@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 11 — Casos Prácticos por Sector | Curso ISO 45001</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+:root{--azul:#1A3A5C;--azul-mid:#2563A8;--azul-claro:#EAF1FB;--acento:#E85820;--acento-light:#FDF0EB;--verde:#2D8B5A;--verde-light:#E5F4EC;--rojo:#C0392B;--rojo-light:#FDECEA;--amarillo:#D97706;--amarillo-light:#FEF3C7;--gris-1:#F7F8FA;--gris-2:#E8EBF0;--gris-3:#9AA3B0;--texto:#1A1F2E;--radio:10px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--gris-1);color:var(--texto);font-size:16px;line-height:1.7;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:280px;flex-shrink:0;background:var(--azul);color:#fff;padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.badge{background:var(--acento);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.sidebar-logo h2{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.3;}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.sidebar-progress{padding:0 24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.progress-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:4px;height:6px;}
+.progress-bar-fill{background:var(--acento);border-radius:4px;height:6px;width:91%;}
+.progress-pct{font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;}
+.sidebar nav ul{list-style:none;}
+.sidebar nav ul li a{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;}
+.sidebar nav ul li a.active{color:#fff;border-left-color:var(--acento);background:rgba(255,255,255,0.08);font-weight:600;}
+.sidebar nav ul li a.done{color:rgba(255,255,255,0.4);}
+.check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+.done .check{background:var(--verde);border-color:var(--verde);}
+.main{flex:1;padding:48px 56px;max-width:900px;}
+.modulo-eyebrow{font-size:12px;font-weight:600;color:var(--acento);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+h1{font-family:'DM Serif Display',serif;font-size:40px;line-height:1.2;color:var(--azul);margin-bottom:16px;}
+.modulo-intro{font-size:17px;color:#4A5568;max-width:660px;margin-bottom:20px;}
+.modulo-meta{display:flex;gap:24px;margin-bottom:40px;flex-wrap:wrap;}
+.meta-item{font-size:13px;color:var(--gris-3);}
+.seccion{margin-bottom:60px;}
+h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--azul);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gris-2);}
+h3{font-size:16px;font-weight:700;color:var(--texto);margin:20px 0 8px;}
+p{color:#374151;margin-bottom:12px;line-height:1.75;}
+ul,ol{margin:0 0 12px 20px;color:#374151;}
+ul li,ol li{margin-bottom:8px;line-height:1.6;}
+
+/* Sector tabs */
+.sector-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.sector-tab{padding:8px 18px;border-radius:100px;border:2px solid var(--gris-2);background:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--text-muted);}
+.sector-tab:hover{border-color:var(--acento);}
+.sector-tab.active{background:var(--acento);color:#fff;border-color:var(--acento);}
+
+/* Sector panel */
+.sector-panel{display:none;}
+.sector-panel.active{display:block;}
+.sector-header{background:linear-gradient(135deg,var(--azul),var(--azul-mid));border-radius:var(--radio);padding:28px 32px;margin-bottom:24px;display:flex;align-items:center;gap:20px;}
+.sector-icon{font-size:40px;}
+.sector-header-body h3{color:#fff;font-size:20px;font-family:'DM Serif Display',serif;margin-bottom:4px;}
+.sector-header-body p{color:rgba(200,220,255,0.85);font-size:14px;margin:0;}
+
+.riesgo-block{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);margin-bottom:16px;overflow:hidden;}
+.riesgo-block-header{padding:16px 20px;background:var(--gris-1);border-bottom:1px solid var(--gris-2);display:flex;align-items:center;gap:12px;cursor:pointer;}
+.riesgo-block-header h4{font-size:14px;font-weight:700;color:var(--azul);margin:0;flex:1;}
+.riesgo-nivel{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;}
+.nivel-alto{background:var(--rojo-light);color:var(--rojo);}
+.nivel-medio{background:var(--amarillo-light);color:var(--amarillo);}
+.riesgo-block-body{padding:20px;font-size:13.5px;}
+.riesgo-block-body p{margin-bottom:8px;}
+.riesgo-block-body ul{margin-bottom:8px;}
+.riesgo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
+.riesgo-col h5{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.riesgo-col.controles h5{color:var(--verde);}
+.riesgo-col.nc h5{color:var(--rojo);}
+.riesgo-col ul{font-size:12.5px;margin-left:14px;}
+.riesgo-col ul li{margin-bottom:5px;}
+
+/* NC frecuentes */
+.nc-list{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.nc-item{background:var(--rojo-light);border-left:4px solid var(--rojo);border-radius:0 var(--radio) var(--radio) 0;padding:14px 16px;}
+.nc-item strong{display:block;font-size:13px;color:var(--rojo);margin-bottom:3px;}
+.nc-item p{font-size:12.5px;color:#374151;margin:0;}
+
+.callout{padding:18px 22px;border-radius:var(--radio);margin:20px 0;display:flex;gap:14px;}
+.callout.clave{background:var(--verde-light);border-left:4px solid var(--verde);}
+.callout.alerta{background:var(--acento-light);border-left:4px solid var(--acento);}
+.callout-icon{font-size:18px;flex-shrink:0;margin-top:2px;}
+.callout-body strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;}
+.callout.clave .callout-body strong{color:var(--verde);}
+.callout.alerta .callout-body strong{color:var(--acento);}
+.callout-body p{margin:0;font-size:13.5px;color:#374151;}
+
+/* Quiz */
+.descargable{background:linear-gradient(135deg,var(--azul),var(--azul-mid));border-radius:var(--radio);padding:28px 32px;color:#fff;display:flex;align-items:center;gap:24px;margin:32px 0;}
+.descargable-icon{font-size:40px;flex-shrink:0;}
+.descargable-body h4{font-size:17px;font-weight:600;margin-bottom:6px;}
+.descargable-body p{font-size:13.5px;color:rgba(255,255,255,0.75);margin:0 0 16px;}
+.btn-dl{background:var(--acento);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.quiz-container{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);overflow:hidden;margin:32px 0;}
+.quiz-header{background:var(--azul);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:12px;}
+.quiz-header h3{font-size:16px;font-weight:600;border:none;margin:0;padding:0;color:#fff;}
+.quiz-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:auto;}
+.quiz-body{padding:28px;}
+.pregunta{margin-bottom:32px;}
+.pregunta:last-child{margin-bottom:0;}
+.pregunta-num{font-size:11px;font-weight:600;color:var(--gris-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.pregunta h4{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--texto);}
+.opciones{display:flex;flex-direction:column;gap:10px;}
+.opcion{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--gris-2);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--texto);}
+.opcion:hover{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--gris-2);flex-shrink:0;}
+.opcion.selected{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion.selected .opcion-dot{background:var(--azul-mid);border-color:var(--azul-mid);}
+.opcion.correcta{border-color:var(--verde);background:var(--verde-light);}
+.opcion.correcta .opcion-dot{background:var(--verde);border-color:var(--verde);}
+.opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-light);}
+.opcion.incorrecta .opcion-dot{background:var(--rojo);border-color:var(--rojo);}
+.feedback-pregunta{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;}
+.feedback-pregunta.ok{background:var(--verde-light);color:#1A5C38;display:block;}
+.feedback-pregunta.ko{background:var(--rojo-light);color:#8B1A10;display:block;}
+.quiz-footer{padding:20px 28px;border-top:1px solid var(--gris-2);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.btn-quiz{background:var(--azul);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-quiz:hover{background:var(--azul-mid);}
+.btn-quiz:disabled{background:var(--gris-3);cursor:not-allowed;}
+.quiz-resultado{font-size:14px;color:var(--gris-3);display:none;}
+.quiz-resultado.visible{display:block;}
+.modulo-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:32px;border-top:2px solid var(--gris-2);}
+.btn-nav{display:flex;align-items:center;gap:10px;padding:13px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;}
+.btn-nav.siguiente{background:var(--azul);color:#fff;}
+.btn-nav.anterior{background:#fff;color:var(--azul);border:2px solid var(--gris-2);}
+@media(max-width:768px){.sidebar{display:none;}.main{padding:24px 20px;}h1{font-size:28px;}.riesgo-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">ISO 45001:2018</div>
+    <h2>Consultor SST<br>Certificado</h2>
+    <p>Seguridad y Salud en el Trabajo</p>
+  </div>
+  <div class="sidebar-progress">
+    <div class="progress-label">Progreso</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+    <div class="progress-pct">Módulo 11 de 12</div>
+  </div>
+  <nav><ul>
+    <li><a href="iso45001-modulo1.html" class="done"><span class="check">✓</span> Fundamentos SST y Marco Legal</a></li>
+    <li><a href="iso45001-modulo2.html" class="done"><span class="check">✓</span> La norma ISO 45001:2018</a></li>
+    <li><a href="iso45001-modulo3.html" class="done"><span class="check">✓</span> Contexto y Liderazgo</a></li>
+    <li><a href="iso45001-modulo4.html" class="done"><span class="check">✓</span> Identificación de Peligros y Riesgos</a></li>
+    <li><a href="iso45001-modulo5.html" class="done"><span class="check">✓</span> Planificación y Objetivos SST</a></li>
+    <li><a href="iso45001-modulo6.html" class="done"><span class="check">✓</span> Soporte y Operación SST</a></li>
+    <li><a href="iso45001-modulo7.html" class="done"><span class="check">✓</span> Investigación de Incidentes</a></li>
+    <li><a href="iso45001-modulo8.html" class="done"><span class="check">✓</span> Auditoría Interna y Revisión</a></li>
+    <li><a href="iso45001-modulo9.html" class="done"><span class="check">✓</span> Proceso de Certificación SST</a></li>
+    <li><a href="iso45001-modulo10.html" class="done"><span class="check">✓</span> Gestión de Contratistas</a></li>
+    <li><a href="#" class="active"><span class="check">11</span> Casos Prácticos por Sector</a></li>
+    <li><a href="#"><span class="check">12</span> Proyecto Final</a></li>
+  </ul></nav>
+</aside>
+<main class="main">
+  <div class="modulo-eyebrow">Módulo 11 de 12 — Aplicación sectorial</div>
+  <h1>Casos Prácticos por Sector</h1>
+  <p class="modulo-intro">El SGS es el mismo para todos los sectores — la norma no cambia. Lo que cambia son los peligros, los controles, las referencias legales y las NC más frecuentes. Este módulo te prepara para entrar en cualquier empresa y saber exactamente dónde mirar.</p>
+  <div class="modulo-meta">
+    <span class="meta-item">⏱ 3h 30min</span>
+    <span class="meta-item">✅ 12 preguntas</span>
+    <span class="meta-item">🏭 6 sectores con peligros, controles y NC reales</span>
+  </div>
+
+  <!-- Tabs de sector -->
+  <div class="sector-tabs">
+    <button class="sector-tab active" onclick="mostrarSector('industria',this)">⚙️ Industria</button>
+    <button class="sector-tab" onclick="mostrarSector('construccion',this)">🏗️ Construcción</button>
+    <button class="sector-tab" onclick="mostrarSector('hosteleria',this)">🍽️ Hostelería</button>
+    <button class="sector-tab" onclick="mostrarSector('sanidad',this)">🏥 Sanidad</button>
+    <button class="sector-tab" onclick="mostrarSector('logistica',this)">🚛 Logística</button>
+    <button class="sector-tab" onclick="mostrarSector('oficinas',this)">🖥️ Oficinas</button>
+  </div>
+
+  <!-- INDUSTRIA -->
+  <div class="sector-panel active" id="sector-industria">
+    <div class="sector-header">
+      <div class="sector-icon">⚙️</div>
+      <div class="sector-header-body">
+        <h3>Industria manufacturera y metalurgia</h3>
+        <p>Mecanizado, soldadura, tratamiento superficial, pintura, fundición. Alta densidad de peligros físicos, químicos y mecánicos.</p>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Atrapamiento en maquinaria (prensas, tornos, fresadoras, cintas)</h4>
+        <span class="riesgo-nivel nivel-alto">MUY ALTO</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>Principal causa de accidentes graves y amputaciones en industria. La maquinaria sin resguardos o con resguardos anulados es el escenario más frecuente.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Resguardos fijos o enclavados en todos los puntos de operación</li><li>Dispositivo bimano para prensas (doble accionamiento simultáneo)</li><li>Sistema LOTO para mantenimiento</li><li>Formación específica en el equipo antes de operar solo</li><li>Señalización de zonas de peligro</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Resguardo retirado para "trabajar más cómodo" y no repuesto</li><li>Mantenimiento sin LOTO — máquina en tensión</li><li>Sin evaluación del riesgo de atrapamiento en el puesto</li><li>Formación de acogida genérica sin instrucción específica de la máquina</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Exposición a agentes químicos (COV, metales pesados, ácidos)</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>Pinturas, disolventes, taladrinas, baños galvánicos, decapantes. Riesgo de enfermedades profesionales a largo plazo (cáncer de pulmón, dermatitis crónica, hipoacusia química).</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Mediciones higiénicas de COV, metales y ruido</li><li>Sustitución por alternativas menos tóxicas cuando sea posible</li><li>Extracción localizada certificada y mantenida</li><li>FDS actualizadas de todos los productos</li><li>EPI específico por producto (mascarilla FFP3, guantes nitrilo/neopreno)</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>FDS sin actualizar (versión antigua) o sin FDS de productos nuevos</li><li>Sin mediciones higiénicas periódicas</li><li>EPI genérico no adecuado al agente específico</li><li>Vigilancia de la salud sin protocolo específico para agentes químicos</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout clave">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Lo que más valora el auditor en industria</strong>
+      <p>Que la evaluación de riesgos incluya mediciones reales (ruido, agentes químicos) y no solo estimaciones visuales. Y que los resguardos de las máquinas estén físicamente en su sitio durante la auditoría — no que estén en el procedimiento pero retirados en el taller.</p></div>
+    </div>
+
+    <h3>NC más frecuentes en auditorías de industria manufacturera</h3>
+    <div class="nc-list">
+      <div class="nc-item"><strong>NC Mayor — Evaluación de riesgos de máquinas sin análisis de puntos de peligro específicos</strong><p>La evaluación dice "riesgo de atrapamiento" pero no identifica los puntos concretos de la máquina, los controles específicos ni el riesgo residual. No cumple C.6.1.1.</p></div>
+      <div class="nc-item"><strong>NC Mayor — Mantenimiento de máquinas sin sistema LOTO documentado</strong><p>Los operarios de mantenimiento intervienen en máquinas sin consignación formal. Un accidente aquí es probable. NC en C.8.1.</p></div>
+      <div class="nc-item"><strong>NC Menor — Registros de entrega de EPI sin firma del trabajador</strong><p>Hay EPI disponibles pero sin evidencia de que se entregaron. NC en C.7.2 — sin evidencia de que el trabajador los recibió.</p></div>
+      <div class="nc-item"><strong>NC Menor — Vigilancia de la salud sin protocolo específico para el puesto</strong><p>Todos los trabajadores pasan el mismo reconocimiento genérico independientemente de si están expuestos a ruido, químicos o esfuerzos físicos. NC en C.6.1.1 y C.9.1.</p></div>
+    </div>
+  </div>
+
+  <!-- CONSTRUCCIÓN -->
+  <div class="sector-panel" id="sector-construccion">
+    <div class="sector-header">
+      <div class="sector-icon">🏗️</div>
+      <div class="sector-header-body">
+        <h3>Construcción y obra civil</h3>
+        <p>Edificación residencial, rehabilitación, obra civil, demolición. El sector con mayor siniestralidad grave y mortal de España.</p>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Caída a distinto nivel desde andamios, cubiertas y bordes de forjado</h4>
+        <span class="riesgo-nivel nivel-alto">MUY ALTO — Principal causa de muerte en construcción</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>Las caídas en altura causan el 30% de los accidentes mortales del sector. La combinación de andamios mal montados, ausencia de protecciones colectivas y uso incorrecto del arnés es letal.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Protecciones colectivas primero: redes, barandillas, pasarelas</li><li>Andamio montado y certificado por empresa homologada</li><li>Revisión diaria del andamio antes de subir</li><li>Arnés Cat. III con absorbedor de energía y línea de vida certificada</li><li>Permiso de trabajo en altura para trabajos &gt;2m sin protección colectiva</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Andamio sin barandilla en algún tramo "porque es solo un momento"</li><li>Arnés sin absorbedor — si cae, la cuerda no amortigua el impacto</li><li>Sin revisión del andamio tras lluvia antes de reanudar trabajos</li><li>Cubiertas con huecos sin señalizar ni proteger</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Exposición a sílice cristalina — silicosis</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Enfermedad profesional irreversible</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>El corte en seco de hormigón, ladrillo y granito genera polvo de sílice que causa silicosis — una enfermedad pulmonar incurable. Muchos trabajadores de construcción desconocen el riesgo.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Corte siempre con agua o con extracción integrada en la herramienta</li><li>Mascarilla FFP3 con válvula para trabajos de corte y desbaste</li><li>Medición higiénica de la exposición a sílice en puestos críticos</li><li>Vigilancia de la salud con espirometría</li><li>Formación sobre el riesgo — muchos trabajadores no saben qué es la silicosis</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Corte en seco sin extracción ni agua</li><li>Sin mascarilla o con mascarilla quirúrgica (no válida para sílice)</li><li>Evaluación de riesgos que no identifica la sílice como agente cancerígeno</li><li>Sin reconocimiento médico específico (espirometría) para expuestos</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout alerta">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>El Plan de Seguridad y Salud: específico para cada obra</strong>
+      <p>En construcción con proyecto, el Plan de Seguridad y Salud (PSS) es obligatorio y debe ser específico para esa obra — no un documento genérico copiado de otra obra. El auditor ISO 45001 que visita una empresa de construcción buscará que el SGS se aplica de forma adaptada a cada proyecto, con el PSS como herramienta operativa, no como trámite burocrático.</p></div>
+    </div>
+
+    <h3>NC más frecuentes en auditorías de construcción</h3>
+    <div class="nc-list">
+      <div class="nc-item"><strong>NC Mayor — Plan de Seguridad y Salud genérico no adaptado a la obra</strong><p>El PSS es un copy-paste de obra anterior. No recoge los peligros específicos del proyecto (demolición con amianto, excavaciones en zona inundable, trabajo en altura en fachada histórica). NC en C.6.1.1.</p></div>
+      <div class="nc-item"><strong>NC Mayor — Trabajadores sin formación específica de Construcción (Convenio)</strong><p>Trabajadores sin la formación de 8 o 20 horas del convenio sectorial. Peligro grave sin control documentado de competencia. NC en C.7.2.</p></div>
+      <div class="nc-item"><strong>NC Menor — Sin coordinación documentada con subcontratas</strong><p>La empresa principal tiene varias subcontratas en obra pero no hay evidencia de reuniones de coordinación ni intercambio de evaluaciones de riesgos. NC en C.8.1.4 y RD 171/2004.</p></div>
+    </div>
+  </div>
+
+  <!-- HOSTELERÍA -->
+  <div class="sector-panel" id="sector-hosteleria">
+    <div class="sector-header">
+      <div class="sector-icon">🍽️</div>
+      <div class="sector-header-body">
+        <h3>Hostelería y restauración</h3>
+        <p>Hoteles, restaurantes, bares, catering. Alta siniestralidad "invisible" por considerarse riesgos menores. Importante peso de los riesgos psicosociales.</p>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Caídas al mismo nivel por suelos mojados y objetos en el suelo</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Primera causa de accidente en hostelería</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>En cocina y en zonas de servicio, los suelos se mojan constantemente. La combinación de calzado inadecuado, ritmo acelerado y suelos resbaladizos genera la mayor parte de los accidentes del sector.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Calzado antideslizante con resistencia a aceites (norma SRC) obligatorio en cocina</li><li>Señalización inmediata de suelos mojados con señal portátil</li><li>Rutina de limpieza de derrames inmediata</li><li>Suelo de cocina con material antideslizante (coeficiente de fricción &gt;0.4)</li><li>Orden riguroso — cables, cajas y objetos fuera de zonas de paso</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Personal con calzado de calle o sin suela antideslizante</li><li>Sin señalización de suelo mojado durante la limpieza</li><li>Zona de paso obstruida con cajas de suministros</li><li>Sin evaluación específica del riesgo de caída en cocina</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Riesgos psicosociales — estrés, jornadas largas, violencia de clientes</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Causa principal de absentismo en el sector</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>El sector de hostelería tiene una de las mayores tasas de absentismo por causa psicosocial de España: turnos partidos, trabajo en festivos, alta demanda emocional, bajo salario relativo y trato con clientes difíciles.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Evaluación de riesgos psicosociales con metodología validada (FPSICO o CoPsoQ)</li><li>Protocolo de actuación ante clientes violentos o abusivos</li><li>Control de la carga de trabajo — ratios adecuados en temporada alta</li><li>Descansos obligatorios respetados en cocina</li><li>Canal de comunicación de situaciones de acoso o violencia</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Sin evaluación de riesgos psicosociales — "aquí no hay estrés, todos contentos"</li><li>Sin protocolo de actuación ante violencia de clientes</li><li>Control de jornada que no refleja las horas reales trabajadas</li><li>Sin canal de denuncia de acoso entre compañeros</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>NC más frecuentes en auditorías de hostelería</h3>
+    <div class="nc-list">
+      <div class="nc-item"><strong>NC Mayor — Sin evaluación de riesgos psicosociales</strong><p>"Eso es para empresas grandes" es la respuesta más frecuente. Pero el 12% de absentismo en el sector y las bajas por ansiedad son evidencia de que existe y no se gestiona. NC en C.6.1.1.</p></div>
+      <div class="nc-item"><strong>NC Menor — Extintores de cocina sin revisión anual</strong><p>Los extintores de polvo o CO₂ de la cocina sin la etiqueta de revisión del año en curso. NC en C.8.2 — equipo de emergencia no mantenido.</p></div>
+      <div class="nc-item"><strong>NC Menor — Personal temporal sin formación de acogida documentada</strong><p>En temporada alta se incorporan refuerzos sin formación previa documentada. NC en C.7.2 — competencia no verificada antes de trabajar.</p></div>
+    </div>
+  </div>
+
+  <!-- SANIDAD -->
+  <div class="sector-panel" id="sector-sanidad">
+    <div class="sector-header">
+      <div class="sector-icon">🏥</div>
+      <div class="sector-header-body">
+        <h3>Sanidad y servicios sociosanitarios</h3>
+        <p>Hospitales, clínicas, residencias de mayores, centros de salud. Combinación única de agentes biológicos, riesgos ergonómicos y carga emocional extrema.</p>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Exposición a agentes biológicos (accidentes con objetos punzantes, aerosoles)</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Enfermedades infecciosas graves (VHB, VHC, VIH)</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>Los accidentes con agujas, bisturíes y otros objetos cortopunzantes son la principal vía de transmisión de enfermedades infecciosas en el personal sanitario. Una aguja contaminada con VHB puede infectar al trabajador con una probabilidad del 30%.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Contenedores rígidos de agujas (sharps containers) homologados en cada punto de uso</li><li>Agujas con dispositivo de seguridad (retractables) para extracciones y vías</li><li>Vacunación hepatitis B obligatoria antes del inicio de actividad</li><li>Protocolo de actuación ante exposición accidental (profilaxis postexposición)</li><li>Formación en precauciones estándar y manejo seguro de objetos cortopunzantes</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Agujas sin dispositivo de seguridad en unidades que los requieren</li><li>Personal sin vacunación hepatitis B documentada</li><li>Sin protocolo postexposición escrito — o protocolo no conocido por el personal</li><li>Contenedores de agujas llenos al 100% (riesgo de punción al cerrar)</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Trastornos musculoesqueléticos por movilización de pacientes</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Primera causa de baja en enfermería</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>La movilización manual de pacientes encamados es una de las cargas de trabajo más exigentes físicamente. El 70% del personal de enfermería sufre dolor lumbar crónico relacionado con el trabajo.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Grúas de techo o grúas móviles para pacientes dependientes</li><li>Sábanas de deslizamiento (transfer sheets) para cambios posturales</li><li>Camas regulables en altura eléctricas en todas las habitaciones</li><li>Formación en técnica de movilización segura (principio MAPO)</li><li>Evaluación MAPO para cuantificar el riesgo de movilización</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Grúas disponibles pero sin formación para usarlas</li><li>Camas no regulables que obligan a agacharse para movilizar</li><li>Sin evaluación MAPO del riesgo de movilización</li><li>Vigilancia de salud sin protocolo específico de columna</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>NC más frecuentes en auditorías de sanidad</h3>
+    <div class="nc-list">
+      <div class="nc-item"><strong>NC Mayor — Sin protocolo de actuación ante exposición a sangre documentado y conocido</strong><p>El protocolo existe en el manual de bioseguridad pero el personal de guardia no lo conoce ni sabe dónde encontrarlo. NC en C.7.3 y C.8.2.</p></div>
+      <div class="nc-item"><strong>NC Mayor — Personal sin vacuna hepatitis B o sin serología de control</strong><p>El personal lleva años trabajando sin documentar el estado vacunal frente a hepatitis B. NC en C.7.2 y C.9.1 (vigilancia de la salud).</p></div>
+      <div class="nc-item"><strong>NC Menor — Riesgo psicosocial no evaluado en UCI y urgencias</strong><p>Las unidades de mayor carga emocional y de trabajo (UCI, urgencias, oncología) no tienen evaluación de riesgos psicosociales específica. NC en C.6.1.1.</p></div>
+    </div>
+  </div>
+
+  <!-- LOGÍSTICA -->
+  <div class="sector-panel" id="sector-logistica">
+    <div class="sector-header">
+      <div class="sector-icon">🚛</div>
+      <div class="sector-header-body">
+        <h3>Logística, transporte y almacenamiento</h3>
+        <p>Almacenes, centros logísticos, transporte de mercancías. Los riesgos de tráfico interno y la interacción peatones-vehículos son los más críticos.</p>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Atropello y colisión peatón-carretilla en almacén</h4>
+        <span class="riesgo-nivel nivel-alto">MUY ALTO — Accidente más grave en logística</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>La interacción entre carretillas elevadoras y peatones en espacios compartidos es la causa de los accidentes más graves en almacenes. La carretilla pesa varias toneladas y puede superar los 15 km/h.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Separación física de vías: barreras, marcado en suelo, semáforos</li><li>Carretillas con cámara trasera y alarma de marcha atrás</li><li>Límite de velocidad interior (5 km/h) señalizado y respetado</li><li>Espejos convexos en todos los cruces y ángulos ciegos</li><li>Chaleco reflectante obligatorio para todos los peatones en zona de carretillas</li><li>Carnet de carretillero en vigor con revisión periódica</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Zonas peatonales no diferenciadas físicamente de las de carretillas</li><li>Carretilleros sin formación actualizada (carnet de hace 10 años sin reciclaje)</li><li>Sin espejos en cruces de pasillos — punto ciego no controlado</li><li>Velocidad real de carretillas muy por encima del límite establecido</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Accidente de tráfico en ruta — conducción profesional</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Primera causa de accidente mortal laboral en España</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>Los accidentes de tráfico en jornada laboral y los in itinere son conjuntamente la primera causa de muerte por accidente laboral en España. El conductor profesional pasa miles de horas al año expuesto.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Política de no uso del móvil al volante y política de cinturón</li><li>Control de tiempos de conducción y descanso (tacógrafo)</li><li>Revisión médica específica para conductores profesionales (visión, reflejos)</li><li>Vehículo en buen estado mecánico con ITV en vigor</li><li>Formación en conducción eficiente y segura</li><li>Plan de gestión de la fatiga — rutas nocturnas con rotación</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Sin política documentada de uso del teléfono al volante</li><li>Tacógrafo manipulado para extender la jornada de conducción</li><li>Sin evaluación del riesgo de accidente de tráfico en la evaluación de puestos</li><li>Conductores sin reconocimiento médico específico para el puesto</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>NC más frecuentes en auditorías de logística</h3>
+    <div class="nc-list">
+      <div class="nc-item"><strong>NC Mayor — Zonas de peatones no delimitadas físicamente de zonas de carretillas</strong><p>Solo hay marcado en el suelo que nadie respeta. Sin barreras físicas el riesgo de atropello es muy alto. NC en C.8.1 — control operacional insuficiente para el nivel de riesgo.</p></div>
+      <div class="nc-item"><strong>NC Menor — Sin evaluación de riesgos para conductores profesionales</strong><p>La evaluación de riesgos cubre el almacén pero no el puesto de conductor — el de mayor riesgo real del sector. NC en C.6.1.1.</p></div>
+      <div class="nc-item"><strong>NC Menor — Estanterías sin carga máxima señalizada ni revisión periódica documentada</strong><p>Estanterías de paletería sin la etiqueta de carga máxima por balda visible. Riesgo de colapso por sobrecarga. NC en C.8.1.</p></div>
+    </div>
+  </div>
+
+  <!-- OFICINAS -->
+  <div class="sector-panel" id="sector-oficinas">
+    <div class="sector-header">
+      <div class="sector-icon">🖥️</div>
+      <div class="sector-header-body">
+        <h3>Oficinas y trabajo con pantallas de visualización de datos</h3>
+        <p>Empresas de servicios, despachos profesionales, call centers, fintech. Los riesgos son menos evidentes pero producen el mayor absentismo acumulado.</p>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>TME por trabajo prolongado con PVD — postura inadecuada</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Primera causa de absentismo en oficinas</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>Lumbalgia, cervicalgia, tendinitis de muñeca y síndrome del túnel carpiano son las enfermedades profesionales más frecuentes en trabajadores de oficina. El teletrabajo ha multiplicado el problema al eliminar la supervisión ergonómica del puesto.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Evaluación ergonómica individual de cada puesto con PVD</li><li>Silla regulable con apoyo lumbar, reposabrazos y altura ajustable</li><li>Monitor a 50-70 cm del ojo, parte superior a la altura de los ojos</li><li>Teclado y ratón a la altura de los codos</li><li>Pausas activas cada 50 minutos de trabajo con PVD</li><li>Evaluación del puesto de teletrabajo en domicilio</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Sin evaluación de puestos de teletrabajo — "eso ya no es nuestra responsabilidad"</li><li>Sillas no regulables o sin apoyo lumbar adecuado</li><li>Monitor en posición lateral o a ángulo incorrecto</li><li>Sin pausas activas planificadas — trabajadores horas delante de la pantalla</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="riesgo-block">
+      <div class="riesgo-block-header">
+        <h4>Riesgos psicosociales — estrés laboral crónico y burnout</h4>
+        <span class="riesgo-nivel nivel-alto">ALTO — Magnitud invisible con gran impacto económico</span>
+      </div>
+      <div class="riesgo-block-body">
+        <p>En sectores de servicios con alta carga cognitiva, plazos estrictos y demandas de clientes, el estrés crónico es el riesgo principal. El teletrabajo ha borrado los límites entre vida laboral y personal, agravando el burnout.</p>
+        <div class="riesgo-grid">
+          <div class="riesgo-col controles"><h5>✅ Controles obligatorios</h5><ul><li>Evaluación de riesgos psicosociales con FPSICO o CoPsoQ</li><li>Política de desconexión digital fuera del horario laboral</li><li>Control real de la jornada — no solo registro de entrada/salida</li><li>Cultura de gestión por objetivos sin microcontrol de horas</li><li>Formación de mandos en detección precoz del burnout</li></ul></div>
+          <div class="riesgo-col nc"><h5>❌ NC más frecuentes</h5><ul><li>Sin evaluación de riesgos psicosociales en empresa de 50+ trabajadores</li><li>Sin política de desconexión digital escrita y comunicada</li><li>Registro de jornada que no refleja las horas reales (sistemático)</li><li>Indicadores SST que no incluyen absentismo por causa psicológica</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>NC más frecuentes en auditorías de oficinas</h3>
+    <div class="nc-list">
+      <div class="nc-item"><strong>NC Mayor — Sin evaluación de puestos de teletrabajo</strong><p>La empresa tiene el 60% de la plantilla en teletrabajo y ningún puesto domiciliario ha sido evaluado ergonómicamente. NC en C.6.1.1 — peligros no identificados para una parte significativa de los trabajadores.</p></div>
+      <div class="nc-item"><strong>NC Mayor — Sin evaluación de riesgos psicosociales en empresa con más de 25 trabajadores</strong><p>La evaluación de riesgos solo cubre riesgos físicos. Los psicosociales están sistemáticamente ausentes. NC en C.6.1.1 — la norma exige evaluarlos explícitamente.</p></div>
+      <div class="nc-item"><strong>NC Menor — Plan de evacuación no actualizado tras cambio de distribución de la oficina</strong><p>Se reorganizaron los espacios de trabajo hace 6 meses pero el plano de evacuación sigue siendo el anterior. NC en C.8.2 — plan de emergencias desactualizado.</p></div>
+    </div>
+  </div>
+
+  <div class="descargable" style="margin-top:40px;">
+    <div class="descargable-icon">📊</div>
+    <div class="descargable-body">
+      <h4>Fichas de peligros por sector — 6 sectores × 10 peligros principales</h4>
+      <p>60 fichas de peligro con descripción, controles por jerarquía, legislación aplicable y NC más frecuente asociada. Listas para usar como base de la evaluación de riesgos sectorial.</p>
+      <button class="btn-dl" onclick="descargar()">⬇ Descargar fichas de peligros</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h3>Quiz del Módulo 11</h3><span class="quiz-badge">12 preguntas</span>
+    </div>
+    <div class="quiz-body">
+
+      <div class="pregunta" id="p1"><div class="pregunta-num">Pregunta 1 de 12</div>
+      <h4>¿Cuál es la primera causa de accidente mortal en el sector de la construcción en España?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Atrapamiento en maquinaria de obra</label>
+        <label class="opcion" onclick="sel(this,'p1',true)"><div class="opcion-dot"></div>Caída a distinto nivel desde andamios, cubiertas y bordes de forjado</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Accidente eléctrico durante instalaciones</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Atropello por maquinaria de obra civil</label>
+      </div><div class="feedback-pregunta" id="fb1"></div></div>
+
+      <div class="pregunta" id="p2"><div class="pregunta-num">Pregunta 2 de 12</div>
+      <h4>¿Por qué el corte en seco de hormigón o ladrillo requiere mascarilla FFP3 y no vale una mascarilla quirúrgica?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Por normativa del convenio colectivo de construcción que exige FFP3 siempre</label>
+        <label class="opcion" onclick="sel(this,'p2',true)"><div class="opcion-dot"></div>Porque el polvo de sílice cristalina es un agente cancerígeno de partículas submicrónicas que solo filtra la FFP3 — la quirúrgica no filtra partículas respirables</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Porque la quirúrgica no está homologada para uso laboral en España</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Por el nivel de ruido asociado al trabajo con radial, que exige EPI de mayor categoría</label>
+      </div><div class="feedback-pregunta" id="fb2"></div></div>
+
+      <div class="pregunta" id="p3"><div class="pregunta-num">Pregunta 3 de 12</div>
+      <h4>En hostelería, ¿qué calzado es obligatorio en cocina para controlar el riesgo de caída al mismo nivel?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Cualquier calzado cerrado de cuero que cubra el tobillo</label>
+        <label class="opcion" onclick="sel(this,'p3',true)"><div class="opcion-dot"></div>Calzado antideslizante con resistencia a aceites y agua (marcado SRC) — el calzado de calle estándar no tiene suficiente agarre en suelos húmedos con grasa</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Calzado de seguridad con puntera de acero Cat. S3</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Cualquier calzado mientras tenga suela de goma</label>
+      </div><div class="feedback-pregunta" id="fb3"></div></div>
+
+      <div class="pregunta" id="p4"><div class="pregunta-num">Pregunta 4 de 12</div>
+      <h4>¿Qué probabilidad de infección por VHB tiene un sanitario tras un accidente con aguja contaminada?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Inferior al 1% — el riesgo real es mínimo</label>
+        <label class="opcion" onclick="sel(this,'p4',true)"><div class="opcion-dot"></div>Hasta el 30% — la hepatitis B es el agente biológico de mayor transmisibilidad por inoculación accidental</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Igual que para el VIH — todos tienen el mismo riesgo</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Entre el 5% y el 10% si el paciente estaba en fase activa</label>
+      </div><div class="feedback-pregunta" id="fb4"></div></div>
+
+      <div class="pregunta" id="p5"><div class="pregunta-num">Pregunta 5 de 12</div>
+      <h4>¿Cuál es el control más eficaz para prevenir el atropello de peatones por carretillas en almacén?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Formación de los carretilleros en conducción segura dentro del almacén</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Señalización de los límites de velocidad y de las zonas peatonales en el suelo</label>
+        <label class="opcion" onclick="sel(this,'p5',true)"><div class="opcion-dot"></div>Separación física mediante barreras entre zonas de carretillas y zonas peatonales — es un control de ingeniería que funciona independientemente del comportamiento</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Obligar a los peatones a llevar chaleco reflectante en todo el almacén</label>
+      </div><div class="feedback-pregunta" id="fb5"></div></div>
+
+      <div class="pregunta" id="p6"><div class="pregunta-num">Pregunta 6 de 12</div>
+      <h4>¿Por qué el teletrabajo ha aumentado el riesgo ergonómico en el sector de oficinas?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Porque en casa se trabaja más horas que en la oficina</label>
+        <label class="opcion" onclick="sel(this,'p6',true)"><div class="opcion-dot"></div>Porque ha eliminado la supervisión ergonómica del puesto — muchos trabajadores usan portátiles en sillas de comedor durante horas, sin la infraestructura ergonómica de la oficina</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Porque el wifi doméstico genera campos electromagnéticos que dañan la columna</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Porque la normativa PRL no aplica al domicilio del trabajador</label>
+      </div><div class="feedback-pregunta" id="fb6"></div></div>
+
+      <div class="pregunta" id="p7"><div class="pregunta-num">Pregunta 7 de 12</div>
+      <h4>¿Qué metodología específica se usa para evaluar el riesgo de trastornos musculoesqueléticos por movilización de pacientes en sanidad?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>Método Fine para actividades con exposición repetida</label>
+        <label class="opcion" onclick="sel(this,'p7',true)"><div class="opcion-dot"></div>Evaluación MAPO (Movimentazione e Assistenza Pazienti Ospedalizzati) — específica para cuantificar el riesgo de movilización de pacientes en entornos hospitalarios</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>FPSICO — la misma que se usa para riesgos psicosociales</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>NTP 330 del INSST — método simplificado de evaluación de riesgos</label>
+      </div><div class="feedback-pregunta" id="fb7"></div></div>
+
+      <div class="pregunta" id="p8"><div class="pregunta-num">Pregunta 8 de 12</div>
+      <h4>¿Qué hace NC mayor en la evaluación de riesgos de una empresa de logística con conductores profesionales?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Que los conductores no tienen formación en conducción eficiente</label>
+        <label class="opcion" onclick="sel(this,'p8',true)"><div class="opcion-dot"></div>Que el puesto de conductor profesional no está incluido en la evaluación de riesgos — el riesgo de accidente de tráfico (principal causa de muerte laboral) no se ha identificado ni controlado</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Que los vehículos tienen más de 5 años de antigüedad</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Solo es NC menor porque los accidentes de tráfico son "fuera de la empresa"</label>
+      </div><div class="feedback-pregunta" id="fb8"></div></div>
+
+      <div class="pregunta" id="p9"><div class="pregunta-num">Pregunta 9 de 12</div>
+      <h4>¿Cuál es el sistema de control más eficaz para el riesgo de atrapamiento en maquinaria industrial?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Formación exhaustiva del operario en la máquina</label>
+        <label class="opcion" onclick="sel(this,'p9',true)"><div class="opcion-dot"></div>Resguardos físicos con enclavamiento que impiden el funcionamiento de la máquina si el resguardo está abierto — control de ingeniería que funciona aunque el operario cometa un error</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Señalización de zona de peligro alrededor de la máquina</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Procedimiento escrito de operación segura de la máquina</label>
+      </div><div class="feedback-pregunta" id="fb9"></div></div>
+
+      <div class="pregunta" id="p10"><div class="pregunta-num">Pregunta 10 de 12</div>
+      <h4>¿Por qué la evaluación de riesgos psicosociales es NC mayor en una empresa de hostelería que la omite?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Solo es NC mayor si la empresa tiene más de 50 trabajadores</label>
+        <label class="opcion" onclick="sel(this,'p10',true)"><div class="opcion-dot"></div>Porque ISO 45001 exige identificar y evaluar todos los peligros incluyendo los psicosociales — omitirlos es no cumplir la cláusula 6.1.1 independientemente del tamaño de la empresa</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Solo es NC menor porque los riesgos psicosociales no generan accidentes con baja</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Porque el convenio colectivo de hostelería la exige específicamente</label>
+      </div><div class="feedback-pregunta" id="fb10"></div></div>
+
+      <div class="pregunta" id="p11"><div class="pregunta-num">Pregunta 11 de 12</div>
+      <h4>¿Qué significa el marcado SRC en el calzado de trabajo?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Que el calzado tiene puntera y plantilla de acero reforzado</label>
+        <label class="opcion" onclick="sel(this,'p11',true)"><div class="opcion-dot"></div>Que la suela supera las pruebas de deslizamiento en superficies con agua (SRA) y con aceite (SRB) — es el marcado de antideslizancia combinada</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Que el calzado está certificado para uso en cocinas industriales específicamente</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Que el calzado resistencia a corriente eléctrica estática</label>
+      </div><div class="feedback-pregunta" id="fb11"></div></div>
+
+      <div class="pregunta" id="p12"><div class="pregunta-num">Pregunta 12 de 12</div>
+      <h4>¿Cuál de estos peligros es específico del sector sanitario y no aparece en los demás sectores analizados?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Caídas al mismo nivel por suelos mojados</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Trastornos musculoesqueléticos por posturas forzadas</label>
+        <label class="opcion" onclick="sel(this,'p12',true)"><div class="opcion-dot"></div>Accidentes con objetos cortopunzantes contaminados con agentes biológicos (VHB, VHC, VIH)</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Riesgos psicosociales por alta carga emocional y de trabajo</label>
+      </div><div class="feedback-pregunta" id="fb12"></div></div>
+
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-quiz" id="btnComprobar" onclick="comprobarQuiz()">Comprobar respuestas</button>
+      <button class="btn-quiz" id="btnReset" onclick="resetQuiz()" style="background:#fff;color:var(--azul);border:2px solid var(--gris-2);display:none;">Reintentar</button>
+      <span class="quiz-resultado" id="quizResultado"></span>
+    </div>
+  </div>
+
+  <div class="modulo-nav">
+    <a href="iso45001-modulo10.html" class="btn-nav anterior">← Módulo 10</a>
+    <a href="iso45001-modulo12.html" class="btn-nav siguiente">Módulo 12: Proyecto Final →</a>
+  </div>
+</main>
+</div>
+<script>
+function mostrarSector(id, btn) {
+  document.querySelectorAll('.sector-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sector-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('sector-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+const R={};
+const CI={p1:1,p2:1,p3:1,p4:1,p5:2,p6:1,p7:1,p8:1,p9:1,p10:1,p11:1,p12:2};
+const FB={
+  p1:{ok:'✅ Correcto. Las caídas a distinto nivel causan el 30% de los accidentes mortales en construcción. Son la primera causa de muerte en el sector, por encima de los atropellos y los accidentes eléctricos.',ko:'❌ Incorrecto. La primera causa de muerte en construcción son las caídas a distinto nivel — desde andamios, cubiertas y bordes de forjado. Representan aproximadamente el 30% de los accidentes mortales del sector.'},
+  p2:{ok:'✅ Correcto. La sílice cristalina genera partículas respirables submicrónicas (menores de 10 micras) que penetran en los alvéolos pulmonares. La mascarilla FFP3 filtra al menos el 99% de partículas de ese tamaño. La quirúrgica no filtra partículas finas y es solo una barrera de salpicaduras.',ko:'❌ Incorrecto. La sílice cristalina genera partículas submicrónicas que solo filtra la FFP3 (filtración ≥99%). La mascarilla quirúrgica no está diseñada para filtrar partículas finas respirables — solo protege de salpicaduras.'},
+  p3:{ok:'✅ Correcto. El marcado SRC indica que la suela supera las pruebas de deslizamiento en suelo con agua y con aceite — exactamente las condiciones de una cocina. El calzado con suela de goma estándar no garantiza ese nivel de adherencia en suelos húmedos con grasa.',ko:'❌ Incorrecto. El calzado correcto para cocina debe tener marcado SRC — resistencia al deslizamiento tanto con agua como con aceite. La suela de goma estándar puede resbalar en suelos con grasa incluso si es cerrado.'},
+  p4:{ok:'✅ Correcto. La hepatitis B es el agente biológico de mayor transmisibilidad por inoculación accidental: hasta el 30% de probabilidad de infección tras accidente con aguja contaminada. El VIH tiene una probabilidad de transmisión de alrededor del 0.3% y el VHC del 1.8%.',ko:'❌ Incorrecto. El VHB tiene la mayor transmisibilidad: hasta el 30% de probabilidad de infección tras accidente con aguja contaminada. Por eso la vacunación hepatitis B es obligatoria antes del inicio de actividad en sanidad.'},
+  p5:{ok:'✅ Correcto. La separación física con barreras es el control de ingeniería más eficaz — funciona independientemente del comportamiento del carretillero o del peatón. La señalización y la formación son controles administrativos que dependen del comportamiento humano, que puede fallar.',ko:'❌ Incorrecto. El control más eficaz es la separación física — un control de ingeniería que funciona siempre. La señalización y la formación son controles administrativos que solo funcionan cuando las personas los respetan.'},
+  p6:{ok:'✅ Correcto. El teletrabajo ha eliminado la supervisión del puesto: muchos trabajadores usan portátiles en posiciones inadecuadas durante horas sin la infraestructura ergonómica de la oficina (silla regulable, monitor externo, teclado). La obligación del empleador de evaluar el puesto de teletrabajo se mantiene.',ko:'❌ Incorrecto. El teletrabajo ha multiplicado el riesgo ergonómico al eliminar la supervisión del puesto. El empleador sigue siendo responsable de la evaluación ergonómica del puesto en domicilio — la normativa PRL aplica aunque el trabajador esté en casa.'},
+  p7:{ok:'✅ Correcto. La evaluación MAPO (Movimentazione e Assistenza Pazienti Ospedalizzati) es la metodología específica para cuantificar el riesgo de trastornos musculoesqueléticos por movilización de pacientes. Evalúa el tipo de pacientes, las ayudas mecánicas disponibles y las condiciones del entorno.',ko:'❌ Incorrecto. La metodología específica para movilización de pacientes en sanidad es la evaluación MAPO. FPSICO es para riesgos psicosociales y NTP 330 es el método simplificado de evaluación de riesgos generales.'},
+  p8:{ok:'✅ Correcto. El accidente de tráfico es la primera causa de muerte laboral en España. Si la evaluación de riesgos de una empresa de transporte no incluye el puesto de conductor, hay un peligro muy grave sin identificar ni controlar — NC mayor en C.6.1.1.',ko:'❌ Incorrecto. Que el accidente ocurra "fuera" no lo excluye de la evaluación de riesgos. El accidente de tráfico en jornada laboral es accidente de trabajo. No evaluar el puesto de conductor en una empresa de transporte es NC mayor porque omite el peligro más letal del sector.'},
+  p9:{ok:'✅ Correcto. El resguardo con enclavamiento es un control de ingeniería: la máquina no puede funcionar si el resguardo está abierto — independientemente de si el operario comete un error o no. Es más eficaz que la formación (que depende del comportamiento) o la señalización (que puede ignorarse).',ko:'❌ Incorrecto. El resguardo con enclavamiento es el control más eficaz porque es un control de ingeniería pasivo — funciona siempre, no depende del comportamiento humano. La formación y los procedimientos dependen de que el operario los aplique en cada momento.'},
+  p10:{ok:'✅ Correcto. ISO 45001 no hace excepción por tamaño ni sector para los peligros psicosociales. La cláusula 6.1.1 exige identificar todos los peligros, incluyendo explícitamente los factores sociales y la organización del trabajo. Omitirlos es NC mayor independientemente del tamaño.',ko:'❌ Incorrecto. ISO 45001 no tiene excepciones por tamaño para los riesgos psicosociales. La cláusula 6.1.1 exige evaluarlos de forma explícita. Omitirlos en la evaluación de riesgos es NC mayor que afecta a cualquier empresa, pequeña o grande.'},
+  p11:{ok:'✅ Correcto. SRC es la combinación de SRA (antideslizante en suelo de porcelana con agua jabonosa) y SRB (antideslizante en suelo de acero con glicerina). Es el marcado que garantiza adherencia en las condiciones más frecuentes de riesgo de resbalón en entornos laborales.',ko:'❌ Incorrecto. SRC es el marcado de antideslizancia combinada: SRA (agua jabonosa) + SRB (aceite). No tiene relación con la puntera de acero ni con la resistencia eléctrica. Es el criterio específico de antideslizancia que debe tener el calzado en cocinas.'},
+  p12:{ok:'✅ Correcto. Los accidentes con objetos cortopunzantes contaminados con agentes biológicos (agujas, bisturíes) son exclusivos del entorno sanitario. Las caídas, los TME y los riesgos psicosociales aparecen en varios sectores — la exposición a agentes biológicos por inoculación accidental es específica de sanidad.',ko:'❌ Incorrecto. Las caídas, los TME y los riesgos psicosociales aparecen en múltiples sectores. El peligro específico de sanidad son los accidentes con objetos cortopunzantes contaminados con agentes biológicos (VHB, VHC, VIH) — no existe en los otros sectores analizados.'}
+};
+function sel(el,pid,ok){if(document.getElementById('btnComprobar').disabled)return;el.closest('.opciones').querySelectorAll('.opcion').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');R[pid]={idx:Array.from(el.closest('.opciones').children).indexOf(el),ok};}
+function comprobarQuiz(){const ps=['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12'];if(Object.keys(R).length<ps.length){alert('Responde todas las preguntas.');return;}let a=0;ps.forEach(pid=>{const r=R[pid];const ops=document.querySelectorAll('#'+pid+' .opcion');const fb=document.getElementById('fb'+pid.substring(1));ops.forEach(o=>o.style.pointerEvents='none');if(r.ok){ops[r.idx].classList.add('correcta');fb.className='feedback-pregunta ok';fb.textContent=FB[pid].ok;a++;}else{ops[r.idx].classList.add('incorrecta');ops[CI[pid]].classList.add('correcta');fb.className='feedback-pregunta ko';fb.textContent=FB[pid].ko;}});document.getElementById('btnComprobar').disabled=true;document.getElementById('btnComprobar').style.display='none';document.getElementById('btnReset').style.display='inline-block';const res=document.getElementById('quizResultado');res.classList.add('visible');const pct=Math.round(a/12*100);res.style.color=pct>=80?'var(--verde)':pct>=60?'var(--amarillo)':'var(--rojo)';res.textContent=pct>=80?`🎉 ${a}/12 (${pct}%) — Conoces los riesgos de todos los sectores.`:pct>=60?`📖 ${a}/12 (${pct}%) — Repasa los sectores incorrectos.`:`🔄 ${a}/12 (${pct}%) — Vuelve a revisar los casos prácticos.`;}
+function resetQuiz(){Object.keys(R).forEach(k=>delete R[k]);document.querySelectorAll('.opcion').forEach(o=>{o.classList.remove('selected','correcta','incorrecta');o.style.pointerEvents='';});document.querySelectorAll('.feedback-pregunta').forEach(f=>{f.className='feedback-pregunta';f.textContent='';});document.getElementById('btnComprobar').disabled=false;document.getElementById('btnComprobar').style.display='';document.getElementById('btnReset').style.display='none';document.getElementById('quizResultado').classList.remove('visible');}
+function descargar(){
+  const t=`FICHAS DE PELIGROS POR SECTOR — ISO 45001:2018
+${'='.repeat(55)}
+
+SECTOR INDUSTRIA
+1. Atrapamiento en máquinas | Amputación, aplastamiento | MUY ALTO | Resguardos enclavados, LOTO, bimano en prensas | RD 1215/1997 | Sin resguardo o resguardo anulado
+2. Exposición a COV | Intoxicación, cáncer | ALTO | Extracción localizada, sustitución, FFP3, mediciones | RD 374/2001 | Sin mediciones higiénicas
+3. Ruido >85 dB | Hipoacusia profesional | ALTO | Cabinas acústicas, protectores, rotación | RD 286/2006 | Sin audiometrías periódicas
+4. Manipulación manual de cargas >25kg | Lumbalgia, hernia | ALTO | Ayudas mecánicas, límite peso, formación | RD 487/1997 | Sin evaluación de MMC
+5. Caída mismo nivel suelos grasos | Fractura, contusión | MEDIO | Suelo antideslizante, señalización, calzado SRC | LPRL Art.15 | Sin calzado adecuado
+
+SECTOR CONSTRUCCIÓN
+1. Caída distinto nivel andamio | Muerte, politraumatismo | MUY ALTO | Barandillas, arnés+absorbedor, línea vida | RD 1627/1997 | Andamio sin barandilla
+2. Sílice cristalina (corte hormigón) | Silicosis (incurable) | MUY ALTO | Corte con agua, FFP3, espirometría | RD 665/1997 | Corte en seco sin protección
+3. Derrumbe zanja | Muerte aplastamiento | MUY ALTO | Entibación, talud estable, vallado | RD 1627/1997 | Sin entibación en excavaciones >1.5m
+4. Contacto eléctrico en instalaciones | Electrocución | ALTO | Sin tensión, formación BA4 | RD 614/2001 | Sin señalización de tensión
+5. Caída de objetos desde altura | Traumatismo craneal | ALTO | Red perimetral, casco obligatorio | RD 1627/1997 | Zona sin acotar bajo trabajos en altura
+
+SECTOR HOSTELERÍA
+1. Caída mismo nivel suelos mojados | Fractura, esguince | ALTO | Calzado SRC, señalización, suelo antideslizante | RD 486/1997 | Sin calzado antideslizante
+2. Corte con cuchillos | Amputación parcial | ALTO | Guantes malla, tabla estable, formación | LPRL Art.15 | Sin guantes corte en cocina
+3. Quemaduras por hornos y aceite | Quemadura 2º-3º grado | ALTO | Guantes calor, mangas largas, señalización | LPRL Art.15 | Sin formación para nuevos en cocina
+4. Riesgo psicosocial turnos/clientes | Burnout, ansiedad | ALTO | FPSICO, protocolo violencia, descansos | NTP 443 | Sin evaluación de riesgos psicosociales
+5. Sobrecarga postural camareros | Cervicalgia, varices | MEDIO | Calzado ergonómico, pausas, rotación | RD 487/1997 | Sin evaluación ergonómica del puesto
+
+SECTOR SANIDAD
+1. Accidente con cortopunzante | VHB (30%), VHC, VIH | MUY ALTO | Agujas seguridad, sharps, vacuna VHB, protocolo PEP | RD 1010/2010 | Sin vacunación hepatitis B
+2. Movilización manual pacientes | Lumbalgia crónica | ALTO | Grúas, transfer sheets, camas regulables, MAPO | RD 487/1997 | Sin grúas o sin formación para usarlas
+3. Exposición a citostáticos | Cáncer, teratogenicidad | MUY ALTO | Cabinas seguridad, guantes dobles, formación | RD 665/1997 | Sin cabina de seguridad biológica
+4. Agresiones de pacientes | Traumatismo, estrés postraumático | ALTO | Protocolo agresiones, formación desescalada | NTP 489 | Sin protocolo de actuación ante agresión
+5. Riesgo psicosocial UCI/urgencias | Burnout, síndrome quemado | ALTO | FPSICO, rotación, supervisión clínica | NTP 604 | Sin evaluación en unidades de alta presión
+
+SECTOR LOGÍSTICA
+1. Atropello peatón-carretilla | Muerte, aplastamiento | MUY ALTO | Separación física, cámara trasera, espejos, 5 km/h | RD 1215/1997 | Sin separación física peatones-carretillas
+2. Vuelco de carretilla | Aplastamiento del operador | ALTO | Carnet vigente, cinturón, velocidad controlada | RD 1215/1997 | Operador sin cinturón
+3. Accidente de tráfico conductores | Muerte, lesiones graves | ALTO | Tacógrafo, política móvil, reconocimiento médico | CE 561/2006 | Sin evaluación del riesgo de conducción
+4. Colapso de estanterías | Aplastamiento | ALTO | Revisión anual, carga máxima señalizada | UNE EN 15512 | Sin carga máxima señalizada por balda
+5. TME por manipulación de cargas | Lumbalgia, hernia | ALTO | Transpaletas eléctricas, ayudas mecánicas | RD 487/1997 | Sin ayudas mecánicas para cargas >25 kg
+
+SECTOR OFICINAS
+1. TME por PVD postura inadecuada | Cervicalgia, lumbalgia, STC | ALTO | Evaluación ergonómica, silla regulable, pausas | RD 488/1997 | Sin evaluación puestos teletrabajo
+2. Riesgo psicosocial estrés/burnout | Baja por ansiedad, depresión | ALTO | FPSICO, desconexión digital, control jornada | NTP 604 | Sin evaluación psicosocial
+3. Caída mismo nivel cables/escaleras | Fractura, contusión | BAJO | Gestión cables, alfombras fijadas, iluminación | RD 486/1997 | Cables cruzando zonas de paso
+4. Fatiga visual trabajo prolongado PVD | Cefaleas, visión borrosa | MEDIO | Pausas activas, reconocimiento visual | RD 488/1997 | Sin reconocimiento visual usuarios PVD
+5. Incendio sobrecarga eléctrica | Quemaduras, intoxicación | MEDIO | Instalación revisada, extintores, plan evacuación | RD 513/2017 | Plan evacuación desactualizado tras reforma
+
+© Curso Consultor ISO 45001 — Todos los derechos reservados`;
+  const b=new Blob([t],{type:'text/plain;charset=utf-8'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a');
+  a.href=u;
+  a.download='fichas-peligros-por-sector-iso45001.txt';
+  a.click();
+  URL.revokeObjectURL(u);
+}
+</script>
+</body>
+</html>

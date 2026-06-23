@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 3 — Contexto y Liderazgo | Curso ISO 45001</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+:root{--azul:#1A3A5C;--azul-mid:#2563A8;--azul-claro:#EAF1FB;--acento:#E85820;--acento-light:#FDF0EB;--verde:#2D8B5A;--verde-light:#E5F4EC;--rojo:#C0392B;--rojo-light:#FDECEA;--amarillo:#D97706;--amarillo-light:#FEF3C7;--gris-1:#F7F8FA;--gris-2:#E8EBF0;--gris-3:#9AA3B0;--texto:#1A1F2E;--radio:10px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--gris-1);color:var(--texto);font-size:16px;line-height:1.7;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:280px;flex-shrink:0;background:var(--azul);color:#fff;padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.badge{background:var(--acento);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.sidebar-logo h2{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.3;}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.sidebar-progress{padding:0 24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.progress-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:4px;height:6px;}
+.progress-bar-fill{background:var(--acento);border-radius:4px;height:6px;width:25%;}
+.progress-pct{font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;}
+.sidebar nav ul{list-style:none;}
+.sidebar nav ul li a{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;}
+.sidebar nav ul li a.active{color:#fff;border-left-color:var(--acento);background:rgba(255,255,255,0.08);font-weight:600;}
+.sidebar nav ul li a.done{color:rgba(255,255,255,0.4);}
+.check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+.done .check{background:var(--verde);border-color:var(--verde);}
+.main{flex:1;padding:48px 56px;max-width:880px;}
+.modulo-eyebrow{font-size:12px;font-weight:600;color:var(--acento);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+h1{font-family:'DM Serif Display',serif;font-size:40px;line-height:1.2;color:var(--azul);margin-bottom:16px;}
+.modulo-intro{font-size:17px;color:#4A5568;max-width:660px;margin-bottom:20px;}
+.modulo-meta{display:flex;gap:24px;margin-bottom:40px;flex-wrap:wrap;}
+.meta-item{font-size:13px;color:var(--gris-3);}
+.seccion{margin-bottom:60px;}
+h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--azul);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gris-2);}
+h3{font-size:17px;font-weight:700;color:var(--texto);margin:28px 0 10px;}
+p{color:#374151;margin-bottom:14px;line-height:1.75;}
+ul,ol{margin:0 0 14px 20px;color:#374151;}
+ul li,ol li{margin-bottom:10px;line-height:1.6;}
+.callout{padding:20px 24px;border-radius:var(--radio);margin:24px 0;display:flex;gap:16px;}
+.callout.info{background:var(--azul-claro);border-left:4px solid var(--azul-mid);}
+.callout.alerta{background:var(--acento-light);border-left:4px solid var(--acento);}
+.callout.clave{background:var(--verde-light);border-left:4px solid var(--verde);}
+.callout.legal{background:var(--amarillo-light);border-left:4px solid var(--amarillo);}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.callout-body strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;color:var(--azul);}
+.callout.alerta .callout-body strong{color:var(--acento);}
+.callout.clave .callout-body strong{color:var(--verde);}
+.callout.legal .callout-body strong{color:var(--amarillo);}
+.callout-body p{margin:0;font-size:14.5px;color:#374151;}
+.infografia-wrap{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:32px;margin:28px 0;overflow-x:auto;}
+.infografia-titulo{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--gris-3);margin-bottom:24px;}
+.tabla-wrap{overflow-x:auto;margin:20px 0;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--azul);color:#fff;padding:12px 16px;text-align:left;font-weight:600;}
+td{padding:11px 16px;border-bottom:1px solid var(--gris-2);vertical-align:top;}
+tr:nth-child(even) td{background:var(--gris-1);}
+tr:last-child td{border-bottom:none;}
+.caso-practico{background:#fff;border:2px solid var(--acento);border-radius:var(--radio);padding:28px;margin:28px 0;}
+.caso-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.caso-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;}
+.caso-header h4{font-size:16px;font-weight:700;color:var(--acento);margin:0;}
+.auditor-tip{background:#1A1F2E;color:#fff;border-radius:var(--radio);padding:24px 28px;margin:24px 0;}
+.auditor-tip h4{font-size:14px;font-weight:700;color:var(--acento);margin-bottom:10px;}
+.auditor-tip p,.auditor-tip li{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7;}
+.auditor-tip ul{margin-left:20px;}
+.auditor-tip ul li{margin-bottom:6px;}
+.participacion-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0;}
+.part-card{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:22px;}
+.part-card.valido{border-top:4px solid var(--verde);}
+.part-card.invalido{border-top:4px solid var(--rojo);}
+.part-card h4{font-size:14px;font-weight:700;margin-bottom:12px;}
+.part-card.valido h4{color:var(--verde);}
+.part-card.invalido h4{color:var(--rojo);}
+.part-card ul{font-size:13px;color:#374151;padding-left:16px;margin:0;}
+.part-card ul li{margin-bottom:6px;}
+.politica-box{background:var(--azul-claro);border:2px solid var(--azul-mid);border-radius:var(--radio);padding:28px;margin:24px 0;}
+.politica-box .politica-label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--azul-mid);letter-spacing:0.5px;margin-bottom:12px;}
+.politica-box p{font-size:15px;color:var(--azul);line-height:1.8;font-style:italic;margin:0;}
+.politica-box .politica-firma{margin-top:16px;font-size:13px;color:var(--gris-3);font-style:normal;}
+.descargable{background:linear-gradient(135deg,var(--azul),var(--azul-mid));border-radius:var(--radio);padding:28px 32px;color:#fff;display:flex;align-items:center;gap:24px;margin:32px 0;}
+.descargable-icon{font-size:40px;flex-shrink:0;}
+.descargable-body h4{font-size:17px;font-weight:600;margin-bottom:6px;}
+.descargable-body p{font-size:13.5px;color:rgba(255,255,255,0.75);margin:0 0 16px;}
+.btn-dl{background:var(--acento);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.quiz-container{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);overflow:hidden;margin:32px 0;}
+.quiz-header{background:var(--azul);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:12px;}
+.quiz-header h3{font-size:16px;font-weight:600;border:none;margin:0;padding:0;color:#fff;}
+.quiz-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:auto;}
+.quiz-body{padding:28px;}
+.pregunta{margin-bottom:32px;}
+.pregunta:last-child{margin-bottom:0;}
+.pregunta-num{font-size:11px;font-weight:600;color:var(--gris-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.pregunta h4{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--texto);}
+.opciones{display:flex;flex-direction:column;gap:10px;}
+.opcion{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--gris-2);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--texto);}
+.opcion:hover{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--gris-2);flex-shrink:0;}
+.opcion.selected{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion.selected .opcion-dot{background:var(--azul-mid);border-color:var(--azul-mid);}
+.opcion.correcta{border-color:var(--verde);background:var(--verde-light);}
+.opcion.correcta .opcion-dot{background:var(--verde);border-color:var(--verde);}
+.opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-light);}
+.opcion.incorrecta .opcion-dot{background:var(--rojo);border-color:var(--rojo);}
+.feedback-pregunta{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;}
+.feedback-pregunta.ok{background:var(--verde-light);color:#1A5C38;display:block;}
+.feedback-pregunta.ko{background:var(--rojo-light);color:#8B1A10;display:block;}
+.quiz-footer{padding:20px 28px;border-top:1px solid var(--gris-2);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.btn-quiz{background:var(--azul);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-quiz:hover{background:var(--azul-mid);}
+.btn-quiz:disabled{background:var(--gris-3);cursor:not-allowed;}
+.quiz-resultado{font-size:14px;color:var(--gris-3);display:none;}
+.quiz-resultado.visible{display:block;}
+.modulo-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:32px;border-top:2px solid var(--gris-2);}
+.btn-nav{display:flex;align-items:center;gap:10px;padding:13px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.2s;}
+.btn-nav.siguiente{background:var(--azul);color:#fff;}
+.btn-nav.anterior{background:#fff;color:var(--azul);border:2px solid var(--gris-2);}
+@media(max-width:768px){.sidebar{display:none;}.main{padding:24px 20px;}h1{font-size:28px;}.participacion-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">ISO 45001:2018</div>
+    <h2>Consultor SST<br>Certificado</h2>
+    <p>Seguridad y Salud en el Trabajo</p>
+  </div>
+  <div class="sidebar-progress">
+    <div class="progress-label">Progreso</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+    <div class="progress-pct">Módulo 3 de 12</div>
+  </div>
+  <nav><ul>
+    <li><a href="iso45001-modulo1.html" class="done"><span class="check">✓</span> Fundamentos SST y Marco Legal</a></li>
+    <li><a href="iso45001-modulo2.html" class="done"><span class="check">✓</span> La norma ISO 45001:2018</a></li>
+    <li><a href="#" class="active"><span class="check">3</span> Contexto y Liderazgo</a></li>
+    <li><a href="#"><span class="check">4</span> Identificación de Peligros y Riesgos</a></li>
+    <li><a href="#"><span class="check">5</span> Planificación y Objetivos SST</a></li>
+    <li><a href="#"><span class="check">6</span> Soporte y Operación</a></li>
+    <li><a href="#"><span class="check">7</span> Investigación de Incidentes</a></li>
+    <li><a href="#"><span class="check">8</span> Auditoría Interna y Revisión</a></li>
+    <li><a href="#"><span class="check">9</span> Proceso de Certificación SST</a></li>
+    <li><a href="#"><span class="check">10</span> Gestión de Contratistas</a></li>
+    <li><a href="#"><span class="check">11</span> Casos Prácticos por Sector</a></li>
+    <li><a href="#"><span class="check">12</span> Proyecto Final</a></li>
+  </ul></nav>
+</aside>
+<main class="main">
+  <div class="modulo-eyebrow">Módulo 3 de 12 — Cláusulas 4 y 5</div>
+  <h1>Contexto y Liderazgo</h1>
+  <p class="modulo-intro">Las cláusulas 4 y 5 son donde el auditor decide si el SGS es real o de papel. Un análisis de contexto genérico y una dirección que no conoce sus propios objetivos SST son señales inequívocas de un sistema que no funciona.</p>
+  <div class="modulo-meta">
+    <span class="meta-item">⏱ 2h 30min</span>
+    <span class="meta-item">✅ 12 preguntas</span>
+    <span class="meta-item">📋 Plantilla contexto SST + modelo política</span>
+  </div>
+
+  <section class="seccion">
+    <h2>1. El análisis de contexto SST: más allá del DAFO genérico</h2>
+    <p>La cláusula 4.1 exige que la organización comprenda su contexto interno y externo en relación con el SGS. La trampa habitual es presentar un DAFO corporativo que nada tiene que ver con la seguridad y salud laboral. El auditor lo detecta en segundos.</p>
+
+    <p>Un análisis de contexto SST riguroso debe responder a estas preguntas:</p>
+    <ul>
+      <li>¿Qué factores del entorno externo pueden crear nuevos peligros o agravar los existentes?</li>
+      <li>¿Qué características internas de la organización condicionan el desempeño SST?</li>
+      <li>¿Cómo conectan los factores identificados con los riesgos SST reales de la empresa?</li>
+    </ul>
+
+    <div class="infografia-wrap">
+      <div class="infografia-titulo">🔲 Factores de contexto SST — Internos vs Externos</div>
+      <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;">
+        <!-- Internos -->
+        <rect x="20" y="20" width="300" height="340" rx="10" fill="#EAF1FB" stroke="#2563A8" stroke-width="1.5"/>
+        <text x="170" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#1A3A5C">FACTORES INTERNOS</text>
+        <text x="40" y="80" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#1A3A5C">Cultura y organización</text>
+        <text x="40" y="98" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Cultura de seguridad real (no declarada)</text>
+        <text x="40" y="114" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Rotación de personal y pérdida de conocimiento</text>
+        <text x="40" y="130" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Grado de subcontratación de actividades</text>
+        <text x="40" y="146" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Estructura jerárquica y autonomía operativa</text>
+        <text x="40" y="172" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#1A3A5C">Personas y competencias</text>
+        <text x="40" y="190" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Edad media de la plantilla</text>
+        <text x="40" y="206" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Trabajadores especialmente sensibles</text>
+        <text x="40" y="222" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Nivel de formación y experiencia en PRL</text>
+        <text x="40" y="238" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Diversidad lingüística (inmigrantes)</text>
+        <text x="40" y="264" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#1A3A5C">Instalaciones y procesos</text>
+        <text x="40" y="282" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Antigüedad de instalaciones y equipos</text>
+        <text x="40" y="298" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Procesos con sustancias peligrosas</text>
+        <text x="40" y="314" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Jornadas, turnos y trabajo nocturno</text>
+        <text x="40" y="330" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Historial de accidentalidad propio</text>
+        <!-- Externos -->
+        <rect x="360" y="20" width="300" height="340" rx="10" fill="#FDF0EB" stroke="#E85820" stroke-width="1.5"/>
+        <text x="510" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#C44B15">FACTORES EXTERNOS</text>
+        <text x="380" y="80" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#C44B15">Marco legal y regulatorio</text>
+        <text x="380" y="98" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Legislación PRL aplicable al sector</text>
+        <text x="380" y="114" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Cambios normativos previstos</text>
+        <text x="380" y="130" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Planes de inspección de la ITSS</text>
+        <text x="380" y="146" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Sentencias judiciales relevantes del sector</text>
+        <text x="380" y="172" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#C44B15">Mercado y sector</text>
+        <text x="380" y="190" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Exigencias SST de clientes y licitadores</text>
+        <text x="380" y="206" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Accidentalidad del sector (estadísticas)</text>
+        <text x="380" y="222" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Sindicatos y relaciones laborales</text>
+        <text x="380" y="238" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Mercado laboral (escasez de perfiles)</text>
+        <text x="380" y="264" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#C44B15">Entorno físico y social</text>
+        <text x="380" y="282" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Condiciones climáticas (trabajo exterior)</text>
+        <text x="380" y="298" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Proximidad a comunidades y vecinos</text>
+        <text x="380" y="314" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Emergencias externas (inundaciones, etc.)</text>
+        <text x="380" y="330" font-family="Inter,sans-serif" font-size="11" fill="#374151">• Proveedores con impacto en SST</text>
+      </svg>
+    </div>
+
+    <div class="auditor-tip">
+      <h4>🔍 Cómo conectar el contexto con los riesgos: lo que diferencia un buen análisis</h4>
+      <p>El auditor no solo revisa que hayas identificado los factores — comprueba que hay una trazabilidad lógica entre el contexto y los riesgos SST que gestionas. Ejemplo de conexión correcta:</p>
+      <ul>
+        <li><strong>Factor identificado:</strong> Alta rotación de personal (30% anual en producción)</li>
+        <li><strong>Riesgo SST derivado:</strong> Personal nuevo sin suficiente experiencia en manejo de maquinaria peligrosa</li>
+        <li><strong>Control planificado:</strong> Procedimiento de acogida SST reforzado + supervisor asignado los primeros 30 días + restricción de acceso a máquinas peligrosas hasta completar formación específica</li>
+      </ul>
+      <p>Eso es un análisis de contexto que se sostiene ante el auditor.</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>2. Partes interesadas SST: quién importa y qué espera</h2>
+    <p>La cláusula 4.2 exige identificar las partes interesadas relevantes para el SGS y determinar sus necesidades y expectativas en materia SST. En la práctica, muchas empresas listan las mismas partes interesadas que en ISO 9001 sin adaptarlas a la perspectiva de seguridad y salud.</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Parte interesada</th><th>Necesidades/expectativas SST</th><th>Cómo gestionarlas</th><th>¿Tienen requisito legal?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Trabajadores</strong></td><td>Lugar de trabajo seguro, información sobre riesgos, participación en decisiones SST, formación adecuada</td><td>Cláusula 5.4 — mecanismos de participación específicos</td><td>✅ LPRL Art. 18, 19</td></tr>
+        <tr><td><strong>Representantes de trabajadores</strong></td><td>Ser consultados en medidas SST, acceso a información preventiva, participar en investigación de accidentes</td><td>Reuniones periódicas, documentación compartida</td><td>✅ LPRL Art. 33-40</td></tr>
+        <tr><td><strong>Autoridad laboral / ITSS</strong></td><td>Cumplimiento de la legislación, registros disponibles, acceso en inspecciones</td><td>Registro de requisitos legales actualizado, evaluaciones al día</td><td>✅ LISOS, LPRL</td></tr>
+        <tr><td><strong>Organismos de certificación</strong></td><td>Cumplimiento de ISO 45001, evidencias documentadas, mejora continua</td><td>SGS mantenido y mejorado entre auditorías</td><td>❌ Voluntario</td></tr>
+        <tr><td><strong>Clientes / licitadores</strong></td><td>Que sus contratistas tengan sistemas SST robustos, estadísticas de accidentalidad, certificación</td><td>Mantener certificado, compartir estadísticas SST</td><td>❌ Contractual</td></tr>
+        <tr><td><strong>Aseguradoras</strong></td><td>Gestión activa del riesgo, reducción de siniestralidad, sistemas documentados</td><td>Informes de accidentalidad, planes de mejora</td><td>❌ Contractual</td></tr>
+        <tr><td><strong>Contratistas y proveedores</strong></td><td>Coordinación eficaz, información sobre riesgos del centro, procedimientos claros</td><td>Procedimiento CAE, información antes del acceso</td><td>✅ RD 171/2004</td></tr>
+        <tr><td><strong>Comunidad / vecinos</strong></td><td>No ser afectados por accidentes o emergencias de la organización</td><td>Plan de emergencias con impacto exterior, comunicación proactiva</td><td>Parcial — Ley industrial</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="seccion">
+    <h2>3. El alcance del SGS: decidir qué entra y qué no</h2>
+    <p>La cláusula 4.3 exige determinar los límites y la aplicabilidad del SGS. Esta decisión tiene consecuencias directas en la auditoría: el certificado especificará exactamente el alcance y el auditor solo evaluará lo que esté dentro de él.</p>
+
+    <h3>Principios para definir el alcance</h3>
+    <ul>
+      <li>El alcance debe incluir todas las actividades, productos y servicios que la organización controla o puede influir</li>
+      <li>No puede excluirse una actividad o centro solo porque sea peligrosa — precisamente eso justificaría incluirla</li>
+      <li>Las exclusiones deben justificarse documentalmente y no pueden utilizarse para ocultar incumplimientos</li>
+      <li>Si la organización tiene múltiples centros, debe especificarse cuáles entran en el alcance</li>
+    </ul>
+
+    <div class="caso-practico">
+      <div class="caso-header">
+        <span class="caso-badge">Caso práctico</span>
+        <h4>Empresa logística con tres centros — Decisión de alcance</h4>
+      </div>
+      <p><strong>Situación:</strong> Empresa de transporte y logística con tres centros: almacén central (150 trabajadores), delegación norte (40 trabajadores) y flota de transporte (60 conductores). La dirección quiere certificar ISO 45001 pero le preocupa la complejidad del alcance.</p>
+      <p><strong>Análisis de alcance:</strong></p>
+      <ul>
+        <li><strong>Almacén central:</strong> Incluir obligatoriamente — es la actividad principal y concentra los riesgos más significativos (carretillas, almacenamiento en altura, muelles de carga)</li>
+        <li><strong>Delegación norte:</strong> Recomendable incluir — misma actividad, mismos riesgos. Excluirla sin justificación sólida generaría preguntas del auditor</li>
+        <li><strong>Flota de transporte:</strong> Incluir — los conductores están bajo el control de la organización aunque trabajen fuera de las instalaciones. La definición de "lugar de trabajo" de ISO 45001 los incluye</li>
+      </ul>
+      <p><strong>Declaración de alcance recomendada:</strong> "El sistema de gestión de la seguridad y salud en el trabajo aplica a las actividades de almacenamiento, manipulación de mercancías y transporte por carretera de [Empresa], en sus instalaciones de [Ciudad A] y [Ciudad B], incluyendo la flota de vehículos de transporte."</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>4. Liderazgo: la prueba de fuego de la dirección</h2>
+    <p>La cláusula 5.1 es donde ISO 45001 se juega su credibilidad. Un SGS sin liderazgo real de la alta dirección es un sistema que no funcionará nunca — independientemente de cuántos procedimientos tenga documentados.</p>
+
+    <h3>Lo que la norma exige demostrar a la alta dirección</h3>
+    <p>No es suficiente con que la dirección apruebe la política y firme documentos. La norma exige que la dirección demuestre liderazgo y compromiso mediante acciones concretas y verificables:</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Requisito de la norma (5.1)</th><th>Evidencia que espera el auditor</th><th>Error frecuente</th></tr></thead>
+      <tbody>
+        <tr><td>Asumir la responsabilidad y rendición de cuentas de la eficacia del SGS</td><td>Dirección puede responder sobre resultados SST, objetivos y desviaciones</td><td>Derivar todas las preguntas al técnico de PRL</td></tr>
+        <tr><td>Asegurarse de que se establecen la política y los objetivos SST</td><td>Política firmada por la dirección, objetivos conocidos por la dirección</td><td>Política firmada pero desconocida para quien la firmó</td></tr>
+        <tr><td>Asegurarse de la integración de los requisitos SST en los procesos de negocio</td><td>La SST aparece en reuniones de operaciones, planificación de producción, decisiones de inversión</td><td>La SST solo se trata en el comité de seguridad, aislada del resto de procesos</td></tr>
+        <tr><td>Asegurarse de que los recursos necesarios están disponibles</td><td>Presupuesto SST asignado y respetado, personal de prevención adecuado</td><td>Recortes sistemáticos en el presupuesto de prevención</td></tr>
+        <tr><td>Promover la mejora continua</td><td>La dirección propone y apoya iniciativas de mejora SST, no solo las aprueba</td><td>Mejora continua como trámite documental anual</td></tr>
+        <tr><td>Apoyar a otros roles directivos para demostrar su liderazgo</td><td>Los mandos intermedios tienen responsabilidades SST definidas y las ejercen</td><td>Solo el técnico de PRL "hace seguridad"</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="auditor-tip">
+      <h4>🔍 Las preguntas que el auditor hace al director general</h4>
+      <ul>
+        <li>"¿Cuántos accidentes con baja ha habido en los últimos 12 meses?"</li>
+        <li>"¿Cuál es el objetivo SST que se han marcado para este año?"</li>
+        <li>"¿Cuándo fue la última revisión por la dirección? ¿Qué decisiones se tomaron?"</li>
+        <li>"¿Qué ha hecho usted personalmente en los últimos 6 meses para mejorar la seguridad?"</li>
+        <li>"¿Cuánto presupuesto tienen asignado para prevención este año?"</li>
+        <li>"¿Cómo sabe usted que los trabajadores conocen los riesgos de sus puestos?"</li>
+      </ul>
+      <p>Si el director responde con evasivas, desconocimiento o deriva todo al técnico de PRL, el auditor registrará una no conformidad en la cláusula 5.1. Prepara a tu cliente para estas preguntas.</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>5. La política SST: cómo redactarla para que funcione</h2>
+    <p>La política SST no es un documento decorativo. Es la declaración pública de los compromisos de la dirección y el marco dentro del cual se establecen los objetivos. Debe ser específica, comprometedora y conocida por todos.</p>
+
+    <h3>Requisitos de la política según la cláusula 5.2</h3>
+    <ul>
+      <li>Apropiada al propósito, tamaño y contexto de la organización y a la naturaleza específica de sus riesgos SST</li>
+      <li>Proporcionar el marco para establecer los objetivos SST</li>
+      <li>Incluir el compromiso de cumplir los requisitos legales aplicables</li>
+      <li>Incluir el compromiso de eliminar los peligros y reducir los riesgos SST</li>
+      <li>Incluir el compromiso de mejora continua del SGS</li>
+      <li>Incluir el compromiso de consulta y participación de los trabajadores</li>
+      <li>Estar disponible para las partes interesadas</li>
+      <li>Estar comunicada, comprendida y aplicada dentro de la organización</li>
+    </ul>
+
+    <div class="politica-box">
+      <div class="politica-label">📄 Ejemplo de política SST — Empresa industrial (adaptar siempre al contexto real)</div>
+      <p>"En [EMPRESA], la seguridad y salud de nuestros trabajadores es el valor principal sobre el que construimos nuestra actividad. Ningún objetivo productivo o económico justifica poner en riesgo la integridad física o la salud de las personas que trabajan con nosotros.<br><br>
+      La dirección se compromete a:<br>
+      — Proporcionar lugares de trabajo seguros y saludables, previniendo las lesiones y el deterioro de la salud relacionados con el trabajo.<br>
+      — Identificar y eliminar los peligros y reducir los riesgos SST, aplicando la jerarquía de controles.<br>
+      — Cumplir y superar los requisitos legales aplicables en materia de seguridad y salud.<br>
+      — Consultar y promover la participación activa de los trabajadores y sus representantes en todos los aspectos del sistema de gestión.<br>
+      — Mejorar continuamente el desempeño de nuestro sistema de gestión de la seguridad y salud.<br>
+      — Proporcionar los recursos humanos, técnicos y económicos necesarios para el correcto funcionamiento del sistema.<br><br>
+      Esta política se comunica a todos los trabajadores, contratistas y partes interesadas, y se revisa periódicamente para asegurar su adecuación y eficacia."</p>
+      <div class="politica-firma">Firmado: [Director General] — [Ciudad, Fecha] — Revisión: anual</div>
+    </div>
+
+    <div class="callout alerta">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Lo que hace que una política sea rechazada por el auditor</strong>
+      <p>Una política que podría valer para cualquier empresa del sector sin cambiar una sola palabra. Si la política de una empresa química puede ser exactamente igual a la de una empresa de servicios informáticos, algo falla. El auditor buscará que la política mencione los riesgos SST específicos del sector o de la organización, o que al menos el marco sea genuinamente propio.</p></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>6. La cláusula 5.4: participación real de los trabajadores</h2>
+    <p>Esta es la cláusula que más trabajo requiere y la que genera más no conformidades en primera auditoría. La norma es explícita: no basta con "informar" a los trabajadores — hay que "consultar" y promover su "participación".</p>
+
+    <h3>La diferencia entre informar, consultar y participar</h3>
+    <ul>
+      <li><strong>Informar:</strong> comunicar decisiones ya tomadas. La norma lo da por supuesto pero no es suficiente</li>
+      <li><strong>Consultar:</strong> pedir la opinión antes de tomar la decisión. Implica que la opinión puede influir en el resultado</li>
+      <li><strong>Participar:</strong> involucrar activamente en el proceso de toma de decisiones. El mayor nivel de implicación</li>
+    </ul>
+
+    <div class="participacion-grid">
+      <div class="part-card valido">
+        <h4>✅ Mecanismos válidos de participación</h4>
+        <ul>
+          <li>Reuniones periódicas de seguridad por departamento con registro y seguimiento de puntos</li>
+          <li>Participación de trabajadores en la identificación de peligros de su puesto (entrevistas documentadas)</li>
+          <li>Comité de Seguridad y Salud activo con actas que reflejan debates reales</li>
+          <li>Sistema de sugerencias SST con respuesta documentada a cada propuesta</li>
+          <li>Trabajadores incluidos en la investigación de incidentes</li>
+          <li>Consulta previa a cambios que afectan a la seguridad del puesto</li>
+          <li>Elección de EPI con participación de los trabajadores que los van a usar</li>
+        </ul>
+      </div>
+      <div class="part-card invalido">
+        <h4>❌ Lo que NO cumple la cláusula 5.4</h4>
+        <ul>
+          <li>Colgar la política SST en el tablón de anuncios y pedir firma de recibí</li>
+          <li>Enviar email informando de nuevos procedimientos sin solicitar retroalimentación</li>
+          <li>CSS que se reúne una vez al año para aprobar la memoria preventiva</li>
+          <li>Formación en la que los trabajadores "reciben" información pero no pueden hacer preguntas ni aportar</li>
+          <li>Evaluación de riesgos elaborada exclusivamente por el técnico sin visitar los puestos ni entrevistar a los trabajadores</li>
+          <li>Investigación de accidentes realizada solo por el responsable de seguridad sin el trabajador afectado</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout clave">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>El test del trabajador: cómo lo aplica el auditor</strong>
+      <p>El auditor entrevistará a trabajadores de distintos niveles y departamentos sin presencia del responsable de calidad o seguridad. Les preguntará: "¿Ha participado usted alguna vez en la identificación de los riesgos de su puesto?", "¿Sabe qué puede hacer si detecta un peligro?", "¿Ha hecho alguna sugerencia de mejora en seguridad? ¿Qué pasó con ella?". Si los trabajadores no saben responder o responden que nadie les ha preguntado nunca, la cláusula 5.4 tiene una no conformidad.</p></div>
+    </div>
+  </section>
+
+  <div class="descargable">
+    <div class="descargable-icon">📋</div>
+    <div class="descargable-body">
+      <h4>Plantilla: Análisis de contexto SST + Registro de partes interesadas + Modelo de política SST</h4>
+      <p>Tres documentos listos para adaptar. El análisis de contexto incluye la tabla de factores con conexión a riesgos SST. La política incluye las tres variantes por sector: industria, construcción y servicios.</p>
+      <button class="btn-dl" onclick="descargar()">⬇ Descargar plantillas</button>
+    </div>
+  </div>
+
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h3>Quiz del Módulo 3</h3><span class="quiz-badge">12 preguntas</span>
+    </div>
+    <div class="quiz-body">
+      <div class="pregunta" id="p1"><div class="pregunta-num">Pregunta 1 de 12</div>
+      <h4>¿Qué diferencia un buen análisis de contexto SST de un DAFO genérico?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>El número de factores identificados</label>
+        <label class="opcion" onclick="sel(this,'p1',true)"><div class="opcion-dot"></div>La trazabilidad entre los factores identificados y los riesgos SST reales de la organización</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Que esté firmado por el director general</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Que utilice una metodología reconocida internacionalmente</label>
+      </div><div class="feedback-pregunta" id="fb1"></div></div>
+
+      <div class="pregunta" id="p2"><div class="pregunta-num">Pregunta 2 de 12</div>
+      <h4>Una empresa de transporte tiene conductores que trabajan en rutas distintas cada día. ¿Están incluidos en el alcance del SGS ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>No, porque no trabajan en un lugar de trabajo fijo</label>
+        <label class="opcion" onclick="sel(this,'p2',true)"><div class="opcion-dot"></div>Sí, porque la definición de "lugar de trabajo" de ISO 45001 incluye cualquier lugar bajo el control de la organización donde una persona trabaja</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Solo si la empresa ha decidido incluirlos expresamente en la declaración de alcance</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>No, los conductores están cubiertos por la normativa de transporte, no por ISO 45001</label>
+      </div><div class="feedback-pregunta" id="fb2"></div></div>
+
+      <div class="pregunta" id="p3"><div class="pregunta-num">Pregunta 3 de 12</div>
+      <h4>¿Puede una empresa excluir de su alcance ISO 45001 una actividad especialmente peligrosa para simplificar la implantación?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Sí, las exclusiones al alcance son libres</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Sí, si el técnico de prevención lo justifica documentalmente</label>
+        <label class="opcion" onclick="sel(this,'p3',true)"><div class="opcion-dot"></div>No, no puede excluirse una actividad precisamente porque sea peligrosa — eso justificaría incluirla</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Sí, pero debe comunicárselo al organismo certificador</label>
+      </div><div class="feedback-pregunta" id="fb3"></div></div>
+
+      <div class="pregunta" id="p4"><div class="pregunta-num">Pregunta 4 de 12</div>
+      <h4>Durante la auditoría, el director general deriva todas las preguntas sobre accidentes y objetivos SST al técnico de prevención. ¿Qué registrará el auditor?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Nada — es normal que el director delegue en el técnico</label>
+        <label class="opcion" onclick="sel(this,'p4',true)"><div class="opcion-dot"></div>Una no conformidad en la cláusula 5.1 por falta de liderazgo y compromiso demostrable de la alta dirección</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Una observación de mejora sin valor de no conformidad</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Lo anotará pero no tiene impacto en la certificación</label>
+      </div><div class="feedback-pregunta" id="fb4"></div></div>
+
+      <div class="pregunta" id="p5"><div class="pregunta-num">Pregunta 5 de 12</div>
+      <h4>¿Cuál de estos compromisos es OBLIGATORIO en la política SST según la cláusula 5.2?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Reducir el índice de accidentalidad un 50% en 5 años</label>
+        <label class="opcion" onclick="sel(this,'p5',true)"><div class="opcion-dot"></div>Consulta y participación de los trabajadores en el SGS</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Certificarse en ISO 45001 antes de una fecha determinada</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Contratar un Servicio de Prevención Ajeno acreditado</label>
+      </div><div class="feedback-pregunta" id="fb5"></div></div>
+
+      <div class="pregunta" id="p6"><div class="pregunta-num">Pregunta 6 de 12</div>
+      <h4>¿Qué diferencia hay entre "consultar" y "participar" según la cláusula 5.4?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Son sinónimos en el contexto de ISO 45001</label>
+        <label class="opcion" onclick="sel(this,'p6',true)"><div class="opcion-dot"></div>Consultar implica pedir opinión antes de decidir; participar implica involucrar activamente en el proceso de toma de decisiones</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Consultar es para mandos; participar es para trabajadores de base</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Consultar es informal; participar requiere documentación</label>
+      </div><div class="feedback-pregunta" id="fb6"></div></div>
+
+      <div class="pregunta" id="p7"><div class="pregunta-num">Pregunta 7 de 12</div>
+      <h4>Un trabajador comenta al auditor que nunca le han preguntado sobre los riesgos de su puesto. ¿Qué cláusula está en riesgo de incumplimiento?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>7.3 — Toma de conciencia</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>6.1 — Identificación de peligros</label>
+        <label class="opcion" onclick="sel(this,'p7',true)"><div class="opcion-dot"></div>5.4 — Consulta y participación de los trabajadores (y posiblemente también 6.1)</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>9.1 — Seguimiento y medición</label>
+      </div><div class="feedback-pregunta" id="fb7"></div></div>
+
+      <div class="pregunta" id="p8"><div class="pregunta-num">Pregunta 8 de 12</div>
+      <h4>¿Tener un Comité de Seguridad y Salud (CSS) activo es suficiente para cumplir la cláusula 5.4?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Sí, el CSS es el mecanismo de participación reconocido legalmente</label>
+        <label class="opcion" onclick="sel(this,'p8',true)"><div class="opcion-dot"></div>No necesariamente — la norma exige participación real que puede requerir mecanismos adicionales al CSS</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Sí, si las actas del CSS están documentadas correctamente</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Solo si la empresa tiene más de 50 trabajadores</label>
+      </div><div class="feedback-pregunta" id="fb8"></div></div>
+
+      <div class="pregunta" id="p9"><div class="pregunta-num">Pregunta 9 de 12</div>
+      <h4>¿Cuál de estos es un factor de contexto EXTERNO relevante para el SGS SST?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>La antigüedad de las instalaciones de la empresa</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>La rotación de personal en los últimos 3 años</label>
+        <label class="opcion" onclick="sel(this,'p9',true)"><div class="opcion-dot"></div>Los planes de inspección de la ITSS en el sector</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>El historial de accidentalidad propio de la empresa</label>
+      </div><div class="feedback-pregunta" id="fb9"></div></div>
+
+      <div class="pregunta" id="p10"><div class="pregunta-num">Pregunta 10 de 12</div>
+      <h4>¿Qué necesidades SST tienen los contratistas como parte interesada?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Solo necesitan saber los horarios y el lugar de trabajo</label>
+        <label class="opcion" onclick="sel(this,'p10',true)"><div class="opcion-dot"></div>Coordinación eficaz, información sobre los riesgos del centro, procedimientos claros y mecanismos de emergencia</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>No son parte interesada del SGS SST, solo del SGC</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Solo necesitan el certificado ISO 45001 de la empresa contratante</label>
+      </div><div class="feedback-pregunta" id="fb10"></div></div>
+
+      <div class="pregunta" id="p11"><div class="pregunta-num">Pregunta 11 de 12</div>
+      <h4>¿Qué requisito de la política SST diferencia a ISO 45001 de ISO 9001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>El compromiso de mejora continua</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>El compromiso de cumplir los requisitos legales</label>
+        <label class="opcion" onclick="sel(this,'p11',true)"><div class="opcion-dot"></div>El compromiso explícito de eliminar peligros, reducir riesgos SST y promover la consulta y participación de los trabajadores</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>La obligación de publicar la política en la web corporativa</label>
+      </div><div class="feedback-pregunta" id="fb11"></div></div>
+
+      <div class="pregunta" id="p12"><div class="pregunta-num">Pregunta 12 de 12</div>
+      <h4>¿Cuál de estas acciones demuestra liderazgo SST real de la alta dirección según la cláusula 5.1?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Firmar la política SST anualmente</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Aprobar el presupuesto de prevención sin revisarlo en detalle</label>
+        <label class="opcion" onclick="sel(this,'p12',true)"><div class="opcion-dot"></div>Participar personalmente en la revisión mensual de los indicadores SST y tomar decisiones basadas en sus resultados</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Designar un responsable de calidad y seguridad con plenos poderes</label>
+      </div><div class="feedback-pregunta" id="fb12"></div></div>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-quiz" id="btnComprobar" onclick="comprobarQuiz()">Comprobar respuestas</button>
+      <button class="btn-quiz" id="btnReset" onclick="resetQuiz()" style="background:#fff;color:var(--azul);border:2px solid var(--gris-2);display:none;">Reintentar</button>
+      <span class="quiz-resultado" id="quizResultado"></span>
+    </div>
+  </div>
+
+  <div class="modulo-nav">
+    <a href="iso45001-modulo2.html" class="btn-nav anterior">← Módulo 2</a>
+    <a href="iso45001-modulo4.html" class="btn-nav siguiente">Módulo 4: Identificación de Peligros →</a>
+  </div>
+</main>
+</div>
+<script>
+const R={};
+const CI={p1:1,p2:1,p3:2,p4:1,p5:1,p6:1,p7:2,p8:1,p9:2,p10:1,p11:2,p12:2};
+const FB={
+  p1:{ok:'✅ Correcto. La trazabilidad entre factores y riesgos SST reales es lo que diferencia un análisis útil de uno genérico. El auditor buscará esa conexión.',ko:'❌ Incorrecto. Lo que importa no es la cantidad de factores sino la conexión entre cada factor identificado y los riesgos SST concretos de esa organización.'},
+  p2:{ok:'✅ Correcto. ISO 45001 define "lugar de trabajo" de forma amplia: cualquier lugar bajo el control de la organización donde se realiza trabajo. Los conductores están bajo ese control aunque trabajen en la vía pública.',ko:'❌ Incorrecto. La definición de "lugar de trabajo" de ISO 45001 es amplia e incluye cualquier lugar bajo el control de la organización. Los conductores están incluidos.'},
+  p3:{ok:'✅ Correcto. Las exclusiones al alcance no pueden usarse para evitar incluir actividades peligrosas. Precisamente la peligrosidad justifica que estén dentro del SGS.',ko:'❌ Incorrecto. Una actividad peligrosa es una razón para INCLUIRLA en el alcance, no para excluirla. Las exclusiones no pueden utilizarse para ocultar incumplimientos.'},
+  p4:{ok:'✅ Correcto. La cláusula 5.1 exige que la alta dirección demuestre liderazgo y compromiso personalmente. Derivar todo al técnico es evidencia de que ese liderazgo no existe.',ko:'❌ Incorrecto. El auditor registrará una no conformidad en la cláusula 5.1. La dirección debe poder responder sobre resultados SST, objetivos y acciones propias.'},
+  p5:{ok:'✅ Correcto. La consulta y participación de los trabajadores es uno de los compromisos obligatorios en la política SST según la cláusula 5.2.',ko:'❌ Incorrecto. Los compromisos obligatorios en la política incluyen: cumplimiento legal, eliminación de peligros, mejora continua y consulta y participación de los trabajadores.'},
+  p6:{ok:'✅ Correcto. Consultar implica que la opinión puede influir en la decisión. Participar es el nivel más alto: implicación activa en el proceso decisional.',ko:'❌ Incorrecto. Son niveles distintos. Consultar = pedir opinión antes de decidir. Participar = involucrar en el proceso de decisión. La norma exige ambos.'},
+  p7:{ok:'✅ Correcto. Si los trabajadores no han sido consultados sobre los riesgos de su puesto, hay un incumplimiento claro de 5.4 y posiblemente también de 6.1 (la identificación de peligros debe incluir la perspectiva de quienes realizan el trabajo).',ko:'❌ Incorrecto. La no consulta sobre riesgos del puesto afecta directamente a la cláusula 5.4 (participación) y posiblemente a 6.1 (identificación de peligros sin involucrar a los trabajadores).'},
+  p8:{ok:'✅ Correcto. El CSS es un mecanismo legal pero puede no ser suficiente para cumplir la cláusula 5.4, que exige participación real en múltiples aspectos del SGS.',ko:'❌ Incorrecto. El CSS es un órgano legal que no siempre alcanza a todos los aspectos de la cláusula 5.4. La norma exige mecanismos adicionales de participación directa.'},
+  p9:{ok:'✅ Correcto. Los planes de inspección de la ITSS son un factor externo — fuera del control de la empresa pero con impacto directo en el SGS SST.',ko:'❌ Incorrecto. Las instalaciones antiguas, la rotación y el historial propio son factores INTERNOS. Los planes de inspección de la ITSS son externos (fuera del control de la organización).'},
+  p10:{ok:'✅ Correcto. Los contratistas necesitan coordinación, información sobre riesgos y procedimientos claros — todo regulado por el RD 171/2004 y la cláusula 8.1.4 de ISO 45001.',ko:'❌ Incorrecto. Los contratistas son parte interesada con necesidades SST específicas: coordinación, información sobre riesgos del centro, procedimientos de emergencia y mecanismos de comunicación.'},
+  p11:{ok:'✅ Correcto. Los compromisos de eliminar peligros, reducir riesgos SST y promover la participación de los trabajadores son específicos de ISO 45001 y no aparecen en ISO 9001.',ko:'❌ Incorrecto. La mejora continua y el cumplimiento legal también están en ISO 9001. Lo exclusivo de ISO 45001 es el compromiso de eliminar peligros, reducir riesgos SST y promover la participación de los trabajadores.'},
+  p12:{ok:'✅ Correcto. La participación personal en la revisión de indicadores y la toma de decisiones basadas en datos SST es evidencia real de liderazgo. No es delegar ni firmar.',ko:'❌ Incorrecto. Firmar documentos o delegar sin involucrarse no es liderazgo. El auditor buscará acciones concretas y personales de la dirección, como revisar indicadores y tomar decisiones SST.'}
+};
+function sel(el,pid,ok){if(document.getElementById('btnComprobar').disabled)return;el.closest('.opciones').querySelectorAll('.opcion').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');R[pid]={idx:Array.from(el.closest('.opciones').children).indexOf(el),ok};}
+function comprobarQuiz(){const ps=['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12'];if(Object.keys(R).length<ps.length){alert('Responde todas las preguntas.');return;}let a=0;ps.forEach(pid=>{const r=R[pid];const ops=document.querySelectorAll('#'+pid+' .opcion');const fb=document.getElementById('fb'+pid.substring(1));ops.forEach(o=>o.style.pointerEvents='none');if(r.ok){ops[r.idx].classList.add('correcta');fb.className='feedback-pregunta ok';fb.textContent=FB[pid].ok;a++;}else{ops[r.idx].classList.add('incorrecta');ops[CI[pid]].classList.add('correcta');fb.className='feedback-pregunta ko';fb.textContent=FB[pid].ko;}});document.getElementById('btnComprobar').disabled=true;document.getElementById('btnComprobar').style.display='none';document.getElementById('btnReset').style.display='inline-block';const res=document.getElementById('quizResultado');res.classList.add('visible');const pct=Math.round(a/ps.length*100);res.style.color=pct>=80?'var(--verde)':pct>=60?'var(--amarillo)':'var(--rojo)';res.textContent=pct>=80?`🎉 ${a}/12 (${pct}%) — Sólido en contexto y liderazgo.`:pct>=60?`📖 ${a}/12 (${pct}%) — Repasa los puntos incorrectos.`:`🔄 ${a}/12 (${pct}%) — Vuelve a leer el módulo.`;}
+function resetQuiz(){Object.keys(R).forEach(k=>delete R[k]);document.querySelectorAll('.opcion').forEach(o=>{o.classList.remove('selected','correcta','incorrecta');o.style.pointerEvents='';});document.querySelectorAll('.feedback-pregunta').forEach(f=>{f.className='feedback-pregunta';f.textContent='';});document.getElementById('btnComprobar').disabled=false;document.getElementById('btnComprobar').style.display='';document.getElementById('btnReset').style.display='none';document.getElementById('quizResultado').classList.remove('visible');}
+function descargar(){const t=`PLANTILLAS MÓDULO 3 — CONTEXTO Y LIDERAZGO ISO 45001\n${'='.repeat(55)}\n\nPLANTILLA 1: ANÁLISIS DE CONTEXTO SST\n\nFACTORES INTERNOS\n| Factor | Descripción específica | Riesgo SST derivado | Control planificado |\n|---|---|---|---|\n| Rotación de personal | ___% anual en producción | Personal sin experiencia en equipos peligrosos | Acogida SST reforzada + supervisor primeros 30 días |\n| Antigüedad instalaciones | ___ años | Equipos sin protecciones modernas | Plan de mantenimiento preventivo + revisión protecciones |\n| Trabajadores sensibles | Nº embarazadas, discapacitados... | Exposición a riesgos incompatibles | Adaptación de puesto o cambio temporal |\n| Diversidad lingüística | ___ idiomas en plantilla | Incomprensión de instrucciones de seguridad | Señalización pictográfica + formación en idioma |\n| Subcontratación | ___% de actividad subcontratada | Riesgos de coordinación | Procedimiento CAE |\n\nFACTORES EXTERNOS\n| Factor | Descripción específica | Riesgo SST derivado | Control planificado |\n|---|---|---|---|\n| Planes ITSS | Campaña inspección ___ | Incumplimientos detectados | Auditoría interna previa |\n| Legislación nueva | RD ___ en vigor desde ___ | Nuevos requisitos legales | Actualización evaluación riesgos |\n| Exigencias clientes | Clientes requieren ___ | Pérdida de contratos | Certificación ISO 45001 |\n| Accidentalidad sector | Índice sectorial ___ | Referencia para objetivos | Objetivos por debajo de la media sectorial |\n\n=====================================\n\nPLANTILLA 2: REGISTRO DE PARTES INTERESADAS SST\n\n| Parte interesada | Necesidades/expectativas SST | Forma de gestión | Requisito legal | Frecuencia revisión |\n|---|---|---|---|---|\n| Trabajadores | Lugar seguro, información riesgos, participación | Mecanismos cláusula 5.4 | LPRL Art. 14-19 | Continua |\n| Rep. trabajadores | Consulta medidas SST, acceso información | CSS, reuniones | LPRL Art. 33-40 | Trimestral |\n| ITSS | Cumplimiento legal, acceso registros | Mantenimiento legal | LISOS | Continua |\n| Clientes | SGS robusto, estadísticas SST, certificación | Mantener certificado, informes | No legal | Anual |\n| Contratistas | Coordinación, info riesgos, procedimientos | Procedimiento CAE | RD 171/2004 | Por contrata |\n| Aseguradoras | Gestión activa del riesgo | Informes siniestralidad | No legal | Anual |\n\n=====================================\n\nPLANTILLA 3: MODELO DE POLÍTICA SST — TRES VARIANTES\n\nVARIANTE A — INDUSTRIA\n"En [EMPRESA INDUSTRIAL], la protección de la seguridad y salud de nuestros trabajadores constituye un valor fundamental e irrenunciable de nuestra actividad productiva. Trabajamos con maquinaria, equipos y sustancias que requieren una gestión preventiva rigurosa y sistemática.\n\nLa dirección se compromete a:\n— Proporcionar lugares de trabajo seguros, previniendo lesiones y enfermedades profesionales.\n— Identificar y controlar los riesgos de nuestros procesos aplicando la jerarquía de controles.\n— Cumplir y superar los requisitos legales en materia de seguridad e higiene industrial.\n— Involucrar activamente a nuestros trabajadores en la identificación de riesgos y la mejora continua.\n— Asignar los recursos necesarios para mantener y mejorar nuestro sistema de gestión.\n\nEsta política es revisada anualmente y comunicada a todos los trabajadores y contratistas."\n\nVARIANTE B — CONSTRUCCIÓN\n"En [EMPRESA CONSTRUCTORA], la seguridad en la obra es nuestra primera prioridad. Desarrollamos actividades de alto riesgo que exigen el máximo compromiso de todos — desde la dirección hasta el último trabajador en obra.\n\nLa dirección se compromete a:\n— Garantizar condiciones de trabajo seguras en todos nuestros centros de trabajo, incluyendo obras temporales.\n— Gestionar los riesgos específicos de la construcción: trabajos en altura, movimiento de tierras, instalaciones eléctricas y coordinación con subcontratas.\n— Cumplir la legislación de seguridad en construcción y superar sus requisitos mínimos.\n— Consultar a los trabajadores y sus representantes antes de tomar decisiones que afecten a su seguridad.\n— Investigar todos los incidentes y accidentes para aprender y evitar su repetición."\n\nVARIANTE C — SERVICIOS\n"En [EMPRESA DE SERVICIOS], entendemos que la seguridad y salud abarca tanto los riesgos físicos como los psicosociales. Trabajamos con personas, para personas, y su bienestar es nuestra responsabilidad.\n\nLa dirección se compromete a:\n— Crear entornos de trabajo saludables, prestando especial atención a los riesgos ergonómicos, psicosociales y de trabajo con PVD.\n— Gestionar proactivamente el estrés laboral, el acoso y la carga mental como riesgos reales del trabajo de oficina y atención al público.\n— Cumplir todos los requisitos legales aplicables a nuestra actividad.\n— Promover la participación de los trabajadores en la mejora de sus condiciones de trabajo.\n— Revisar y mejorar continuamente nuestro sistema de gestión SST."\n\n© Curso Consultor ISO 45001 — Todos los derechos reservados`;
+  const b=new Blob([t],{type:'text/plain;charset=utf-8'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='plantillas-contexto-liderazgo-iso45001.txt';a.click();URL.revokeObjectURL(u);}
+</script>
+</body>
+</html>

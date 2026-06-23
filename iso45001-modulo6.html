@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 6 — Soporte y Operación SST | Curso ISO 45001</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+:root{--azul:#1A3A5C;--azul-mid:#2563A8;--azul-claro:#EAF1FB;--acento:#E85820;--acento-light:#FDF0EB;--verde:#2D8B5A;--verde-light:#E5F4EC;--rojo:#C0392B;--rojo-light:#FDECEA;--amarillo:#D97706;--amarillo-light:#FEF3C7;--gris-1:#F7F8FA;--gris-2:#E8EBF0;--gris-3:#9AA3B0;--texto:#1A1F2E;--radio:10px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--gris-1);color:var(--texto);font-size:16px;line-height:1.7;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:280px;flex-shrink:0;background:var(--azul);color:#fff;padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.badge{background:var(--acento);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.sidebar-logo h2{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.3;}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.sidebar-progress{padding:0 24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.progress-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:4px;height:6px;}
+.progress-bar-fill{background:var(--acento);border-radius:4px;height:6px;width:50%;}
+.progress-pct{font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;}
+.sidebar nav ul{list-style:none;}
+.sidebar nav ul li a{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;}
+.sidebar nav ul li a.active{color:#fff;border-left-color:var(--acento);background:rgba(255,255,255,0.08);font-weight:600;}
+.sidebar nav ul li a.done{color:rgba(255,255,255,0.4);}
+.check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+.done .check{background:var(--verde);border-color:var(--verde);}
+.main{flex:1;padding:48px 56px;max-width:880px;}
+.modulo-eyebrow{font-size:12px;font-weight:600;color:var(--acento);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+h1{font-family:'DM Serif Display',serif;font-size:40px;line-height:1.2;color:var(--azul);margin-bottom:16px;}
+.modulo-intro{font-size:17px;color:#4A5568;max-width:660px;margin-bottom:20px;}
+.modulo-meta{display:flex;gap:24px;margin-bottom:40px;flex-wrap:wrap;}
+.meta-item{font-size:13px;color:var(--gris-3);}
+.seccion{margin-bottom:60px;}
+h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--azul);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gris-2);}
+h3{font-size:17px;font-weight:700;color:var(--texto);margin:28px 0 10px;}
+p{color:#374151;margin-bottom:14px;line-height:1.75;}
+ul,ol{margin:0 0 14px 20px;color:#374151;}
+ul li,ol li{margin-bottom:10px;line-height:1.6;}
+.callout{padding:20px 24px;border-radius:var(--radio);margin:24px 0;display:flex;gap:16px;}
+.callout.info{background:var(--azul-claro);border-left:4px solid var(--azul-mid);}
+.callout.alerta{background:var(--acento-light);border-left:4px solid var(--acento);}
+.callout.clave{background:var(--verde-light);border-left:4px solid var(--verde);}
+.callout.legal{background:var(--amarillo-light);border-left:4px solid var(--amarillo);}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.callout-body strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;color:var(--azul);}
+.callout.alerta .callout-body strong{color:var(--acento);}
+.callout.clave .callout-body strong{color:var(--verde);}
+.callout.legal .callout-body strong{color:var(--amarillo);}
+.callout-body p{margin:0;font-size:14.5px;color:#374151;}
+.infografia-wrap{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:32px;margin:28px 0;overflow-x:auto;}
+.infografia-titulo{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--gris-3);margin-bottom:24px;}
+.tabla-wrap{overflow-x:auto;margin:20px 0;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--azul);color:#fff;padding:12px 16px;text-align:left;font-weight:600;}
+td{padding:11px 16px;border-bottom:1px solid var(--gris-2);vertical-align:top;}
+tr:nth-child(even) td{background:var(--gris-1);}
+tr:last-child td{border-bottom:none;}
+.caso-practico{background:#fff;border:2px solid var(--acento);border-radius:var(--radio);padding:28px;margin:28px 0;}
+.caso-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.caso-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;}
+.caso-header h4{font-size:16px;font-weight:700;color:var(--acento);margin:0;}
+.auditor-tip{background:#1A1F2E;color:#fff;border-radius:var(--radio);padding:24px 28px;margin:24px 0;}
+.auditor-tip h4{font-size:14px;font-weight:700;color:var(--acento);margin-bottom:10px;}
+.auditor-tip p,.auditor-tip li{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7;}
+.auditor-tip ul{margin-left:20px;}
+.auditor-tip ul li{margin-bottom:6px;}
+.descargable{background:linear-gradient(135deg,var(--azul),var(--azul-mid));border-radius:var(--radio);padding:28px 32px;color:#fff;display:flex;align-items:center;gap:24px;margin:32px 0;}
+.descargable-icon{font-size:40px;flex-shrink:0;}
+.descargable-body h4{font-size:17px;font-weight:600;margin-bottom:6px;}
+.descargable-body p{font-size:13.5px;color:rgba(255,255,255,0.75);margin:0 0 16px;}
+.btn-dl{background:var(--acento);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.quiz-container{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);overflow:hidden;margin:32px 0;}
+.quiz-header{background:var(--azul);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:12px;}
+.quiz-header h3{font-size:16px;font-weight:600;border:none;margin:0;padding:0;color:#fff;}
+.quiz-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:auto;}
+.quiz-body{padding:28px;}
+.pregunta{margin-bottom:32px;}
+.pregunta:last-child{margin-bottom:0;}
+.pregunta-num{font-size:11px;font-weight:600;color:var(--gris-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.pregunta h4{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--texto);}
+.opciones{display:flex;flex-direction:column;gap:10px;}
+.opcion{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--gris-2);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--texto);}
+.opcion:hover{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--gris-2);flex-shrink:0;}
+.opcion.selected{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion.selected .opcion-dot{background:var(--azul-mid);border-color:var(--azul-mid);}
+.opcion.correcta{border-color:var(--verde);background:var(--verde-light);}
+.opcion.correcta .opcion-dot{background:var(--verde);border-color:var(--verde);}
+.opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-light);}
+.opcion.incorrecta .opcion-dot{background:var(--rojo);border-color:var(--rojo);}
+.feedback-pregunta{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;}
+.feedback-pregunta.ok{background:var(--verde-light);color:#1A5C38;display:block;}
+.feedback-pregunta.ko{background:var(--rojo-light);color:#8B1A10;display:block;}
+.quiz-footer{padding:20px 28px;border-top:1px solid var(--gris-2);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.btn-quiz{background:var(--azul);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-quiz:hover{background:var(--azul-mid);}
+.btn-quiz:disabled{background:var(--gris-3);cursor:not-allowed;}
+.quiz-resultado{font-size:14px;color:var(--gris-3);display:none;}
+.quiz-resultado.visible{display:block;}
+.permiso-box{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:24px;margin:16px 0;border-left:5px solid var(--acento);}
+.permiso-box h4{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:12px;}
+.permiso-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.permiso-item{background:var(--gris-1);padding:10px 12px;border-radius:6px;}
+.permiso-item strong{display:block;font-size:10px;text-transform:uppercase;color:var(--gris-3);letter-spacing:0.5px;margin-bottom:3px;}
+.permiso-item span{font-size:13px;color:var(--texto);}
+.modulo-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:32px;border-top:2px solid var(--gris-2);}
+.btn-nav{display:flex;align-items:center;gap:10px;padding:13px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.2s;}
+.btn-nav.siguiente{background:var(--azul);color:#fff;}
+.btn-nav.anterior{background:#fff;color:var(--azul);border:2px solid var(--gris-2);}
+@media(max-width:768px){.sidebar{display:none;}.main{padding:24px 20px;}h1{font-size:28px;}.permiso-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">ISO 45001:2018</div>
+    <h2>Consultor SST<br>Certificado</h2>
+    <p>Seguridad y Salud en el Trabajo</p>
+  </div>
+  <div class="sidebar-progress">
+    <div class="progress-label">Progreso</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+    <div class="progress-pct">Módulo 6 de 12</div>
+  </div>
+  <nav><ul>
+    <li><a href="iso45001-modulo1.html" class="done"><span class="check">✓</span> Fundamentos SST y Marco Legal</a></li>
+    <li><a href="iso45001-modulo2.html" class="done"><span class="check">✓</span> La norma ISO 45001:2018</a></li>
+    <li><a href="iso45001-modulo3.html" class="done"><span class="check">✓</span> Contexto y Liderazgo</a></li>
+    <li><a href="iso45001-modulo4.html" class="done"><span class="check">✓</span> Identificación de Peligros y Riesgos</a></li>
+    <li><a href="iso45001-modulo5.html" class="done"><span class="check">✓</span> Planificación y Objetivos SST</a></li>
+    <li><a href="#" class="active"><span class="check">6</span> Soporte y Operación SST</a></li>
+    <li><a href="#"><span class="check">7</span> Investigación de Incidentes</a></li>
+    <li><a href="#"><span class="check">8</span> Auditoría Interna y Revisión</a></li>
+    <li><a href="#"><span class="check">9</span> Proceso de Certificación SST</a></li>
+    <li><a href="#"><span class="check">10</span> Gestión de Contratistas</a></li>
+    <li><a href="#"><span class="check">11</span> Casos Prácticos por Sector</a></li>
+    <li><a href="#"><span class="check">12</span> Proyecto Final</a></li>
+  </ul></nav>
+</aside>
+<main class="main">
+  <div class="modulo-eyebrow">Módulo 6 de 12 — Cláusulas 7 y 8</div>
+  <h1>Soporte y Operación SST</h1>
+  <p class="modulo-intro">El soporte es donde el SGS deja el papel y se convierte en comportamiento real. Los controles operacionales son la respuesta práctica a los riesgos evaluados. Sin este módulo, el sistema existe en documentos pero no en la realidad de los puestos de trabajo.</p>
+  <div class="modulo-meta">
+    <span class="meta-item">⏱ 3 horas</span>
+    <span class="meta-item">✅ 12 preguntas</span>
+    <span class="meta-item">📋 Procedimiento permisos de trabajo + matriz competencias descargable</span>
+  </div>
+
+  <section class="seccion">
+    <h2>1. Recursos, competencia y toma de conciencia (C.7)</h2>
+
+    <h3>7.1 Recursos para la SST</h3>
+    <p>La organización debe determinar y proporcionar los recursos necesarios para el SGS. En SST esto incluye tres categorías que el auditor verificará con evidencias concretas:</p>
+    <ul>
+      <li><strong>Recursos humanos:</strong> técnico de prevención con nivel y dedicación proporcional a los riesgos (propio o servicio de prevención ajeno), representantes de los trabajadores en SST</li>
+      <li><strong>Recursos técnicos:</strong> EPI adecuados y en buen estado, equipos de trabajo con marcado CE, sistemas de extracción calibrados, instrumentos de medición higiénica</li>
+      <li><strong>Recursos económicos:</strong> presupuesto preventivo real — el auditor puede preguntar cuánto se ha invertido en prevención en el último año y qué porcentaje de las acciones del plan se han ejecutado</li>
+    </ul>
+
+    <h3>7.2 Competencia SST</h3>
+    <p>La competencia en SST va mucho más allá de haber recibido la formación de acogida. La organización debe determinar qué competencia SST necesita cada puesto y asegurarse de que el personal la tiene.</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Puesto</th><th>Competencia SST requerida</th><th>Formación mínima</th><th>Evaluación eficacia</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Técnico de prevención</strong></td><td>Nivel intermedio o superior PRL (RD 39/1997), legislación aplicable, metodologías evaluación</td><td>Titulación oficial nivel intermedio (600h) o superior (nivel universitario)</td><td>Evaluación del desempeño preventivo</td></tr>
+        <tr><td><strong>Mando intermedio (encargado, jefe turno)</strong></td><td>Riesgos de su área, obligaciones legales como mando, gestión de emergencias, investigación básica</td><td>Formación específica para mandos (mín. 8h/año)</td><td>Entrevista de auditoría + observación</td></tr>
+        <tr><td><strong>Operario de equipos de trabajo</strong></td><td>Riesgos del equipo, controles operacionales de su puesto, EPI del puesto, actuación ante emergencia</td><td>Formación inicial al puesto + formación periódica</td><td>Evaluación práctica en puesto</td></tr>
+        <tr><td><strong>Personal de primeros auxilios</strong></td><td>RCP básica, manejo DEA, atención de heridas, protocolo de notificación</td><td>Curso primeros auxilios homologado (reciclaje bienal)</td><td>Evaluación práctica simulacro</td></tr>
+        <tr><td><strong>Trabajador novel / reciente incorporación</strong></td><td>Peligros generales de la empresa + peligros específicos del puesto antes de iniciar la actividad</td><td>Formación de acogida documentada ANTES de trabajar</td><td>Verificación de comprensión (test breve)</td></tr>
+        <tr><td><strong>Auditor interno SST</strong></td><td>ISO 45001:2018, legislación PRL básica, técnicas de auditoría</td><td>Curso auditor interno ISO 45001 (diferente de ISO 9001)</td><td>Informe de auditoría interna</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout alerta">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>El error más frecuente en competencia SST</strong>
+      <p>Confundir "haber dado la formación" con "tener la competencia". Una formación de acogida genérica de 2 horas para un operario de prensa troqueladora no genera la competencia necesaria para operar con seguridad ese equipo. La norma exige evaluar la eficacia de la formación — no basta con la hoja de asistencia firmada. La evaluación de eficacia puede ser un test escrito, una observación en puesto o una entrevista técnica.</p></div>
+    </div>
+
+    <h3>7.3 Toma de conciencia</h3>
+    <p>Todos los trabajadores deben ser conscientes de la política SST, de los peligros y riesgos de su puesto específico, de su contribución a la eficacia del SGS, y de las consecuencias de no cumplir los requisitos. La toma de conciencia es individual y específica al puesto — no es un cartel en la pared.</p>
+
+    <h3>7.4 Comunicación SST</h3>
+    <p>ISO 45001 exige establecer procesos de comunicación SST tanto interna como externa. La comunicación interna sobre SST debe incluir:</p>
+    <ul>
+      <li>Información sobre peligros y riesgos a los trabajadores que los enfrentan</li>
+      <li>Cambios en procedimientos, equipos o condiciones de trabajo antes de implementarlos</li>
+      <li>Resultados de investigaciones de incidentes</li>
+      <li>Lecciones aprendidas de accidentes propios y del sector</li>
+      <li>Resultados de inspecciones de seguridad</li>
+    </ul>
+  </section>
+
+  <section class="seccion">
+    <h2>2. Control operacional SST (C.8.1): la implementación real de los controles</h2>
+    <p>La cláusula 8.1 exige que la organización planifique, implemente, controle y mantenga los procesos necesarios para cumplir los requisitos del SGS y para implementar las acciones planificadas en la evaluación de riesgos. Esto incluye:</p>
+
+    <h3>Tipos de controles operacionales SST</h3>
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Tipo</th><th>Ejemplos SST</th><th>Ventaja</th><th>Limitación</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Procedimientos e instrucciones de trabajo seguro</strong></td><td>IT de operación de sierra circular, procedimiento de bloqueo/etiquetado (LOTO), instrucción de trabajos en altura</td><td>Sistematizan el método correcto de trabajo</td><td>Solo eficaces si el personal los conoce y aplica</td></tr>
+        <tr><td><strong>Permisos de trabajo</strong></td><td>Permiso de trabajo en caliente, permiso de entrada a espacio confinado, permiso de trabajos en altura >2m</td><td>Formalizan la autorización y las condiciones de seguridad antes de empezar</td><td>Requieren disciplina de gestión — si se convierten en trámite burocrático, pierden valor</td></tr>
+        <tr><td><strong>Criterios operativos</strong></td><td>Velocidad máxima de carretillas (5 km/h en interiores), carga máxima de estanterías, presión máxima de recipientes</td><td>Objetivos y verificables — no dependen de interpretación</td><td>Requieren señalización y verificación periódica</td></tr>
+        <tr><td><strong>Mantenimiento preventivo</strong></td><td>Plan de mantenimiento de equipos de elevación, revisión anual de EPI, calibración de detectores de gas</td><td>Previene fallos de equipos que generan accidentes</td><td>Requiere presupuesto y seguimiento sistemático</td></tr>
+        <tr><td><strong>Controles de ingeniería</strong></td><td>Resguardos de máquinas, sistemas de extracción, sensores de parada de emergencia, barandillas</td><td>Los más fiables — funcionan independientemente del comportamiento humano</td><td>Coste de instalación más elevado</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>El sistema de permisos de trabajo: cómo funciona en la práctica</h3>
+    <p>Los permisos de trabajo son uno de los controles operacionales más potentes — y más frecuentemente mal implementados. Un permiso de trabajo bien gestionado requiere:</p>
+
+    <div class="permiso-box">
+      <h4>📋 Permiso de Trabajo en Caliente — Ejemplo completo</h4>
+      <div class="permiso-grid">
+        <div class="permiso-item"><strong>Trabajo autorizado</strong><span>Soldadura de tubería de gas comprimido en planta 2</span></div>
+        <div class="permiso-item"><strong>Responsable del trabajo</strong><span>Nombre y empresa del soldador</span></div>
+        <div class="permiso-item"><strong>Emisor del permiso</strong><span>Jefe de mantenimiento (autorizado)</span></div>
+        <div class="permiso-item"><strong>Período de validez</strong><span>08:00 - 14:00 del [fecha] — prorrogable con nueva firma</span></div>
+        <div class="permiso-item"><strong>Peligros identificados</strong><span>Incendio, explosión (gases combustibles próximos), quemaduras, inhalación humos</span></div>
+        <div class="permiso-item"><strong>Condiciones previas (checklist)</strong><span>☑ Área ventilada ☑ Medición concentración gases <10% LEL ☑ Extintores CO₂ presentes ☑ Mantas ignífugas instaladas ☑ Área acotada 5m radio</span></div>
+        <div class="permiso-item"><strong>EPI requeridos</strong><span>Pantalla soldador, guantes cuero, mandil ignífugo, botas seguridad</span></div>
+        <div class="permiso-item"><strong>Cierre del permiso</strong><span>Verificación de que el área queda en condiciones seguras. Firma del emisor al cierre.</span></div>
+      </div>
+    </div>
+
+    <div class="callout clave">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body"><strong>La diferencia entre un permiso de trabajo que funciona y uno que es papel</strong>
+      <p>Un permiso de trabajo que se emite siempre, sin verificar las condiciones, en 30 segundos, y que todos saben que es un trámite burocrático no previene nada. Un permiso que funciona requiere: (1) quien lo emite inspecciona físicamente el área antes de firmar; (2) quien lo recibe conoce los peligros y las condiciones; (3) si las condiciones cambian durante el trabajo, el permiso se invalida; (4) el cierre verifica que el área queda segura. Eso es control operacional real.</p></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>3. Gestión del cambio en SST (C.8.1.3)</h2>
+    <p>ISO 45001 exige un proceso para gestionar los cambios planificados que puedan afectar al desempeño SST. Los cambios más frecuentes que generan nuevos riesgos no evaluados:</p>
+    <ul>
+      <li><strong>Nueva maquinaria o equipos:</strong> nuevos peligros de atrapamiento, ruido, vibraciones o exposición a sustancias</li>
+      <li><strong>Cambio de materias primas o sustancias químicas:</strong> nuevo perfil toxicológico, nuevos EPI necesarios</li>
+      <li><strong>Modificación de procesos o métodos de trabajo:</strong> nuevas posturas, nuevas cargas, nueva organización</li>
+      <li><strong>Cambios en la organización del trabajo:</strong> nuevos turnos, teletrabajo, trabajo en solitario</li>
+      <li><strong>Incorporación de trabajadores de nuevo perfil:</strong> trabajadores mayores, embarazadas, personas con discapacidad</li>
+      <li><strong>Cambios en la legislación SST:</strong> nuevos valores límite de exposición, nuevas obligaciones</li>
+    </ul>
+
+    <div class="caso-practico">
+      <div class="caso-header">
+        <span class="caso-badge">Caso práctico</span>
+        <h4>Empresa de logística — Introducción de robots de picking sin evaluación SST previa</h4>
+      </div>
+      <p><strong>Situación:</strong> Un almacén de logística introduce robots autónomos de picking para mejorar la eficiencia. El responsable de operaciones aprueba la compra directamente. Nadie evalúa el impacto en SST antes de la instalación.</p>
+      <p><strong>Nuevos riesgos no evaluados:</strong></p>
+      <ul>
+        <li>Colisión robot-persona en zonas de trabajo compartidas (riesgo muy alto)</li>
+        <li>Atrapamiento en puntos de acoplamiento de robots con estanterías (riesgo alto)</li>
+        <li>Fatiga visual por interfaces de control en pantalla durante jornadas largas (riesgo medio)</li>
+        <li>Riesgo psicosocial: ansiedad por ritmo impuesto por el robot, pérdida de autonomía (riesgo medio)</li>
+      </ul>
+      <p><strong>Consecuencias en la auditoría:</strong> El auditor detecta que los robots llevan 4 meses operando y la evaluación de riesgos no ha sido actualizada. NC mayor en 8.1.3 (gestión del cambio) y NC mayor en 6.1.1 (evaluación de riesgos incompleta). La empresa tiene además riesgos reales sin controles implementados — responsabilidad civil si hay accidente.</p>
+      <p><strong>Lección:</strong> Cualquier cambio tecnológico que afecte a cómo trabajan las personas debe pasar por la evaluación de riesgos SST antes de implantarse, no después.</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>4. Adquisiciones y contratistas (C.8.1.4)</h2>
+    <p>ISO 45001 exige que la organización extienda los controles SST a las adquisiciones (equipos, materiales, servicios) y a los contratistas que trabajan en sus instalaciones.</p>
+
+    <h3>Criterios SST en adquisiciones</h3>
+    <ul>
+      <li><strong>Equipos de trabajo:</strong> exigir marcado CE, declaración de conformidad y manual de instrucciones en castellano antes de la puesta en servicio</li>
+      <li><strong>Sustancias químicas:</strong> Ficha de Datos de Seguridad actualizada como condición de compra</li>
+      <li><strong>EPI:</strong> marcado CE con categoría adecuada al riesgo (I, II o III según EN aplicable)</li>
+      <li><strong>Servicios:</strong> criterios SST en los pliegos de contratación — no solo precio</li>
+    </ul>
+
+    <h3>Gestión SST de contratistas en las instalaciones</h3>
+    <p>Los accidentes que involucran a contratistas son estadísticamente más graves que los de trabajadores propios — por desconocimiento del emplazamiento, por presión de plazos y por menor supervisión. El proceso mínimo:</p>
+    <ol>
+      <li><strong>Antes de contratar:</strong> evaluar aptitud SST del contratista (historial de siniestralidad, organización preventiva, certificaciones)</li>
+      <li><strong>Antes de entrar:</strong> acogida SST específica — peligros del emplazamiento, normas de seguridad propias, plan de emergencias, teléfonos de contacto</li>
+      <li><strong>Durante los trabajos:</strong> supervisión de que aplican sus propios procedimientos y los requisitos SST del emplazamiento</li>
+      <li><strong>Coordinación de actividades:</strong> cuando hay actividades concurrentes entre empresa principal y contratistas (obligación del RD 171/2004)</li>
+      <li><strong>Al cierre:</strong> evaluar el desempeño SST del contratista para futuras contrataciones</li>
+    </ol>
+
+    <div class="auditor-tip">
+      <h4>🔍 Lo que el auditor comprueba sobre contratistas en SST</h4>
+      <ul>
+        <li>"¿Tienen un proceso documentado para informar a los contratistas sobre los peligros de sus instalaciones?"</li>
+        <li>"¿Pueden mostrarme el registro de acogida SST del contratista que está trabajando ahora en mantenimiento?"</li>
+        <li>"¿Tienen plan de coordinación de actividades empresariales según el RD 171/2004?"</li>
+        <li>"¿Exigen la evaluación de riesgos específica del contratista para los trabajos que va a realizar aquí?"</li>
+        <li>"¿Si un contratista sufre un accidente en sus instalaciones, ¿qué proceso siguen?"</li>
+      </ul>
+      <p>Una empresa cuya única gestión SST de contratistas es pedirles el TC2 y el seguro de responsabilidad civil tiene un sistema claramente insuficiente.</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>5. Preparación y respuesta ante emergencias SST (C.8.2)</h2>
+    <p>La organización debe establecer y mantener procesos para prepararse y responder ante situaciones de emergencia potenciales. Las emergencias SST más frecuentes que deben planificarse:</p>
+
+    <div class="infografia-wrap">
+      <div class="infografia-titulo">🚨 Plan de emergencias SST — Estructura mínima</div>
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;">
+        <rect x="20" y="20" width="195" height="240" rx="10" fill="#FDECEA" stroke="#C0392B" stroke-width="1.5"/>
+        <text x="117" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#C0392B">EMERGENCIAS A</text>
+        <text x="117" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#C0392B">CONTEMPLAR</text>
+        <text x="117" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🔥 Incendio / explosión</text>
+        <text x="117" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🏥 Accidente grave / muerte</text>
+        <text x="117" y="132" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">⚗️ Fuga de gas / derrame</text>
+        <text x="117" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">⚡ Fallo eléctrico grave</text>
+        <text x="117" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🌊 Inundación repentina</text>
+        <text x="117" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">😰 Crisis psicológica aguda</text>
+        <text x="117" y="204" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🔒 Amenaza / intrusión</text>
+        <text x="117" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🌡️ Golpe de calor masivo</text>
+
+        <rect x="243" y="20" width="195" height="240" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+        <text x="340" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#D97706">ELEMENTOS DEL</text>
+        <text x="340" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#D97706">PLAN</text>
+        <text x="340" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">👤 Equipos de emergencia</text>
+        <text x="340" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">📋 Protocolos por escenario</text>
+        <text x="340" y="132" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">📍 Plano evacuación + PRA</text>
+        <text x="340" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">📞 Contactos de emergencia</text>
+        <text x="340" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🧰 Equipos de intervención</text>
+        <text x="340" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🚑 Primeros auxilios</text>
+        <text x="340" y="204" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">📢 Protocolo comunicación</text>
+        <text x="340" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">🔄 Simulacros anuales</text>
+
+        <rect x="466" y="20" width="195" height="240" rx="10" fill="#E5F4EC" stroke="#2D8B5A" stroke-width="1.5"/>
+        <text x="563" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#2D8B5A">EVIDENCIAS QUE</text>
+        <text x="563" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#2D8B5A">PIDE EL AUDITOR</text>
+        <text x="563" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Plan vigente y firmado</text>
+        <text x="563" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Registro de simulacros</text>
+        <text x="563" y="132" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Formación equipos emergencia</text>
+        <text x="563" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Revisión post-simulacro</text>
+        <text x="563" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Mantenimiento extintores</text>
+        <text x="563" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Revisión botiquines</text>
+        <text x="563" y="204" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">Personal PA formado</text>
+        <text x="563" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#374151">DEA presente y revisado</text>
+      </svg>
+    </div>
+
+    <div class="callout legal">
+      <div class="callout-icon">⚖️</div>
+      <div class="callout-body"><strong>Obligación legal vs requisito ISO 45001</strong>
+      <p>El plan de emergencias es obligatorio legalmente en España para la mayoría de empresas (Art. 20 LPRL y RD 393/2007 de Protección Civil). ISO 45001 eleva el estándar: exige que el plan se pruebe periódicamente mediante simulacros, que se revise tras cada emergencia real o simulacro, y que se comunique a las partes interesadas relevantes (incluidos contratistas). Las empresas que solo tienen el plan "para cumplir" sin haberlo simulado nunca fallan en ambas dimensiones: legal y normativa.</p></div>
+    </div>
+  </section>
+
+  <div class="descargable">
+    <div class="descargable-icon">📋</div>
+    <div class="descargable-body">
+      <h4>Procedimiento de permisos de trabajo + Matriz de competencias SST + Checklist acogida contratistas</h4>
+      <p>Procedimiento completo de permisos de trabajo (caliente, espacio confinado, altura). Matriz de puestos con competencias SST requeridas. Checklist de 20 puntos para acogida SST de contratistas.</p>
+      <button class="btn-dl" onclick="descargar()">⬇ Descargar documentos</button>
+    </div>
+  </div>
+
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h3>Quiz del Módulo 6</h3><span class="quiz-badge">12 preguntas</span>
+    </div>
+    <div class="quiz-body">
+
+      <div class="pregunta" id="p1"><div class="pregunta-num">Pregunta 1 de 12</div>
+      <h4>¿Por qué no es suficiente con la hoja de asistencia firmada para demostrar competencia SST según la cláusula 7.2?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p1',true)"><div class="opcion-dot"></div>Porque la norma exige evaluar la eficacia de la formación — la asistencia solo demuestra presencia, no que el trabajador ha adquirido la competencia necesaria</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Porque la asistencia debe ser firmada también por el técnico de prevención</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Porque la ITSS exige test escrito para toda formación de PRL</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Porque los registros de formación tienen un plazo de conservación de solo 2 años</label>
+      </div><div class="feedback-pregunta" id="fb1"></div></div>
+
+      <div class="pregunta" id="p2"><div class="pregunta-num">Pregunta 2 de 12</div>
+      <h4>¿Qué diferencia a un permiso de trabajo que funciona como control de uno que es solo un trámite burocrático?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>El formato del impreso y el número de firmas requeridas</label>
+        <label class="opcion" onclick="sel(this,'p2',true)"><div class="opcion-dot"></div>Que quien lo emite verifica físicamente las condiciones antes de firmar, y que el permiso se invalida si las condiciones cambian durante el trabajo</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Que esté en soporte digital en lugar de papel</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Que lo firme el director de operaciones además del técnico de prevención</label>
+      </div><div class="feedback-pregunta" id="fb2"></div></div>
+
+      <div class="pregunta" id="p3"><div class="pregunta-num">Pregunta 3 de 12</div>
+      <h4>¿Por qué los accidentes de contratistas son estadísticamente más graves que los de trabajadores propios?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Porque los contratistas tienen menos experiencia laboral en general</label>
+        <label class="opcion" onclick="sel(this,'p3',true)"><div class="opcion-dot"></div>Por desconocimiento del emplazamiento, mayor presión de plazos y menor supervisión SST por parte de la empresa principal</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Porque los contratistas no tienen cobertura de mutua de accidentes</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Porque la legislación de PRL no se aplica a los trabajadores de empresas contratistas</label>
+      </div><div class="feedback-pregunta" id="fb3"></div></div>
+
+      <div class="pregunta" id="p4"><div class="pregunta-num">Pregunta 4 de 12</div>
+      <h4>En el caso práctico de la empresa de logística con robots, ¿qué cláusulas generaron NC mayor?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Solo 8.1.3 — la gestión del cambio no fue aplicada</label>
+        <label class="opcion" onclick="sel(this,'p4',true)"><div class="opcion-dot"></div>8.1.3 (gestión del cambio no aplicada) y 6.1.1 (evaluación de riesgos no actualizada con los nuevos peligros)</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Solo 6.1.1 — la evaluación de riesgos estaba incompleta</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>7.2 — el personal no tenía formación para trabajar con robots</label>
+      </div><div class="feedback-pregunta" id="fb4"></div></div>
+
+      <div class="pregunta" id="p5"><div class="pregunta-num">Pregunta 5 de 12</div>
+      <h4>¿Qué exige el RD 171/2004 cuando hay actividades concurrentes de la empresa principal y contratistas?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Que el contratista asuma toda la responsabilidad SST dentro de sus zonas de trabajo</label>
+        <label class="opcion" onclick="sel(this,'p5',true)"><div class="opcion-dot"></div>Coordinación de actividades empresariales — intercambio de información sobre riesgos, medidas preventivas y procedimientos de emergencia entre todas las empresas presentes</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Que la empresa principal asuma toda la responsabilidad legal por los accidentes del contratista</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Que las actividades de empresa principal y contratistas nunca coincidan en tiempo y espacio</label>
+      </div><div class="feedback-pregunta" id="fb5"></div></div>
+
+      <div class="pregunta" id="p6"><div class="pregunta-num">Pregunta 6 de 12</div>
+      <h4>¿Qué debe exigirse a una empresa contratista antes de que sus trabajadores entren en las instalaciones?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Solo el TC2 y el seguro de responsabilidad civil</label>
+        <label class="opcion" onclick="sel(this,'p6',true)"><div class="opcion-dot"></div>Acogida SST específica sobre los peligros del emplazamiento, normas propias de seguridad, plan de emergencias y registro firmado de que han recibido la información</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Certificación ISO 45001 propia del contratista</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Solo la firma del contrato de servicios con cláusulas de PRL</label>
+      </div><div class="feedback-pregunta" id="fb6"></div></div>
+
+      <div class="pregunta" id="p7"><div class="pregunta-num">Pregunta 7 de 12</div>
+      <h4>¿Qué criterio SST debe exigirse en la compra de un nuevo equipo de trabajo antes de su puesta en servicio?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>Solo el precio y el plazo de entrega del fabricante</label>
+        <label class="opcion" onclick="sel(this,'p7',true)"><div class="opcion-dot"></div>Marcado CE, declaración de conformidad y manual de instrucciones en castellano — documentación que acredita que el equipo cumple los requisitos de seguridad esenciales</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>Un informe de auditoría de seguridad emitido por la empresa vendedora</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>La validación previa de la ITSS del equipo en el sector</label>
+      </div><div class="feedback-pregunta" id="fb7"></div></div>
+
+      <div class="pregunta" id="p8"><div class="pregunta-num">Pregunta 8 de 12</div>
+      <h4>¿Qué añade ISO 45001 a la obligación legal de tener plan de emergencias según el Art. 20 LPRL?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Nada — ISO 45001 solo recoge la obligación legal ya existente</label>
+        <label class="opcion" onclick="sel(this,'p8',true)"><div class="opcion-dot"></div>Que el plan se pruebe periódicamente mediante simulacros, se revise tras cada emergencia o simulacro, y se comunique a las partes interesadas relevantes incluyendo contratistas</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Que el plan sea validado por un organismo certificador antes de entrar en vigor</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Que el plan incluya la gestión de emergencias ambientales además de las SST</label>
+      </div><div class="feedback-pregunta" id="fb8"></div></div>
+
+      <div class="pregunta" id="p9"><div class="pregunta-num">Pregunta 9 de 12</div>
+      <h4>¿Qué tipo de cambio organizativo puede generar nuevos riesgos SST que requieren actualización de la evaluación?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Solo los cambios en maquinaria o instalaciones físicas</label>
+        <label class="opcion" onclick="sel(this,'p9',true)"><div class="opcion-dot"></div>También los cambios en la organización del trabajo: nuevos turnos, teletrabajo, trabajo en solitario, incorporación de trabajadores de nuevo perfil</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Solo los cambios que requieran nueva licencia de actividad</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Solo los cambios que afecten a más de 10 trabajadores simultáneamente</label>
+      </div><div class="feedback-pregunta" id="fb9"></div></div>
+
+      <div class="pregunta" id="p10"><div class="pregunta-num">Pregunta 10 de 12</div>
+      <h4>¿Qué categoría de EPI (I, II o III) requiere mayor nivel de control y debe ser inspeccionada más frecuentemente?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Categoría I — son los EPI más sencillos y protegen de riesgos mínimos</label>
+        <label class="opcion" onclick="sel(this,'p10',true)"><div class="opcion-dot"></div>Categoría III — protegen de riesgos que pueden causar muerte o daño irreversible (arneses anticaída, equipos de respiración autónoma, trajes contra productos químicos)</div>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Categoría II — son los más frecuentes y por tanto los que más se deterioran</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Todas las categorías requieren el mismo nivel de inspección según ISO 45001</label>
+      </div><div class="feedback-pregunta" id="fb10"></div></div>
+
+      <div class="pregunta" id="p11"><div class="pregunta-num">Pregunta 11 de 12</div>
+      <h4>¿Por qué la comunicación de cambios en procedimientos o condiciones de trabajo debe hacerse ANTES de implementarlos?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Por un requisito burocrático de la norma sin impacto real en seguridad</label>
+        <label class="opcion" onclick="sel(this,'p11',true)"><div class="opcion-dot"></div>Porque los trabajadores deben conocer los nuevos peligros y controles antes de enfrentarse a ellos — comunicar después del cambio aumenta el riesgo de accidente durante la fase de adaptación</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Para dar tiempo al Comité de Seguridad y Salud a aprobar los cambios</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Solo es obligatorio comunicarlo antes si el cambio afecta a más de un puesto de trabajo</label>
+      </div><div class="feedback-pregunta" id="fb11"></div></div>
+
+      <div class="pregunta" id="p12"><div class="pregunta-num">Pregunta 12 de 12</div>
+      <h4>¿Qué gestión SST de contratistas es claramente insuficiente para ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Realizar una acogida SST de 30 minutos a todos los contratistas antes de entrar</label>
+        <label class="opcion" onclick="sel(this,'p12',true)"><div class="opcion-dot"></div>Pedir solo el TC2 y el seguro de RC sin proporcionar información sobre los peligros del emplazamiento ni verificar las condiciones de trabajo</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Evaluar el desempeño SST del contratista al finalizar los trabajos</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>Incluir cláusulas SST en el contrato de servicios</label>
+      </div><div class="feedback-pregunta" id="fb12"></div></div>
+
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-quiz" id="btnComprobar" onclick="comprobarQuiz()">Comprobar respuestas</button>
+      <button class="btn-quiz" id="btnReset" onclick="resetQuiz()" style="background:#fff;color:var(--azul);border:2px solid var(--gris-2);display:none;">Reintentar</button>
+      <span class="quiz-resultado" id="quizResultado"></span>
+    </div>
+  </div>
+
+  <div class="modulo-nav">
+    <a href="iso45001-modulo5.html" class="btn-nav anterior">← Módulo 5</a>
+    <a href="iso45001-modulo7.html" class="btn-nav siguiente">Módulo 7: Investigación de Incidentes →</a>
+  </div>
+</main>
+</div>
+<script>
+const R={};
+const CI={p1:0,p2:1,p3:1,p4:1,p5:1,p6:1,p7:1,p8:1,p9:1,p10:1,p11:1,p12:1};
+const FB={
+  p1:{ok:'✅ Correcto. La cláusula 7.2 exige evaluar la eficacia de la formación. La hoja de asistencia demuestra que el trabajador estuvo presente, no que aprendió lo necesario para trabajar con seguridad.',ko:'❌ Incorrecto. La norma exige evaluar la eficacia de la formación — no solo registrar la asistencia. Test escrito, observación en puesto o entrevista técnica son métodos válidos de evaluación de eficacia.'},
+  p2:{ok:'✅ Correcto. Un permiso de trabajo real requiere verificación física previa de las condiciones e invalidación si estas cambian. Sin esas dos condiciones, es papel burocrático que no previene nada.',ko:'❌ Incorrecto. Lo que diferencia un permiso real de un trámite es la verificación física de condiciones antes de firmar y la invalidación cuando las condiciones cambian. El formato y las firmas son secundarios.'},
+  p3:{ok:'✅ Correcto. Los tres factores son clave: el contratista no conoce los peligros específicos del emplazamiento, suele trabajar bajo presión de plazos contractuales y recibe menos supervisión SST por parte de la empresa principal.',ko:'❌ Incorrecto. Los factores que hacen más graves los accidentes de contratistas son: desconocimiento del emplazamiento, presión de plazos contractuales y menor supervisión. No es cuestión de experiencia general sino de contexto específico.'},
+  p4:{ok:'✅ Correcto. El cambio tecnológico sin evaluación SST previa generó dos NC mayores: 8.1.3 (proceso de gestión del cambio no aplicado) y 6.1.1 (evaluación de riesgos no actualizada con los nuevos peligros de los robots).',ko:'❌ Incorrecto. El caso genera dos NC mayores simultáneas: 8.1.3 porque el cambio no pasó por el proceso de gestión del cambio, y 6.1.1 porque la evaluación de riesgos lleva 4 meses sin actualizarse con los nuevos peligros.'},
+  p5:{ok:'✅ Correcto. El RD 171/2004 desarrolla el Art. 24 LPRL sobre coordinación de actividades empresariales. Exige intercambio de información sobre riesgos y medidas preventivas cuando varias empresas coinciden en el mismo centro de trabajo.',ko:'❌ Incorrecto. El RD 171/2004 exige coordinación de actividades empresariales: intercambio de información sobre riesgos, medidas preventivas y emergencias entre todas las empresas que coinciden en el centro de trabajo.'},
+  p6:{ok:'✅ Correcto. La acogida SST con información específica del emplazamiento y registro firmado es el mínimo imprescindible. El TC2 y el seguro son obligaciones laborales, no controles SST del emplazamiento.',ko:'❌ Incorrecto. El TC2 y el seguro son obligaciones laborales administrativas, no controles SST. Lo que previene accidentes es informar al contratista sobre los peligros específicos del emplazamiento antes de que comience a trabajar.'},
+  p7:{ok:'✅ Correcto. El marcado CE, la declaración de conformidad y el manual en castellano son los tres documentos que acreditan que el fabricante ha evaluado los riesgos del equipo y que cumple los requisitos esenciales de seguridad de la Directiva de Máquinas.',ko:'❌ Incorrecto. Los criterios SST mínimos en compra de equipos de trabajo son: marcado CE (el fabricante ha evaluado los riesgos), declaración de conformidad y manual de instrucciones en castellano. Sin estos documentos, el equipo no puede ponerse en servicio.'},
+  p8:{ok:'✅ Correcto. ISO 45001 eleva el estándar por encima de la LPRL exigiendo que el plan se pruebe (simulacros), se revise tras cada prueba o emergencia real, y se comunique a todas las partes interesadas incluyendo los contratistas que trabajan en las instalaciones.',ko:'❌ Incorrecto. ISO 45001 añade a la obligación legal: simulacros periódicos para probar la eficacia del plan, revisión después de cada simulacro o emergencia real, y comunicación del plan a todas las partes interesadas incluyendo contratistas.'},
+  p9:{ok:'✅ Correcto. Los cambios en la organización del trabajo (turnos, teletrabajo, trabajo en solitario) generan riesgos psicosociales, de fatiga, de aislamiento y de comunicación de emergencias que no existían antes. También deben pasar por la gestión del cambio.',ko:'❌ Incorrecto. La gestión del cambio SST aplica a todos los cambios que pueden generar nuevos riesgos, incluidos los organizativos: nuevos turnos, teletrabajo, trabajo en solitario, cambios en la plantilla. No solo los físicos o tecnológicos.'},
+  p10:{ok:'✅ Correcto. Los EPI de Categoría III protegen de riesgos que pueden causar muerte o daño irreversible. Requieren intervención de organismo notificado en su certificación y mayor rigor en su inspección, mantenimiento y fecha de caducidad.',ko:'❌ Incorrecto. Los EPI de Categoría III (arneses, equipos respiración autónoma, trajes químicos) son los más críticos porque protegen de riesgos mortales. Requieren mayor rigor de control, inspección periódica y respeto a las fechas de caducidad.'},
+  p11:{ok:'✅ Correcto. La fase de adaptación a un cambio es el momento de mayor riesgo. Comunicar antes permite al trabajador prepararse mentalmente y conocer los nuevos controles antes de enfrentarse a los nuevos peligros, reduciendo el riesgo de accidente durante la transición.',ko:'❌ Incorrecto. La comunicación previa al cambio reduce el riesgo durante la fase de adaptación, que es estadísticamente el momento de mayor accidentabilidad. Comunicar después aumenta el riesgo precisamente cuando más se necesita la prevención.'},
+  p12:{ok:'✅ Correcto. Pedir solo documentación administrativa sin informar sobre los peligros reales del emplazamiento es la gestión más insuficiente posible. El contratista entra sin saber a qué riesgos se enfrenta — y eso es responsabilidad de la empresa principal.',ko:'❌ Incorrecto. La gestión más insuficiente es pedir solo TC2 y RC sin información sobre peligros. La acogida SST, la evaluación del desempeño y las cláusulas contractuales son elementos correctos de gestión de contratistas.'}
+};
+function sel(el,pid,ok){if(document.getElementById('btnComprobar').disabled)return;el.closest('.opciones').querySelectorAll('.opcion').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');R[pid]={idx:Array.from(el.closest('.opciones').children).indexOf(el),ok};}
+function comprobarQuiz(){const ps=['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12'];if(Object.keys(R).length<ps.length){alert('Responde todas las preguntas.');return;}let a=0;ps.forEach(pid=>{const r=R[pid];const ops=document.querySelectorAll('#'+pid+' .opcion');const fb=document.getElementById('fb'+pid.substring(1));ops.forEach(o=>o.style.pointerEvents='none');if(r.ok){ops[r.idx].classList.add('correcta');fb.className='feedback-pregunta ok';fb.textContent=FB[pid].ok;a++;}else{ops[r.idx].classList.add('incorrecta');ops[CI[pid]].classList.add('correcta');fb.className='feedback-pregunta ko';fb.textContent=FB[pid].ko;}});document.getElementById('btnComprobar').disabled=true;document.getElementById('btnComprobar').style.display='none';document.getElementById('btnReset').style.display='inline-block';const res=document.getElementById('quizResultado');res.classList.add('visible');const pct=Math.round(a/12*100);res.style.color=pct>=80?'var(--verde)':pct>=60?'var(--amarillo)':'var(--rojo)';res.textContent=pct>=80?`🎉 ${a}/12 (${pct}%) — Dominas el soporte y operación SST.`:pct>=60?`📖 ${a}/12 (${pct}%) — Repasa los puntos incorrectos.`:`🔄 ${a}/12 (${pct}%) — Vuelve a leer el módulo.`;}
+function resetQuiz(){Object.keys(R).forEach(k=>delete R[k]);document.querySelectorAll('.opcion').forEach(o=>{o.classList.remove('selected','correcta','incorrecta');o.style.pointerEvents='';});document.querySelectorAll('.feedback-pregunta').forEach(f=>{f.className='feedback-pregunta';f.textContent='';});document.getElementById('btnComprobar').disabled=false;document.getElementById('btnComprobar').style.display='';document.getElementById('btnReset').style.display='none';document.getElementById('quizResultado').classList.remove('visible');}
+function descargar(){const t=`DOCUMENTOS MÓDULO 6 — SOPORTE Y OPERACIÓN SST ISO 45001\n${'='.repeat(58)}\n\nDOCUMENTO 1: PROCEDIMIENTO DE PERMISOS DE TRABAJO\n\nOBJETO: Regular la emisión, ejecución y cierre de los permisos de trabajo para actividades de alto riesgo.\n\nTIPOS DE PERMISO:\n• PT-C: Permiso de Trabajo en Caliente (soldadura, radial, amolado, corte térmico)\n• PT-EC: Permiso de Entrada a Espacio Confinado\n• PT-A: Permiso de Trabajo en Altura (>2m, sin protección colectiva)\n• PT-E: Permiso de Trabajo Eléctrico (maniobras en AT o BT con tensión)\n\nPROCESO DE EMISIÓN:\n1. El solicitante comunica el trabajo con antelación mínima (PT-C: 2h; PT-EC: 24h; PT-A: 2h; PT-E: 24h)\n2. El emisor autorizado (responsable de instalaciones o técnico PRL) inspecciona físicamente el área\n3. El emisor rellena el checklist de condiciones previas y verifica cada punto\n4. Si todas las condiciones están OK: firma el permiso y lo entrega al trabajador\n5. Si alguna condición NO está OK: no se emite el permiso hasta que se corrija\n\nCHECKLIST PT-C (TRABAJO EN CALIENTE):\n[ ] Área libre de materiales combustibles en radio de 5m\n[ ] Medición concentración gases < 10% LEL (detector calibrado)\n[ ] Extintores CO₂ de 5kg presentes y revisados\n[ ] Mantas ignífugas instaladas en zonas de proyección\n[ ] Ventilación natural o forzada activa\n[ ] Vigilante de fuego designado y presente\n[ ] Zona acotada y señalizada\n[ ] Notificación a brigada de emergencia\n[ ] EPI soldador: pantalla, guantes cuero, mandil ignífugo, botas\n\nCHECKLIST PT-EC (ESPACIO CONFINADO):\n[ ] Medición O₂ (19.5-23.5%), CO (<25 ppm), H₂S (<1 ppm), explosividad (<10% LEL)\n[ ] Sistema de ventilación activo durante todo el trabajo\n[ ] Equipo de rescate en el exterior (mínimo 2 personas)\n[ ] Comunicación continua con vigilante exterior\n[ ] Equipo de respiración autónoma disponible (rescate)\n[ ] Arnés anticaída con punto de anclaje exterior\n[ ] EPI: equipo respiración, arnés, casco, guantes, botas\n[ ] Autorización del responsable de instalaciones\n\nCHECKLIST PT-A (TRABAJO EN ALTURA >2m):\n[ ] Línea de vida o punto de anclaje certificado (≥12 kN)\n[ ] Arnés de seguridad Cat. III con absorbedor de energía — revisión visual\n[ ] Longitud cuerda de amarre no permite impacto contra suelo\n[ ] Zona inferior acotada (riesgo caída objetos)\n[ ] Estado del suelo/cubierta verificado\n[ ] Condiciones meteorológicas aceptables (no lluvia, no viento >50 km/h)\n[ ] Formación específica trabajos en altura verificada\n\nCIERRE DEL PERMISO:\n• El emisor verifica que el área queda en condiciones seguras\n• El trabajador devuelve el permiso firmado con hora de finalización\n• El emisor firma el cierre\n• El permiso se archiva (retención mínima 1 año)\n\n=====================================\n\nDOCUMENTO 2: CHECKLIST ACOGIDA SST CONTRATISTAS (20 puntos)\n\nEmpresa contratista: ___ | Trabajo a realizar: ___ | Fecha: ___ | Duración: ___\nResponsable empresa: ___ | Nº trabajadores: ___\n\n[ ] 1. Se ha entregado información sobre los principales peligros de las instalaciones\n[ ] 2. Se han explicado las normas de seguridad específicas del centro\n[ ] 3. Se ha facilitado el plan de emergencias y las vías de evacuación\n[ ] 4. Se han indicado los teléfonos de emergencia y persona de contacto\n[ ] 5. Se ha explicado el procedimiento de notificación de accidentes/incidentes\n[ ] 6. Se ha informado sobre las zonas de acceso restringido\n[ ] 7. Se han indicado los puntos de reunión en caso de evacuación\n[ ] 8. Se ha verificado que el contratista tiene evaluación de riesgos para los trabajos\n[ ] 9. Se ha verificado la formación específica del personal para los trabajos\n[ ] 10. Se han revisado los permisos de trabajo necesarios (si aplica)\n[ ] 11. Se ha informado sobre el uso obligatorio de EPI en cada zona\n[ ] 12. Se ha indicado la ubicación de botiquín y DEA\n[ ] 13. Se han explicado las normas de circulación de vehículos y peatones\n[ ] 14. Se ha informado sobre el almacenamiento de materiales y residuos\n[ ] 15. Se ha indicado la prohibición de fumar y zonas autorizadas\n[ ] 16. Se ha verificado que los equipos de trabajo tienen CE y están en buen estado\n[ ] 17. Se ha informado sobre la gestión de residuos del contratista\n[ ] 18. Se ha entregado copia del plan de coordinación de actividades (si aplica)\n[ ] 19. El contratista ha entregado su evaluación de riesgos específica para los trabajos\n[ ] 20. El contratista ha firmado el documento de recepción de información\n\nFirma responsable empresa: ___ | Firma contratista: ___ | Fecha: ___\n\n© Curso Consultor ISO 45001 — Todos los derechos reservados`;
+  const b=new Blob([t],{type:'text/plain;charset=utf-8'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='permisos-trabajo-acogida-contratistas-sst.txt';a.click();URL.revokeObjectURL(u);}
+</script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 2 — La norma ISO 45001:2018 | Curso ISO 45001</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+:root{--azul:#1A3A5C;--azul-mid:#2563A8;--azul-claro:#EAF1FB;--acento:#E85820;--acento-light:#FDF0EB;--verde:#2D8B5A;--verde-light:#E5F4EC;--rojo:#C0392B;--rojo-light:#FDECEA;--amarillo:#D97706;--amarillo-light:#FEF3C7;--gris-1:#F7F8FA;--gris-2:#E8EBF0;--gris-3:#9AA3B0;--texto:#1A1F2E;--radio:10px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--gris-1);color:var(--texto);font-size:16px;line-height:1.7;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:280px;flex-shrink:0;background:var(--azul);color:#fff;padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.badge{background:var(--acento);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.sidebar-logo h2{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.3;}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.sidebar-progress{padding:0 24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.progress-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:4px;height:6px;}
+.progress-bar-fill{background:var(--acento);border-radius:4px;height:6px;width:16%;}
+.progress-pct{font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;}
+.sidebar nav ul{list-style:none;}
+.sidebar nav ul li a{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;}
+.sidebar nav ul li a.active{color:#fff;border-left-color:var(--acento);background:rgba(255,255,255,0.08);font-weight:600;}
+.sidebar nav ul li a.done{color:rgba(255,255,255,0.4);}
+.check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+.done .check{background:var(--verde);border-color:var(--verde);}
+.main{flex:1;padding:48px 56px;max-width:880px;}
+.modulo-eyebrow{font-size:12px;font-weight:600;color:var(--acento);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+h1{font-family:'DM Serif Display',serif;font-size:40px;line-height:1.2;color:var(--azul);margin-bottom:16px;}
+.modulo-intro{font-size:17px;color:#4A5568;max-width:660px;margin-bottom:20px;line-height:1.7;}
+.modulo-meta{display:flex;gap:24px;margin-bottom:40px;flex-wrap:wrap;}
+.meta-item{font-size:13px;color:var(--gris-3);}
+.seccion{margin-bottom:60px;}
+h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--azul);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gris-2);}
+h3{font-size:17px;font-weight:700;color:var(--texto);margin:28px 0 10px;}
+p{color:#374151;margin-bottom:14px;line-height:1.75;}
+ul,ol{margin:0 0 14px 20px;color:#374151;}
+ul li,ol li{margin-bottom:10px;line-height:1.6;}
+.callout{padding:20px 24px;border-radius:var(--radio);margin:24px 0;display:flex;gap:16px;}
+.callout.info{background:var(--azul-claro);border-left:4px solid var(--azul-mid);}
+.callout.alerta{background:var(--acento-light);border-left:4px solid var(--acento);}
+.callout.clave{background:var(--verde-light);border-left:4px solid var(--verde);}
+.callout.legal{background:var(--amarillo-light);border-left:4px solid var(--amarillo);}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.callout-body strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;color:var(--azul);}
+.callout.alerta .callout-body strong{color:var(--acento);}
+.callout.clave .callout-body strong{color:var(--verde);}
+.callout.legal .callout-body strong{color:var(--amarillo);}
+.callout-body p{margin:0;font-size:14.5px;color:#374151;}
+.infografia-wrap{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:32px;margin:28px 0;overflow-x:auto;}
+.infografia-titulo{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--gris-3);margin-bottom:24px;}
+.tabla-wrap{overflow-x:auto;margin:20px 0;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--azul);color:#fff;padding:12px 16px;text-align:left;font-weight:600;}
+td{padding:11px 16px;border-bottom:1px solid var(--gris-2);vertical-align:top;}
+tr:nth-child(even) td{background:var(--gris-1);}
+tr:last-child td{border-bottom:none;}
+.clausulas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:24px 0;}
+.clausula-card{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:18px;border-top:4px solid var(--azul);}
+.clausula-card.pdca-p{border-top-color:#1A3A5C;}
+.clausula-card.pdca-d{border-top-color:#E85820;}
+.clausula-card.pdca-c{border-top-color:#2D8B5A;}
+.clausula-card.pdca-a{border-top-color:#C0392B;}
+.clausula-card.pdca-x{border-top-color:#9AA3B0;}
+.clausula-num{font-size:11px;font-weight:700;color:var(--gris-3);margin-bottom:6px;}
+.clausula-card h4{font-size:13px;font-weight:700;color:var(--azul);margin-bottom:6px;}
+.clausula-card p{font-size:12px;color:#6B7280;margin:0;}
+.badge-pdca{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-bottom:8px;}
+.badge-p{background:#EAF1FB;color:#1A3A5C;}
+.badge-d{background:#FDF0EB;color:#C44B15;}
+.badge-c{background:#E5F4EC;color:#2D8B5A;}
+.badge-a{background:#FDECEA;color:#C0392B;}
+.badge-x{background:#F7F8FA;color:#9AA3B0;}
+.caso-practico{background:#fff;border:2px solid var(--acento);border-radius:var(--radio);padding:28px;margin:28px 0;}
+.caso-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.caso-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;}
+.caso-header h4{font-size:16px;font-weight:700;color:var(--acento);margin:0;}
+.caso-practico p{font-size:14.5px;}
+.auditor-tip{background:#1A1F2E;color:#fff;border-radius:var(--radio);padding:24px 28px;margin:24px 0;}
+.auditor-tip h4{font-size:14px;font-weight:700;color:var(--acento);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.auditor-tip p,.auditor-tip li{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7;}
+.auditor-tip ul{margin-left:20px;}
+.auditor-tip ul li{margin-bottom:6px;}
+.descargable{background:linear-gradient(135deg,var(--azul),var(--azul-mid));border-radius:var(--radio);padding:28px 32px;color:#fff;display:flex;align-items:center;gap:24px;margin:32px 0;}
+.descargable-icon{font-size:40px;flex-shrink:0;}
+.descargable-body h4{font-size:17px;font-weight:600;margin-bottom:6px;}
+.descargable-body p{font-size:13.5px;color:rgba(255,255,255,0.75);margin:0 0 16px;}
+.btn-dl{background:var(--acento);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.quiz-container{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);overflow:hidden;margin:32px 0;}
+.quiz-header{background:var(--azul);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:12px;}
+.quiz-header h3{font-size:16px;font-weight:600;border:none;margin:0;padding:0;color:#fff;}
+.quiz-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:auto;}
+.quiz-body{padding:28px;}
+.pregunta{margin-bottom:32px;}
+.pregunta:last-child{margin-bottom:0;}
+.pregunta-num{font-size:11px;font-weight:600;color:var(--gris-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.pregunta h4{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--texto);}
+.opciones{display:flex;flex-direction:column;gap:10px;}
+.opcion{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--gris-2);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--texto);}
+.opcion:hover{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--gris-2);flex-shrink:0;}
+.opcion.selected{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion.selected .opcion-dot{background:var(--azul-mid);border-color:var(--azul-mid);}
+.opcion.correcta{border-color:var(--verde);background:var(--verde-light);}
+.opcion.correcta .opcion-dot{background:var(--verde);border-color:var(--verde);}
+.opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-light);}
+.opcion.incorrecta .opcion-dot{background:var(--rojo);border-color:var(--rojo);}
+.feedback-pregunta{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;}
+.feedback-pregunta.ok{background:var(--verde-light);color:#1A5C38;display:block;}
+.feedback-pregunta.ko{background:var(--rojo-light);color:#8B1A10;display:block;}
+.quiz-footer{padding:20px 28px;border-top:1px solid var(--gris-2);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.btn-quiz{background:var(--azul);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-quiz:hover{background:var(--azul-mid);}
+.btn-quiz:disabled{background:var(--gris-3);cursor:not-allowed;}
+.quiz-resultado{font-size:14px;color:var(--gris-3);display:none;}
+.quiz-resultado.visible{display:block;}
+.modulo-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:32px;border-top:2px solid var(--gris-2);}
+.btn-nav{display:flex;align-items:center;gap:10px;padding:13px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.2s;}
+.btn-nav.siguiente{background:var(--azul);color:#fff;}
+.btn-nav.anterior{background:#fff;color:var(--azul);border:2px solid var(--gris-2);}
+@media(max-width:768px){.sidebar{display:none;}.main{padding:24px 20px;}h1{font-size:28px;}.clausulas-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">ISO 45001:2018</div>
+    <h2>Consultor SST<br>Certificado</h2>
+    <p>Seguridad y Salud en el Trabajo</p>
+  </div>
+  <div class="sidebar-progress">
+    <div class="progress-label">Progreso</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+    <div class="progress-pct">Módulo 2 de 12</div>
+  </div>
+  <nav><ul>
+    <li><a href="iso45001-modulo1.html" class="done"><span class="check">✓</span> Fundamentos SST y Marco Legal</a></li>
+    <li><a href="#" class="active"><span class="check">2</span> La norma ISO 45001:2018</a></li>
+    <li><a href="#"><span class="check">3</span> Contexto y Liderazgo</a></li>
+    <li><a href="#"><span class="check">4</span> Identificación de Peligros y Riesgos</a></li>
+    <li><a href="#"><span class="check">5</span> Planificación y Objetivos SST</a></li>
+    <li><a href="#"><span class="check">6</span> Soporte y Operación</a></li>
+    <li><a href="#"><span class="check">7</span> Investigación de Incidentes</a></li>
+    <li><a href="#"><span class="check">8</span> Auditoría Interna y Revisión</a></li>
+    <li><a href="#"><span class="check">9</span> Proceso de Certificación SST</a></li>
+    <li><a href="#"><span class="check">10</span> Gestión de Contratistas</a></li>
+    <li><a href="#"><span class="check">11</span> Casos Prácticos por Sector</a></li>
+    <li><a href="#"><span class="check">12</span> Proyecto Final</a></li>
+  </ul></nav>
+</aside>
+<main class="main">
+  <div class="modulo-eyebrow">Módulo 2 de 12</div>
+  <h1>La norma ISO 45001:2018</h1>
+  <p class="modulo-intro">Anatomía completa de la norma. No se trata de memorizar cláusulas — se trata de entender la lógica que hay detrás de cada requisito y anticipar cómo lo va a evaluar el auditor externo.</p>
+  <div class="modulo-meta">
+    <span class="meta-item">⏱ 3 horas</span>
+    <span class="meta-item">✅ 12 preguntas</span>
+    <span class="meta-item">🗺️ Mapa completo de la norma</span>
+    <span class="meta-item">🔍 Perspectiva de auditor en cada cláusula</span>
+  </div>
+
+  <section class="seccion">
+    <h2>1. La lógica de la norma: por qué está construida así</h2>
+    <p>ISO 45001 no es una lista de requisitos arbitrarios. Tiene una arquitectura deliberada que responde a una pregunta central: <strong>¿cómo construye una organización un sistema que mejora activamente la seguridad y salud de sus trabajadores en lugar de simplemente cumplir un mínimo legal?</strong></p>
+    <p>La respuesta está en tres pilares que atraviesan toda la norma:</p>
+    <ul>
+      <li><strong>Pensamiento basado en riesgos:</strong> identificar proactivamente qué puede salir mal antes de que salga mal</li>
+      <li><strong>Liderazgo activo:</strong> la dirección no delega la SST — la lidera y rinde cuentas</li>
+      <li><strong>Participación de los trabajadores:</strong> los que conocen los riesgos reales son los que trabajan con ellos cada día</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="callout-icon">🧠</div>
+      <div class="callout-body"><strong>La trampa del "sistema de papel"</strong>
+      <p>El mayor fracaso de implantación ISO 45001 es construir un sistema que existe en los documentos pero no en la realidad. Los accidentes siguen ocurriendo porque los procedimientos no se aplican, los trabajadores no conocen los riesgos de su puesto y la dirección solo se involucra para firmar documentos. Un auditor experimentado detecta esto en la primera hora de auditoría. Tu trabajo como consultor es exactamente lo contrario: construir un sistema que vive en la organización.</p></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>2. Las 10 cláusulas y su relación con el PDCA</h2>
+    <p>ISO 45001 sigue la Estructura de Alto Nivel (HLS) y organiza sus requisitos en 10 cláusulas que mapean perfectamente con el ciclo PDCA. Entender este mapa es entender la norma.</p>
+
+    <div class="clausulas-grid">
+      <div class="clausula-card pdca-x">
+        <div class="clausula-num">Cláusula 1</div>
+        <span class="badge-pdca badge-x">Introductoria</span>
+        <h4>Objeto y campo de aplicación</h4>
+        <p>Define el propósito: prevenir lesiones y deterioro de la salud, y proporcionar lugares de trabajo seguros.</p>
+      </div>
+      <div class="clausula-card pdca-x">
+        <div class="clausula-num">Cláusula 2</div>
+        <span class="badge-pdca badge-x">Introductoria</span>
+        <h4>Referencias normativas</h4>
+        <p>No hay referencias normativas — la cláusula existe por coherencia con la HLS.</p>
+      </div>
+      <div class="clausula-card pdca-x">
+        <div class="clausula-num">Cláusula 3</div>
+        <span class="badge-pdca badge-x">Introductoria</span>
+        <h4>Términos y definiciones</h4>
+        <p>37 términos específicos de SST. Algunos con diferencias sutiles pero importantes (peligro vs riesgo, incidente vs accidente).</p>
+      </div>
+      <div class="clausula-card pdca-p">
+        <div class="clausula-num">Cláusula 4</div>
+        <span class="badge-pdca badge-p">PLANIFICAR</span>
+        <h4>Contexto de la organización</h4>
+        <p>Análisis interno/externo, partes interesadas, alcance del SGS, sistema de procesos.</p>
+      </div>
+      <div class="clausula-card pdca-p">
+        <div class="clausula-num">Cláusula 5</div>
+        <span class="badge-pdca badge-p">PLANIFICAR</span>
+        <h4>Liderazgo y participación</h4>
+        <p>La cláusula más diferenciadora vs OHSAS. Liderazgo de la alta dirección + consulta y participación de trabajadores (5.4).</p>
+      </div>
+      <div class="clausula-card pdca-p">
+        <div class="clausula-num">Cláusula 6</div>
+        <span class="badge-pdca badge-p">PLANIFICAR</span>
+        <h4>Planificación</h4>
+        <p>Identificación de peligros, evaluación de riesgos y oportunidades, requisitos legales, objetivos SST.</p>
+      </div>
+      <div class="clausula-card pdca-d">
+        <div class="clausula-num">Cláusula 7</div>
+        <span class="badge-pdca badge-d">HACER</span>
+        <h4>Apoyo</h4>
+        <p>Recursos, competencia, toma de conciencia, comunicación, información documentada.</p>
+      </div>
+      <div class="clausula-card pdca-d">
+        <div class="clausula-num">Cláusula 8</div>
+        <span class="badge-pdca badge-d">HACER</span>
+        <h4>Operación</h4>
+        <p>Planificación y control operacional, gestión del cambio, contratistas, emergencias, compras.</p>
+      </div>
+      <div class="clausula-card pdca-c">
+        <div class="clausula-num">Cláusula 9</div>
+        <span class="badge-pdca badge-c">VERIFICAR</span>
+        <h4>Evaluación del desempeño</h4>
+        <p>Seguimiento y medición, cumplimiento legal, auditoría interna, revisión por la dirección.</p>
+      </div>
+      <div class="clausula-card pdca-a">
+        <div class="clausula-num">Cláusula 10</div>
+        <span class="badge-pdca badge-a">ACTUAR</span>
+        <h4>Mejora</h4>
+        <p>Incidentes, no conformidades, acciones correctivas, mejora continua.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>3. Vocabulario crítico: los términos que más confunden</h2>
+    <p>La cláusula 3 de ISO 45001 define 37 términos. No todos son problemáticos, pero hay cinco pares que generan confusión sistemática — incluso entre profesionales con experiencia. El auditor los preguntará.</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Término A</th><th>Término B</th><th>La diferencia exacta</th><th>Ejemplo práctico</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>PELIGRO</strong><br><em>Fuente con potencial de causar lesión o deterioro de la salud</em></td>
+          <td><strong>RIESGO SST</strong><br><em>Combinación de la probabilidad de que ocurra un evento peligroso y la severidad de la lesión</em></td>
+          <td>El peligro existe siempre. El riesgo depende de la exposición y probabilidad.</td>
+          <td>Una sierra circular ES el peligro. El riesgo de corte depende de si hay protector, formación y procedimiento.</td>
+        </tr>
+        <tr>
+          <td><strong>INCIDENTE</strong><br><em>Evento derivado del trabajo o que ocurre en el curso del trabajo que podría tener o tiene como resultado lesión o deterioro de la salud</em></td>
+          <td><strong>ACCIDENTE</strong><br><em>Incidente que ha dado lugar a lesión, deterioro de la salud o muerte</em></td>
+          <td>Todo accidente es un incidente. No todo incidente es un accidente. Los cuasi-accidentes son incidentes sin resultado lesivo.</td>
+          <td>Un trabajador tropieza y no cae: incidente (cuasi-accidente). Un trabajador tropieza y se fractura la muñeca: accidente.</td>
+        </tr>
+        <tr>
+          <td><strong>LUGAR DE TRABAJO</strong><br><em>Lugar bajo el control de la organización donde una persona necesita estar o ir a trabajar</em></td>
+          <td><strong>TRABAJADOR</strong><br><em>Persona que realiza trabajo o actividades relacionadas con el trabajo bajo el control de la organización</em></td>
+          <td>Ambos tienen definición ampliada en ISO 45001. El lugar puede ser temporal o variable. El trabajador incluye autónomos y subcontratados bajo control.</td>
+          <td>Un comercial visitando a un cliente está en "lugar de trabajo" ISO 45001. Un autónomo en tus instalaciones es "trabajador" a efectos de la norma.</td>
+        </tr>
+        <tr>
+          <td><strong>PARTE INTERESADA</strong><br><em>Persona u organización que puede afectar, verse afectada o percibirse como afectada por las decisiones del SGS</em></td>
+          <td><strong>TRABAJADOR</strong></td>
+          <td>Los trabajadores son una parte interesada específica con un tratamiento propio y reforzado en la norma (cláusula 5.4).</td>
+          <td>Partes interesadas: sindicatos, autoridades laborales, vecinos, clientes. Trabajadores: categoría propia con derechos de participación específicos.</td>
+        </tr>
+        <tr>
+          <td><strong>OPORTUNIDAD SST</strong><br><em>Circunstancia o conjunto de circunstancias que puede conducir a la mejora del desempeño en SST</em></td>
+          <td><strong>RIESGO SST</strong></td>
+          <td>La norma pide gestionar ambos. Las oportunidades son el lado positivo del pensamiento basado en riesgos.</td>
+          <td>Riesgo: nuevo proceso productivo puede generar exposición a ruido. Oportunidad: la renovación de maquinaria permite instalar protecciones que eliminan ese riesgo.</td>
+        </tr>
+      </tbody>
+    </table></div>
+
+    <div class="auditor-tip">
+      <h4>🔍 Lo que pregunta el auditor sobre terminología</h4>
+      <p>En las entrevistas al personal, el auditor preguntará: "¿Qué diferencia hay entre un peligro y un riesgo?" y "¿Qué hace usted cuando detecta un incidente aunque no haya habido lesión?" Si los trabajadores no saben responder, es evidencia de que la toma de conciencia (cláusula 7.3) no es efectiva. Prepara a tu cliente para estas preguntas antes de la auditoría.</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>4. Análisis profundo de cada cláusula: lo que el auditor busca</h2>
+
+    <h3>Cláusula 4 — Contexto de la organización</h3>
+    <p>Más allá del DAFO genérico que muchas empresas presentan, el auditor busca que el análisis de contexto esté <strong>conectado con los riesgos SST reales</strong> de la organización.</p>
+    <ul>
+      <li><strong>4.1:</strong> Factores internos (cultura de seguridad, rotación, subcontratación) y externos (legislación, sindicatos, proveedores, entorno físico)</li>
+      <li><strong>4.2:</strong> Partes interesadas con sus necesidades y expectativas en materia de SST — no solo clientes y empleados, también autoridades, aseguradoras, vecinos</li>
+      <li><strong>4.3:</strong> Alcance del SGS: qué actividades, lugares y trabajadores cubre. Las exclusiones deben justificarse</li>
+      <li><strong>4.4:</strong> Procesos del SGS y sus interacciones</li>
+    </ul>
+
+    <div class="auditor-tip">
+      <h4>🔍 Trampa frecuente en la cláusula 4</h4>
+      <p>Las empresas presentan un análisis DAFO genérico copiado de plantilla que podría valer para cualquier empresa del sector. El auditor lo detecta inmediatamente porque no hay conexión entre los factores identificados y los riesgos SST específicos de esa organización. Si tu cliente fabrica productos químicos, el contexto externo debe incluir la normativa REACH, las inspecciones del Ministerio de Medio Ambiente y la proximidad a zonas habitadas. Si es una empresa de construcción, incluirá la normativa de coordinación con el promotor y los subcontratistas reales que van a concurrir en obra.</p>
+    </div>
+
+    <h3>Cláusula 5 — Liderazgo y participación de los trabajadores</h3>
+    <p>Esta es la cláusula más auditada y donde más no conformidades se generan en primera auditoría. Tiene dos bloques que requieren evidencias distintas:</p>
+
+    <p><strong>5.1 — Liderazgo y compromiso de la alta dirección:</strong> el auditor entrevista al director general o gerente. Comprueba que conoce la política SST, los objetivos y los resultados del último período. Si la dirección solo firma documentos sin saber lo que contienen, es una NC mayor.</p>
+
+    <p><strong>5.4 — Consulta y participación de los trabajadores:</strong> la gran novedad de ISO 45001. La organización debe establecer, implementar y mantener procesos para la consulta y participación de los trabajadores en:</p>
+    <ul>
+      <li>Determinación de los peligros y evaluación de los riesgos</li>
+      <li>Determinación de medidas de control</li>
+      <li>Identificación de necesidades de formación</li>
+      <li>Investigación de incidentes</li>
+      <li>Desarrollo, planificación, implementación y evaluación del SGS</li>
+    </ul>
+
+    <div class="callout alerta">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Error crítico en la cláusula 5.4</strong>
+      <p>Muchas empresas creen que tener un Comité de Seguridad y Salud (CSS) cumple la cláusula 5.4. No es suficiente. La norma exige que la participación sea real, documentada y que abarque los procesos SST clave. Además, el CSS es un órgano legal español que no todas las empresas están obligadas a tener. Debes crear mecanismos adicionales: buzones de sugerencias SST, reuniones periódicas de seguridad por departamento, participación en la identificación de peligros, etc.</p></div>
+    </div>
+
+    <h3>Cláusula 6 — Planificación</h3>
+    <p>El corazón técnico de la norma. Tres subcláusulas críticas:</p>
+    <ul>
+      <li><strong>6.1.1:</strong> Identificación de peligros — proceso continuo, no puntual</li>
+      <li><strong>6.1.2:</strong> Evaluación de riesgos y oportunidades SST — metodología documentada</li>
+      <li><strong>6.1.3:</strong> Determinación de requisitos legales y otros requisitos</li>
+      <li><strong>6.1.4:</strong> Planificación de acciones — jerarquía de controles</li>
+      <li><strong>6.2:</strong> Objetivos SST y planificación para lograrlos</li>
+    </ul>
+    <p>La <strong>jerarquía de controles</strong> (de mayor a menor eficacia) es un concepto que el auditor verifica que la organización aplica realmente:</p>
+
+    <div class="infografia-wrap">
+      <div class="infografia-titulo">🔺 Jerarquía de controles ISO 45001 — De mayor a menor eficacia</div>
+      <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;">
+        <polygon points="300,20 560,340 40,340" fill="none" stroke="#E8EBF0" stroke-width="1"/>
+        <!-- Nivel 1: Eliminación -->
+        <polygon points="300,20 360,100 240,100" fill="#1A3A5C"/>
+        <text x="300" y="55" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">ELIMINACIÓN</text>
+        <text x="300" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">Eliminar el peligro</text>
+        <text x="300" y="86" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Ej: suprimir proceso peligroso</text>
+        <!-- Nivel 2: Sustitución -->
+        <polygon points="240,100 360,100 420,180 180,180" fill="#2563A8"/>
+        <text x="300" y="135" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">SUSTITUCIÓN</text>
+        <text x="300" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.9)">Sustituir por algo menos peligroso</text>
+        <text x="300" y="167" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">Ej: disolvente tóxico → disolvente acuoso</text>
+        <!-- Nivel 3: Controles ingeniería -->
+        <polygon points="180,180 420,180 480,260 120,260" fill="#E85820"/>
+        <text x="300" y="213" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">CONTROLES DE INGENIERÍA</text>
+        <text x="300" y="230" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.9)">Aislar personas del peligro</text>
+        <text x="300" y="248" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">Ej: protectores en máquinas, extracción localizada</text>
+        <!-- Nivel 4: Controles administrativos -->
+        <polygon points="120,260 480,260 540,320 60,320" fill="#D97706"/>
+        <text x="300" y="285" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">CONTROLES ADMINISTRATIVOS</text>
+        <text x="300" y="302" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.9)">Cambiar cómo trabaja la gente</text>
+        <text x="300" y="316" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">Ej: rotación de puestos, permisos de trabajo, formación</text>
+        <!-- Nivel 5: EPI -->
+        <polygon points="60,320 540,320 560,340 40,340" fill="#C0392B"/>
+        <text x="300" y="334" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="white">EPI — Equipos de Protección Individual (último recurso)</text>
+        <!-- Etiqueta eficacia -->
+        <text x="580" y="180" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#9AA3B0" transform="rotate(90,580,180)">MAYOR EFICACIA ↑ MENOR EFICACIA ↓</text>
+      </svg>
+    </div>
+
+    <div class="auditor-tip">
+      <h4>🔍 Lo que el auditor comprueba sobre jerarquía de controles</h4>
+      <p>El auditor buscará evidencias de que la organización ha considerado controles de mayor nivel antes de llegar a los EPI. El error más frecuente es que las empresas resuelven todos sus riesgos con EPI (el nivel más bajo y menos eficaz) porque es lo más barato a corto plazo. Si en tu evaluación de riesgos todos los controles son "uso de guantes" y "uso de casco", el auditor preguntará por qué no se han considerado controles de ingeniería o sustitución.</p>
+    </div>
+
+    <h3>Cláusula 7 — Apoyo</h3>
+    <p>Paralela a ISO 9001 pero con especificidades SST importantes:</p>
+    <ul>
+      <li><strong>7.2 Competencia:</strong> no basta con tener el certificado de formación. El auditor comprobará que el trabajador aplica lo aprendido en su puesto real</li>
+      <li><strong>7.3 Toma de conciencia:</strong> ¿saben los trabajadores cuáles son los riesgos de su puesto, cuáles son las medidas de control y qué consecuencias tiene no aplicarlas?</li>
+      <li><strong>7.4 Comunicación:</strong> ISO 45001 distingue entre comunicación interna y externa, y entre comunicación hacia y desde los trabajadores</li>
+    </ul>
+
+    <h3>Cláusula 8 — Operación</h3>
+    <p>La cláusula más extensa y la que más varía entre sectores. Tres subcláusulas que requieren atención especial:</p>
+    <ul>
+      <li><strong>8.1.3 Gestión del cambio:</strong> cualquier cambio en procesos, instalaciones, equipos o personas debe evaluarse desde el punto de vista SST antes de implementarse. Muchos accidentes ocurren precisamente en situaciones de cambio no gestionado</li>
+      <li><strong>8.1.4 Compras y contratistas:</strong> los riesgos de los contratistas son riesgos de la organización. Se desarrolla en profundidad en el Módulo 10</li>
+      <li><strong>8.2 Preparación y respuesta ante emergencias:</strong> plan de emergencia actualizado, simulacros documentados, equipos formados</li>
+    </ul>
+
+    <h3>Cláusula 9 — Evaluación del desempeño</h3>
+    <p>Un punto diferencial respecto a ISO 9001: la norma distingue entre <strong>indicadores reactivos</strong> (lo que ya ha ocurrido) e <strong>indicadores proactivos</strong> (lo que estás haciendo para prevenir).</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Tipo</th><th>Ejemplos</th><th>Lo que miden</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Indicadores reactivos</strong></td><td>Índice de frecuencia, índice de gravedad, nº accidentes, días de baja, reclamaciones ITSS</td><td>Lo que ya ha fallado. Útiles para tendencias pero llegan tarde.</td></tr>
+        <tr><td><strong>Indicadores proactivos</strong></td><td>% inspecciones de seguridad realizadas, % formación completada, nº mejoras propuestas por trabajadores, % evaluaciones de riesgo actualizadas, nº cuasi-accidentes reportados</td><td>La salud del sistema preventivo. Permiten actuar antes del accidente.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout clave">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body"><strong>El indicador que más valoran los auditores expertos</strong>
+      <p>El número de cuasi-accidentes reportados por los trabajadores es el mejor indicador de la cultura de seguridad de una organización. Una empresa donde los trabajadores reportan muchos cuasi-accidentes no tiene más problemas — tiene una cultura de reporte activa que permite aprender antes del accidente. Una empresa donde nadie reporta cuasi-accidentes tiene un problema real: o no pasan, o no se reportan. Y los auditores saben que lo segundo es lo habitual.</p></div>
+    </div>
+
+    <h3>Cláusula 10 — Mejora</h3>
+    <p>La investigación de incidentes (10.2) es mucho más exigente en ISO 45001 que en otras normas. No basta con registrar lo que ocurrió — hay que investigar las causas raíz y verificar que las acciones tomadas han sido eficaces. Esto se desarrolla en profundidad en el Módulo 7.</p>
+  </section>
+
+  <section class="seccion">
+    <h2>5. Integración con ISO 9001 e ISO 14001: la trilogía</h2>
+    <p>La Estructura de Alto Nivel fue diseñada precisamente para facilitar esto. Una organización que ya tiene ISO 9001 tiene entre el 50% y el 70% del trabajo hecho para ISO 45001, dependiendo de la madurez de su sistema de gestión.</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Elemento</th><th>ISO 9001 (Calidad)</th><th>ISO 14001 (MA)</th><th>ISO 45001 (SST)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Política</strong></td><td>Política de calidad</td><td>Política ambiental</td><td>Política SST</td></tr>
+        <tr><td><strong>Análisis de contexto</strong></td><td>Factores que afectan a la calidad</td><td>Aspectos e impactos ambientales</td><td>Peligros y riesgos SST</td></tr>
+        <tr><td><strong>Partes interesadas</strong></td><td>Clientes, proveedores</td><td>Autoridades, comunidad</td><td>Trabajadores (cláusula específica 5.4)</td></tr>
+        <tr><td><strong>Auditoría interna</strong></td><td>Común — puede ser integrada</td><td>Común — puede ser integrada</td><td>Común — puede ser integrada</td></tr>
+        <tr><td><strong>Revisión por dirección</strong></td><td>Común — puede ser integrada</td><td>Común — puede ser integrada</td><td>Común — puede ser integrada</td></tr>
+        <tr><td><strong>Elemento exclusivo</strong></td><td>Satisfacción cliente, diseño</td><td>Aspectos ambientales significativos</td><td>Identificación peligros, jerarquía controles, investigación incidentes</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="caso-practico">
+      <div class="caso-header">
+        <span class="caso-badge">Caso práctico</span>
+        <h4>Empresa industrial con ISO 9001 que quiere añadir ISO 45001</h4>
+      </div>
+      <p><strong>Situación:</strong> Empresa de 80 trabajadores, sector alimentación, con ISO 9001:2015 desde hace 3 años. La dirección quiere certificar ISO 45001 porque un cliente industrial importante lo exige.</p>
+      <p><strong>Análisis de partida para el consultor:</strong></p>
+      <ul>
+        <li>✅ Política integrada existente — ampliar para incluir compromisos SST</li>
+        <li>✅ Análisis de contexto existente — ampliar con factores SST</li>
+        <li>✅ Mapa de procesos existente — añadir procesos SST</li>
+        <li>✅ Sistema de auditoría interna — ampliar con competencias SST</li>
+        <li>✅ Revisión por la dirección — ampliar entradas y salidas SST</li>
+        <li>✅ Sistema de NC y AC — ampliar para incluir incidentes SST</li>
+        <li>🔴 Identificación de peligros y evaluación de riesgos SST — crear desde cero</li>
+        <li>🔴 Cláusula 5.4 participación trabajadores — crear mecanismos nuevos</li>
+        <li>🔴 Gestión del cambio SST — procedimiento nuevo</li>
+        <li>🔴 Plan de emergencias SST — actualizar o crear</li>
+        <li>🔴 Requisitos legales SST — identificar legislación aplicable</li>
+      </ul>
+      <p><strong>Estimación de horas de consultoría:</strong> 60-80 horas (vs 120-150 para implantación desde cero). El sistema ISO 9001 existente ahorra entre el 40% y el 50% del trabajo.</p>
+    </div>
+  </section>
+
+  <div class="descargable">
+    <div class="descargable-icon">🗺️</div>
+    <div class="descargable-body">
+      <h4>Mapa completo ISO 45001 — Requisitos por cláusula + preguntas clave del auditor</h4>
+      <p>Tabla con los 60+ requisitos de la norma, organizados por cláusula, con la pregunta exacta que hace el auditor en cada uno y el tipo de evidencia que espera encontrar.</p>
+      <button class="btn-dl" onclick="descargar()">⬇ Descargar mapa de requisitos</button>
+    </div>
+  </div>
+
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h3>Quiz del Módulo 2</h3>
+      <span class="quiz-badge">12 preguntas</span>
+    </div>
+    <div class="quiz-body">
+
+      <div class="pregunta" id="p1"><div class="pregunta-num">Pregunta 1 de 12</div>
+      <h4>¿Cuál es la diferencia exacta entre "peligro" y "riesgo SST" según la cláusula 3 de ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Son sinónimos — la norma los usa indistintamente</label>
+        <label class="opcion" onclick="sel(this,'p1',true)"><div class="opcion-dot"></div>El peligro es la fuente con potencial de causar daño; el riesgo es la combinación de probabilidad y severidad del daño</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>El peligro es siempre físico; el riesgo puede ser físico o psicosocial</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>El riesgo es siempre mayor que el peligro</label>
+      </div><div class="feedback-pregunta" id="fb1"></div></div>
+
+      <div class="pregunta" id="p2"><div class="pregunta-num">Pregunta 2 de 12</div>
+      <h4>Un trabajador tropieza con un cable en el suelo, pierde el equilibrio pero no cae. ¿Cómo se clasifica este evento según ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Accidente leve sin consecuencias</label>
+        <label class="opcion" onclick="sel(this,'p2',true)"><div class="opcion-dot"></div>Incidente (cuasi-accidente) — debe registrarse e investigarse</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>No es un evento relevante para el SGS</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>Peligro identificado que pasa a la evaluación de riesgos</label>
+      </div><div class="feedback-pregunta" id="fb2"></div></div>
+
+      <div class="pregunta" id="p3"><div class="pregunta-num">Pregunta 3 de 12</div>
+      <h4>¿A qué fase del ciclo PDCA corresponde la cláusula 5 (Liderazgo) de ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p3',true)"><div class="opcion-dot"></div>Planificar (P)</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Hacer (D)</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Verificar (C)</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Actuar (A)</label>
+      </div><div class="feedback-pregunta" id="fb3"></div></div>
+
+      <div class="pregunta" id="p4"><div class="pregunta-num">Pregunta 4 de 12</div>
+      <h4>¿Qué nivel de la jerarquía de controles es el de MAYOR eficacia según ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Equipos de protección individual (EPI)</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Controles administrativos</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Controles de ingeniería</label>
+        <label class="opcion" onclick="sel(this,'p4',true)"><div class="opcion-dot"></div>Eliminación del peligro</label>
+      </div><div class="feedback-pregunta" id="fb4"></div></div>
+
+      <div class="pregunta" id="p5"><div class="pregunta-num">Pregunta 5 de 12</div>
+      <h4>¿Qué subcláusula de ISO 45001 es la más diferenciadora respecto a OHSAS 18001 y exige mecanismos de participación real de los trabajadores?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>5.1 — Liderazgo y compromiso</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>5.2 — Política SST</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>5.3 — Roles y responsabilidades</label>
+        <label class="opcion" onclick="sel(this,'p5',true)"><div class="opcion-dot"></div>5.4 — Consulta y participación de los trabajadores</label>
+      </div><div class="feedback-pregunta" id="fb5"></div></div>
+
+      <div class="pregunta" id="p6"><div class="pregunta-num">Pregunta 6 de 12</div>
+      <h4>¿Cuál de estos es un indicador PROACTIVO de desempeño SST?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Índice de frecuencia de accidentes</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Número de días de baja por accidente</label>
+        <label class="opcion" onclick="sel(this,'p6',true)"><div class="opcion-dot"></div>Porcentaje de inspecciones de seguridad realizadas respecto a las planificadas</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>Número de reclamaciones a la ITSS recibidas</label>
+      </div><div class="feedback-pregunta" id="fb6"></div></div>
+
+      <div class="pregunta" id="p7"><div class="pregunta-num">Pregunta 7 de 12</div>
+      <h4>Una empresa con ISO 9001:2015 quiere añadir ISO 45001. ¿Qué elemento NO puede reutilizarse directamente del sistema ISO 9001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>El sistema de auditoría interna</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>La revisión por la dirección</label>
+        <label class="opcion" onclick="sel(this,'p7',true)"><div class="opcion-dot"></div>La identificación de peligros y evaluación de riesgos SST</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>El sistema de no conformidades y acciones correctivas</label>
+      </div><div class="feedback-pregunta" id="fb7"></div></div>
+
+      <div class="pregunta" id="p8"><div class="pregunta-num">Pregunta 8 de 12</div>
+      <h4>¿Qué subcláusula de ISO 45001 exige que cualquier cambio en procesos, instalaciones o equipos sea evaluado desde el punto de vista SST antes de implementarse?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>6.1.2 — Evaluación de riesgos</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>8.1.2 — Eliminación de peligros</label>
+        <label class="opcion" onclick="sel(this,'p8',true)"><div class="opcion-dot"></div>8.1.3 — Gestión del cambio</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>10.2 — Incidentes y no conformidades</label>
+      </div><div class="feedback-pregunta" id="fb8"></div></div>
+
+      <div class="pregunta" id="p9"><div class="pregunta-num">Pregunta 9 de 12</div>
+      <h4>¿Por qué un alto número de cuasi-accidentes reportados es un indicador POSITIVO de la cultura de seguridad?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Porque indica que la empresa tiene muchos peligros identificados</label>
+        <label class="opcion" onclick="sel(this,'p9',true)"><div class="opcion-dot"></div>Porque evidencia una cultura de reporte activa que permite aprender y actuar antes de que ocurran accidentes con lesión</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Porque los auditores valoran positivamente la cantidad de documentación</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Porque demuestra que los trabajadores conocen la norma ISO 45001</label>
+      </div><div class="feedback-pregunta" id="fb9"></div></div>
+
+      <div class="pregunta" id="p10"><div class="pregunta-num">Pregunta 10 de 12</div>
+      <h4>¿Qué elemento del sistema es exclusivo de ISO 45001 y no tiene equivalente directo en ISO 9001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>La política del sistema de gestión</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Los objetivos y su planificación</label>
+        <label class="opcion" onclick="sel(this,'p10',true)"><div class="opcion-dot"></div>La identificación de peligros, la jerarquía de controles y la investigación de incidentes</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>La auditoría interna y la revisión por la dirección</label>
+      </div><div class="feedback-pregunta" id="fb10"></div></div>
+
+      <div class="pregunta" id="p11"><div class="pregunta-num">Pregunta 11 de 12</div>
+      <h4>Una empresa resuelve todos sus riesgos identificados con "uso de EPI". ¿Qué problema detectará el auditor?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Ninguno, el uso de EPI es una medida válida según la norma</label>
+        <label class="opcion" onclick="sel(this,'p11',true)"><div class="opcion-dot"></div>Que la organización no ha aplicado la jerarquía de controles — el EPI es el último recurso y no se han considerado controles más eficaces</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Que la evaluación de riesgos no está documentada correctamente</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Que los trabajadores no han sido formados en el uso de los EPI</label>
+      </div><div class="feedback-pregunta" id="fb11"></div></div>
+
+      <div class="pregunta" id="p12"><div class="pregunta-num">Pregunta 12 de 12</div>
+      <h4>¿Cuántos términos y definiciones específicos contiene la cláusula 3 de ISO 45001?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>20</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>25</label>
+        <label class="opcion" onclick="sel(this,'p12',true)"><div class="opcion-dot"></div>37</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>50</label>
+      </div><div class="feedback-pregunta" id="fb12"></div></div>
+
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-quiz" id="btnComprobar" onclick="comprobarQuiz()">Comprobar respuestas</button>
+      <button class="btn-quiz" id="btnReset" onclick="resetQuiz()" style="background:#fff;color:var(--azul);border:2px solid var(--gris-2);display:none;">Reintentar</button>
+      <span class="quiz-resultado" id="quizResultado"></span>
+    </div>
+  </div>
+
+  <div class="modulo-nav">
+    <a href="iso45001-modulo1.html" class="btn-nav anterior">← Módulo 1</a>
+    <a href="iso45001-modulo3.html" class="btn-nav siguiente">Módulo 3: Contexto y Liderazgo →</a>
+  </div>
+</main>
+</div>
+<script>
+const R={};
+const CI={p1:1,p2:1,p3:0,p4:3,p5:3,p6:2,p7:2,p8:2,p9:1,p10:2,p11:1,p12:2};
+const FB={
+  p1:{ok:'✅ Correcto. El peligro es la fuente (existe siempre que el elemento esté presente). El riesgo incorpora la probabilidad y la severidad — puede reducirse con controles aunque el peligro siga existiendo.',ko:'❌ Incorrecto. Son términos distintos y el auditor los diferenciará en la entrevista. Peligro = fuente. Riesgo = probabilidad × severidad.'},
+  p2:{ok:'✅ Correcto. Un cuasi-accidente es un incidente sin resultado lesivo. ISO 45001 exige que se registren e investiguen porque son señales tempranas de que algo puede fallar.',ko:'❌ Incorrecto. Es un incidente (cuasi-accidente). La norma exige registrar e investigar los incidentes aunque no haya lesión — son la oportunidad de aprender antes del accidente.'},
+  p3:{ok:'✅ Correcto. Las cláusulas 4, 5 y 6 corresponden a la fase P (Planificar) del ciclo PDCA.',ko:'❌ Incorrecto. La cláusula 5 forma parte de la fase P (Planificar) junto con las cláusulas 4 y 6.'},
+  p4:{ok:'✅ Correcto. La eliminación del peligro es el nivel más alto de la jerarquía porque elimina el riesgo en origen. Los EPI son el último recurso y el menos eficaz.',ko:'❌ Incorrecto. La eliminación del peligro es el nivel de mayor eficacia. Los EPI son el último recurso porque solo protegen al trabajador expuesto, sin eliminar el peligro.'},
+  p5:{ok:'✅ Correcto. La cláusula 5.4 es la gran novedad de ISO 45001 respecto a OHSAS 18001 — exige participación real y documentada de los trabajadores en los procesos SST clave.',ko:'❌ Incorrecto. La subcláusula 5.4 (Consulta y participación de los trabajadores) es la novedad más significativa de ISO 45001. Es una cláusula completa dedicada exclusivamente a este tema.'},
+  p6:{ok:'✅ Correcto. El porcentaje de inspecciones realizadas mide lo que haces para prevenir (proactivo). Los índices de accidentalidad miden lo que ya ha ocurrido (reactivo).',ko:'❌ Incorrecto. Los indicadores proactivos miden actividades preventivas (antes del accidente). Los indicadores reactivos miden consecuencias (después del accidente). Solo uno de los ejemplos es proactivo.'},
+  p7:{ok:'✅ Correcto. La identificación de peligros y evaluación de riesgos SST es un elemento específico de ISO 45001 que debe crearse desde cero — no tiene equivalente en ISO 9001.',ko:'❌ Incorrecto. La identificación de peligros y evaluación de riesgos SST es exclusiva de ISO 45001. El resto de elementos mencionados pueden integrarse o ampliarse desde el sistema ISO 9001 existente.'},
+  p8:{ok:'✅ Correcto. La cláusula 8.1.3 exige que los cambios planificados sean evaluados desde el punto de vista SST antes de implementarse. Muchos accidentes ocurren precisamente en situaciones de cambio no gestionado.',ko:'❌ Incorrecto. La gestión del cambio está en la cláusula 8.1.3. Es uno de los requisitos más importantes porque muchos accidentes ocurren en situaciones de cambio no evaluado.'},
+  p9:{ok:'✅ Correcto. Un alto número de cuasi-accidentes reportados evidencia que los trabajadores confían en el sistema y reportan activamente. Eso es exactamente lo que permite actuar antes del accidente con lesión.',ko:'❌ Incorrecto. Muchos cuasi-accidentes reportados indica cultura de reporte activa y confianza en el sistema. Una empresa donde nadie reporta cuasi-accidentes tiene un problema cultural más grave.'},
+  p10:{ok:'✅ Correcto. La identificación de peligros, la jerarquía de controles y la investigación de incidentes son elementos propios de SST sin equivalente directo en ISO 9001.',ko:'❌ Incorrecto. La política, objetivos, auditoría y revisión por la dirección existen en ISO 9001. Lo exclusivo de ISO 45001 son la identificación de peligros, la jerarquía de controles y la investigación de incidentes.'},
+  p11:{ok:'✅ Correcto. Resolver todo con EPI sin considerar controles superiores (eliminación, sustitución, ingeniería, administrativos) incumple el principio de jerarquía de controles que exige la cláusula 8.1.2.',ko:'❌ Incorrecto. El auditor detectará que no se ha aplicado la jerarquía de controles. El EPI es el último recurso, no la solución por defecto.'},
+  p12:{ok:'✅ Correcto. La cláusula 3 de ISO 45001 define 37 términos específicos de SST, incluyendo pares que generan confusión frecuente como peligro/riesgo o incidente/accidente.',ko:'❌ Incorrecto. La cláusula 3 de ISO 45001 contiene 37 términos y definiciones. Es importante conocer al menos los 10-12 más relevantes para las entrevistas de auditoría.'}
+};
+function sel(el,pid,ok){if(document.getElementById('btnComprobar').disabled)return;el.closest('.opciones').querySelectorAll('.opcion').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');R[pid]={idx:Array.from(el.closest('.opciones').children).indexOf(el),ok};}
+function comprobarQuiz(){const ps=['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12'];if(Object.keys(R).length<ps.length){alert('Responde todas las preguntas.');return;}let a=0;ps.forEach(pid=>{const r=R[pid];const ops=document.querySelectorAll('#'+pid+' .opcion');const fb=document.getElementById('fb'+pid.substring(1));ops.forEach(o=>o.style.pointerEvents='none');if(r.ok){ops[r.idx].classList.add('correcta');fb.className='feedback-pregunta ok';fb.textContent=FB[pid].ok;a++;}else{ops[r.idx].classList.add('incorrecta');ops[CI[pid]].classList.add('correcta');fb.className='feedback-pregunta ko';fb.textContent=FB[pid].ko;}});document.getElementById('btnComprobar').disabled=true;document.getElementById('btnComprobar').style.display='none';document.getElementById('btnReset').style.display='inline-block';const res=document.getElementById('quizResultado');res.classList.add('visible');const pct=Math.round(a/ps.length*100);res.style.color=pct>=80?'var(--verde)':pct>=60?'var(--amarillo)':'var(--rojo)';res.textContent=pct>=80?`🎉 ${a}/12 (${pct}%) — Dominas la estructura de la norma.`:pct>=60?`📖 ${a}/12 (${pct}%) — Repasa los puntos incorrectos.`:`🔄 ${a}/12 (${pct}%) — Vuelve a leer el módulo.`;}
+function resetQuiz(){Object.keys(R).forEach(k=>delete R[k]);document.querySelectorAll('.opcion').forEach(o=>{o.classList.remove('selected','correcta','incorrecta');o.style.pointerEvents='';});document.querySelectorAll('.feedback-pregunta').forEach(f=>{f.className='feedback-pregunta';f.textContent='';});document.getElementById('btnComprobar').disabled=false;document.getElementById('btnComprobar').style.display='';document.getElementById('btnReset').style.display='none';document.getElementById('quizResultado').classList.remove('visible');}
+function descargar(){const t=`MAPA COMPLETO ISO 45001:2018 — REQUISITOS Y PERSPECTIVA DEL AUDITOR\n${'='.repeat(60)}\n\nCLÁUSULA 4 — CONTEXTO DE LA ORGANIZACIÓN\n\n4.1 Comprensión de la organización y su contexto\nRequisito: Identificar factores internos y externos que afectan al SGS\nPregunta del auditor: "¿Puede mostrarme su análisis de contexto? ¿Cómo conecta con los riesgos SST específicos de su organización?"\nEvidencia esperada: Análisis DAFO o similar con factores SST, no genérico\n\n4.2 Partes interesadas\nRequisito: Identificar partes interesadas y sus necesidades en materia SST\nPregunta del auditor: "¿Han considerado a las autoridades laborales, aseguradoras y sindicatos como partes interesadas?"\nEvidencia esperada: Registro de partes interesadas con necesidades SST específicas\n\n4.3 Alcance del SGS\nRequisito: Determinar los límites y la aplicabilidad del SGS\nPregunta del auditor: "¿Por qué han excluido [X] del alcance? ¿Está justificado documentalmente?"\nEvidencia esperada: Declaración de alcance con justificación de exclusiones\n\n4.4 Sistema de gestión SST y sus procesos\nRequisito: Establecer, implementar, mantener y mejorar el SGS\nPregunta del auditor: "¿Puede mostrarme el mapa de procesos del SGS?"\nEvidencia esperada: Mapa de procesos con interacciones SST identificadas\n\nCLÁUSULA 5 — LIDERAZGO Y PARTICIPACIÓN\n\n5.1 Liderazgo y compromiso\nRequisito: La alta dirección debe demostrar liderazgo y compromiso\nPregunta del auditor (al director general): "¿Cuáles son los objetivos SST de este año? ¿Qué resultados han tenido?"\nEvidencia esperada: Director que conoce política, objetivos y resultados. Actas de reuniones donde dirección trata temas SST\n\n5.2 Política SST\nRequisito: Establecer política SST apropiada al contexto\nPregunta del auditor: "¿Pueden mostrarme la política? ¿La conocen los trabajadores?"\nEvidencia esperada: Política firmada, comunicada, con compromisos de cumplimiento legal y mejora continua\n\n5.3 Roles, responsabilidades y autoridades\nRequisito: Asignar y comunicar roles y responsabilidades SST\nPregunta del auditor: "¿Quién es responsable de la SST? ¿Lo saben los mandos intermedios?"\nEvidencia esperada: Organigrama SST, fichas de puesto con responsabilidades preventivas\n\n5.4 Consulta y participación de los trabajadores ⭐ CRÍTICO\nRequisito: Establecer mecanismos reales de participación\nPregunta del auditor (a los trabajadores): "¿Han participado en la identificación de riesgos de su puesto?"\nEvidencia esperada: Actas de reuniones de participación, registros de sugerencias, evidencia de que las aportaciones se tienen en cuenta\n\nCLÁUSULA 6 — PLANIFICACIÓN\n\n6.1.1 Identificación de peligros\nRequisito: Proceso continuo y proactivo de identificación\nPregunta del auditor: "¿Cómo identifican nuevos peligros cuando cambia un proceso?"\nEvidencia esperada: Procedimiento documentado, registros de identificación de peligros actualizados\n\n6.1.2 Evaluación de riesgos\nRequisito: Metodología documentada para evaluar riesgos y oportunidades\nPregunta del auditor: "¿Por qué han elegido esta metodología? ¿Con qué criterios se prioriza?"\nEvidencia esperada: Evaluación de riesgos por puesto, metodología documentada, criterios de aceptación\n\n6.1.3 Requisitos legales\nRequisito: Identificar y mantener actualizados los requisitos legales aplicables\nPregunta del auditor: "¿Cómo se enteran de los cambios en la legislación? ¿Con qué frecuencia actualizan el registro?"\nEvidencia esperada: Registro de requisitos legales aplicables, actualizado, con responsable de seguimiento\n\n6.1.4 Planificación de acciones (Jerarquía de controles)\nRequisito: Determinar controles siguiendo la jerarquía\nPregunta del auditor: "Para este riesgo [X], ¿por qué han optado por EPI y no por controles de ingeniería?"\nEvidencia esperada: Justificación documentada de los controles seleccionados y la aplicación de la jerarquía\n\n6.2 Objetivos SST\nRequisito: Objetivos coherentes con la política, medibles, monitorizados\nPregunta del auditor: "¿Cuál es el objetivo SST de este año? ¿Cómo van a medirlo?"\nEvidencia esperada: Objetivos SMART con indicador, meta, responsable y plazo\n\nCLÁUSULA 7 — APOYO\n\n7.1 Recursos\nRequisito: Determinar y proporcionar los recursos necesarios\nPregunta del auditor: "¿Tienen presupuesto asignado para SST? ¿Es suficiente para los objetivos planificados?"\nEvidencia esperada: Presupuesto SST documentado, recursos materiales y humanos asignados\n\n7.2 Competencia\nRequisito: Personal competente para tareas con impacto en SST\nPregunta del auditor (al trabajador): "¿Recibió formación antes de empezar a usar esta máquina?"\nEvidencia esperada: Matriz de competencias, registros de formación firmados, evaluación de la eficacia de la formación\n\n7.3 Toma de conciencia\nRequisito: Los trabajadores deben conocer riesgos, controles y consecuencias\nPregunta del auditor (al trabajador): "¿Cuáles son los principales riesgos de su puesto? ¿Qué hace si detecta un peligro?"\nEvidencia esperada: Comunicaciones de riesgos, registros de información recibida, charlas de seguridad\n\n7.4 Comunicación\nRequisito: Procesos de comunicación interna y externa en materia SST\nPregunta del auditor: "¿Cómo comunican los cambios en los procedimientos de seguridad a los trabajadores?"\nEvidencia esperada: Plan de comunicación, registros de comunicaciones realizadas\n\n7.5 Información documentada\nRequisito: Crear, actualizar y controlar la información documentada del SGS\nPregunta del auditor: "¿Cómo controlan las versiones? ¿Los trabajadores acceden a los procedimientos actualizados?"\nEvidencia esperada: Sistema de control documental, versiones actualizadas, registros de distribución\n\nCLÁUSULA 8 — OPERACIÓN\n\n8.1.1 Planificación y control operacional\nRequisito: Establecer controles para gestionar los riesgos SST en operación\nPregunta del auditor: "Para esta operación peligrosa, ¿qué controles operacionales tienen implementados?"\nEvidencia esperada: Procedimientos de trabajo seguro, instrucciones técnicas, permisos de trabajo\n\n8.1.3 Gestión del cambio ⭐ CRÍTICO\nRequisito: Evaluación SST antes de implementar cambios\nPregunta del auditor: "¿Cómo evalúan el impacto en seguridad antes de instalar una nueva máquina o cambiar un proceso?"\nEvidencia esperada: Procedimiento de gestión del cambio, registros de evaluaciones previas a cambios\n\n8.1.4 Compras y contratistas\nRequisito: Controlar los riesgos SST de proveedores y contratistas\nPregunta del auditor: "¿Cómo gestionan la seguridad de los contratistas que trabajan en sus instalaciones?"\nEvidencia esperada: Procedimiento de CAE, documentación de contratistas, registros de coordinación\n\n8.2 Preparación y respuesta ante emergencias\nRequisito: Plan de emergencias, simulacros, equipos formados\nPregunta del auditor: "¿Cuándo fue el último simulacro? ¿Puede mostrarme el registro?"\nEvidencia esperada: Plan de emergencias actualizado, registros de simulacros, listas de equipos de emergencia formados\n\nCLÁUSULA 9 — EVALUACIÓN DEL DESEMPEÑO\n\n9.1 Seguimiento, medición y análisis\nRequisito: Indicadores reactivos Y proactivos\nPregunta del auditor: "¿Qué indicadores proactivos utilizan además del índice de accidentalidad?"\nEvidencia esperada: Cuadro de mando SST con ambos tipos de indicadores, análisis de tendencias\n\n9.1.2 Evaluación del cumplimiento legal\nRequisito: Evaluar periódicamente el cumplimiento de los requisitos legales\nPregunta del auditor: "¿Con qué frecuencia evalúan el cumplimiento legal? ¿Quién lo hace?"\nEvidencia esperada: Registros de evaluación de cumplimiento legal, con resultados y acciones\n\n9.2 Auditoría interna\nRequisito: Programa de auditorías internas a intervalos planificados\nPregunta del auditor: "¿Puede mostrarme el programa de auditorías internas? ¿Los auditores tienen competencia en SST?"\nEvidencia esperada: Programa, informes de auditoría, evidencia de competencia de los auditores\n\n9.3 Revisión por la dirección\nRequisito: Revisión periódica con entradas y salidas definidas\nPregunta del auditor (al director): "¿Cuándo fue la última revisión por la dirección? ¿Qué decisiones se tomaron?"\nEvidencia esperada: Acta de revisión con todas las entradas, decisiones concretas y responsables\n\nCLÁUSULA 10 — MEJORA\n\n10.1 Generalidades\nRequisito: Determinar oportunidades de mejora e implementar acciones\n\n10.2 Incidentes, no conformidades y acciones correctivas ⭐ CRÍTICO\nRequisito: Investigar incidentes, identificar causas raíz, tomar acciones correctivas y verificar eficacia\nPregunta del auditor: "Para este accidente del mes pasado, ¿cuál fue la causa raíz? ¿Cómo han verificado que la acción correctiva funciona?"\nEvidencia esperada: Informes de investigación con causa raíz, acciones correctivas implementadas, verificación de eficacia\n\n10.3 Mejora continua\nRequisito: Mejorar continuamente la idoneidad, adecuación y eficacia del SGS\nPregunta del auditor: "¿Pueden mostrarme ejemplos de mejoras implementadas en el último año?"\nEvidencia esperada: Registro de mejoras, evolución favorable de indicadores\n\n© Curso Consultor ISO 45001 — Todos los derechos reservados`;
+  const b=new Blob([t],{type:'text/plain;charset=utf-8'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='mapa-requisitos-iso45001-auditor.txt';a.click();URL.revokeObjectURL(u);}
+</script>
+</body>
+</html>

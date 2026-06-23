@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 7 — Investigación de Incidentes | Curso ISO 45001</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+:root{--azul:#1A3A5C;--azul-mid:#2563A8;--azul-claro:#EAF1FB;--acento:#E85820;--acento-light:#FDF0EB;--verde:#2D8B5A;--verde-light:#E5F4EC;--rojo:#C0392B;--rojo-light:#FDECEA;--amarillo:#D97706;--amarillo-light:#FEF3C7;--gris-1:#F7F8FA;--gris-2:#E8EBF0;--gris-3:#9AA3B0;--texto:#1A1F2E;--radio:10px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--gris-1);color:var(--texto);font-size:16px;line-height:1.7;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:280px;flex-shrink:0;background:var(--azul);color:#fff;padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.badge{background:var(--acento);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.sidebar-logo h2{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.3;}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.sidebar-progress{padding:0 24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;}
+.progress-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.progress-bar-bg{background:rgba(255,255,255,0.15);border-radius:4px;height:6px;}
+.progress-bar-fill{background:var(--acento);border-radius:4px;height:6px;width:58%;}
+.progress-pct{font-size:12px;color:rgba(255,255,255,0.6);margin-top:6px;}
+.sidebar nav ul{list-style:none;}
+.sidebar nav ul li a{display:flex;align-items:center;gap:10px;padding:9px 24px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;}
+.sidebar nav ul li a.active{color:#fff;border-left-color:var(--acento);background:rgba(255,255,255,0.08);font-weight:600;}
+.sidebar nav ul li a.done{color:rgba(255,255,255,0.4);}
+.check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;}
+.done .check{background:var(--verde);border-color:var(--verde);}
+.main{flex:1;padding:48px 56px;max-width:880px;}
+.modulo-eyebrow{font-size:12px;font-weight:600;color:var(--acento);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+h1{font-family:'DM Serif Display',serif;font-size:40px;line-height:1.2;color:var(--azul);margin-bottom:16px;}
+.modulo-intro{font-size:17px;color:#4A5568;max-width:660px;margin-bottom:20px;}
+.modulo-meta{display:flex;gap:24px;margin-bottom:40px;flex-wrap:wrap;}
+.meta-item{font-size:13px;color:var(--gris-3);}
+.seccion{margin-bottom:60px;}
+h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--azul);margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gris-2);}
+h3{font-size:17px;font-weight:700;color:var(--texto);margin:28px 0 10px;}
+p{color:#374151;margin-bottom:14px;line-height:1.75;}
+ul,ol{margin:0 0 14px 20px;color:#374151;}
+ul li,ol li{margin-bottom:10px;line-height:1.6;}
+.callout{padding:20px 24px;border-radius:var(--radio);margin:24px 0;display:flex;gap:16px;}
+.callout.info{background:var(--azul-claro);border-left:4px solid var(--azul-mid);}
+.callout.alerta{background:var(--acento-light);border-left:4px solid var(--acento);}
+.callout.clave{background:var(--verde-light);border-left:4px solid var(--verde);}
+.callout.legal{background:var(--amarillo-light);border-left:4px solid var(--amarillo);}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.callout-body strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;color:var(--azul);}
+.callout.alerta .callout-body strong{color:var(--acento);}
+.callout.clave .callout-body strong{color:var(--verde);}
+.callout.legal .callout-body strong{color:var(--amarillo);}
+.callout-body p{margin:0;font-size:14.5px;color:#374151;}
+.infografia-wrap{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);padding:32px;margin:28px 0;overflow-x:auto;}
+.infografia-titulo{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--gris-3);margin-bottom:24px;}
+.tabla-wrap{overflow-x:auto;margin:20px 0;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--azul);color:#fff;padding:12px 16px;text-align:left;font-weight:600;}
+td{padding:11px 16px;border-bottom:1px solid var(--gris-2);vertical-align:top;}
+tr:nth-child(even) td{background:var(--gris-1);}
+tr:last-child td{border-bottom:none;}
+.arbol-causas{background:#1A1F2E;border-radius:var(--radio);padding:28px;margin:24px 0;}
+.arbol-causas h4{color:var(--acento);font-size:14px;font-weight:700;margin-bottom:16px;}
+.porq-item{display:flex;gap:14px;margin-bottom:16px;}
+.porq-num{width:28px;height:28px;border-radius:50%;background:var(--acento);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.porq-content p{margin:0;font-size:13.5px;color:rgba(255,255,255,0.85);line-height:1.6;}
+.porq-content strong{color:var(--acento-light);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px;}
+.causa-raiz{background:var(--acento);border-radius:8px;padding:12px 16px;margin-top:16px;}
+.causa-raiz p{color:#fff;font-size:13.5px;font-weight:600;margin:0;}
+.caso-practico{background:#fff;border:2px solid var(--acento);border-radius:var(--radio);padding:28px;margin:28px 0;}
+.caso-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.caso-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;}
+.caso-header h4{font-size:16px;font-weight:700;color:var(--acento);margin:0;}
+.auditor-tip{background:#1A1F2E;color:#fff;border-radius:var(--radio);padding:24px 28px;margin:24px 0;}
+.auditor-tip h4{font-size:14px;font-weight:700;color:var(--acento);margin-bottom:10px;}
+.auditor-tip p,.auditor-tip li{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7;}
+.auditor-tip ul{margin-left:20px;}
+.auditor-tip ul li{margin-bottom:6px;}
+.proceso-flujo{display:flex;flex-direction:column;gap:0;margin:24px 0;}
+.flujo-paso{display:flex;align-items:flex-start;gap:20px;padding:20px 24px;background:#fff;border:1px solid var(--gris-2);}
+.flujo-paso:first-child{border-radius:var(--radio) var(--radio) 0 0;}
+.flujo-paso:last-child{border-radius:0 0 var(--radio) var(--radio);}
+.flujo-paso:not(:last-child){border-bottom:none;}
+.flujo-num{width:36px;height:36px;border-radius:50%;background:var(--azul);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;margin-top:2px;}
+.flujo-body h4{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:4px;}
+.flujo-body p{font-size:13.5px;color:#374151;margin:0;}
+.descargable{background:linear-gradient(135deg,var(--azul),var(--azul-mid));border-radius:var(--radio);padding:28px 32px;color:#fff;display:flex;align-items:center;gap:24px;margin:32px 0;}
+.descargable-icon{font-size:40px;flex-shrink:0;}
+.descargable-body h4{font-size:17px;font-weight:600;margin-bottom:6px;}
+.descargable-body p{font-size:13.5px;color:rgba(255,255,255,0.75);margin:0 0 16px;}
+.btn-dl{background:var(--acento);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.quiz-container{background:#fff;border:1px solid var(--gris-2);border-radius:var(--radio);overflow:hidden;margin:32px 0;}
+.quiz-header{background:var(--azul);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:12px;}
+.quiz-header h3{font-size:16px;font-weight:600;border:none;margin:0;padding:0;color:#fff;}
+.quiz-badge{background:var(--acento);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:auto;}
+.quiz-body{padding:28px;}
+.pregunta{margin-bottom:32px;}
+.pregunta:last-child{margin-bottom:0;}
+.pregunta-num{font-size:11px;font-weight:600;color:var(--gris-3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.pregunta h4{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--texto);}
+.opciones{display:flex;flex-direction:column;gap:10px;}
+.opcion{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--gris-2);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--texto);}
+.opcion:hover{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--gris-2);flex-shrink:0;}
+.opcion.selected{border-color:var(--azul-mid);background:var(--azul-claro);}
+.opcion.selected .opcion-dot{background:var(--azul-mid);border-color:var(--azul-mid);}
+.opcion.correcta{border-color:var(--verde);background:var(--verde-light);}
+.opcion.correcta .opcion-dot{background:var(--verde);border-color:var(--verde);}
+.opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-light);}
+.opcion.incorrecta .opcion-dot{background:var(--rojo);border-color:var(--rojo);}
+.feedback-pregunta{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13.5px;display:none;}
+.feedback-pregunta.ok{background:var(--verde-light);color:#1A5C38;display:block;}
+.feedback-pregunta.ko{background:var(--rojo-light);color:#8B1A10;display:block;}
+.quiz-footer{padding:20px 28px;border-top:1px solid var(--gris-2);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.btn-quiz{background:var(--azul);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-quiz:hover{background:var(--azul-mid);}
+.btn-quiz:disabled{background:var(--gris-3);cursor:not-allowed;}
+.quiz-resultado{font-size:14px;color:var(--gris-3);display:none;}
+.quiz-resultado.visible{display:block;}
+.modulo-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:32px;border-top:2px solid var(--gris-2);}
+.btn-nav{display:flex;align-items:center;gap:10px;padding:13px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.2s;}
+.btn-nav.siguiente{background:var(--azul);color:#fff;}
+.btn-nav.anterior{background:#fff;color:var(--azul);border:2px solid var(--gris-2);}
+@media(max-width:768px){.sidebar{display:none;}.main{padding:24px 20px;}h1{font-size:28px;}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">ISO 45001:2018</div>
+    <h2>Consultor SST<br>Certificado</h2>
+    <p>Seguridad y Salud en el Trabajo</p>
+  </div>
+  <div class="sidebar-progress">
+    <div class="progress-label">Progreso</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+    <div class="progress-pct">Módulo 7 de 12</div>
+  </div>
+  <nav><ul>
+    <li><a href="iso45001-modulo1.html" class="done"><span class="check">✓</span> Fundamentos SST y Marco Legal</a></li>
+    <li><a href="iso45001-modulo2.html" class="done"><span class="check">✓</span> La norma ISO 45001:2018</a></li>
+    <li><a href="iso45001-modulo3.html" class="done"><span class="check">✓</span> Contexto y Liderazgo</a></li>
+    <li><a href="iso45001-modulo4.html" class="done"><span class="check">✓</span> Identificación de Peligros y Riesgos</a></li>
+    <li><a href="iso45001-modulo5.html" class="done"><span class="check">✓</span> Planificación y Objetivos SST</a></li>
+    <li><a href="iso45001-modulo6.html" class="done"><span class="check">✓</span> Soporte y Operación SST</a></li>
+    <li><a href="#" class="active"><span class="check">7</span> Investigación de Incidentes</a></li>
+    <li><a href="#"><span class="check">8</span> Auditoría Interna y Revisión</a></li>
+    <li><a href="#"><span class="check">9</span> Proceso de Certificación SST</a></li>
+    <li><a href="#"><span class="check">10</span> Gestión de Contratistas</a></li>
+    <li><a href="#"><span class="check">11</span> Casos Prácticos por Sector</a></li>
+    <li><a href="#"><span class="check">12</span> Proyecto Final</a></li>
+  </ul></nav>
+</aside>
+<main class="main">
+  <div class="modulo-eyebrow">Módulo 7 de 12 — Cláusula 10.2</div>
+  <h1>Investigación de Incidentes</h1>
+  <p class="modulo-intro">La investigación de incidentes es la herramienta más poderosa del SGS para aprender y mejorar. Una investigación superficial que concluye que "el trabajador no prestó atención" no previene nada. Una buena investigación cambia el sistema.</p>
+  <div class="modulo-meta">
+    <span class="meta-item">⏱ 3 horas</span>
+    <span class="meta-item">✅ 12 preguntas</span>
+    <span class="meta-item">📋 Informe de investigación completo + árbol de causas descargable</span>
+  </div>
+
+  <section class="seccion">
+    <h2>1. Qué debe investigarse: más allá del accidente con baja</h2>
+    <p>ISO 45001 es explícita: deben investigarse los incidentes, no solo los accidentes. Un incidente que no causó lesión pero que podría haberla causado es exactamente tan importante como el accidente que sí la causó — y mucho más fácil de investigar sin la presión emocional y legal que rodea a un accidente grave.</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Tipo</th><th>Definición</th><th>Ejemplos</th><th>¿Investigar?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Accidente con baja</strong></td><td>Lesión que impide al trabajador trabajar al día siguiente</td><td>Fractura por caída, corte con baja médica, quemadura grave</td><td>✅ Siempre — obligación legal y normativa</td></tr>
+        <tr><td><strong>Accidente sin baja</strong></td><td>Lesión que no impide trabajar al día siguiente</td><td>Corte leve tratado en botiquín, contusión sin baja, torcedura leve</td><td>✅ Siempre — estadísticamente preceden a accidentes graves</td></tr>
+        <tr><td><strong>Accidente in itinere</strong></td><td>Accidente en el trayecto al/del trabajo</td><td>Atropello yendo al trabajo, caída en escalera del edificio de vivienda</td><td>✅ Sí — es accidente laboral. Puede revelar fallos en gestión de movilidad</td></tr>
+        <tr><td><strong>Cuasi accidente (near-miss)</strong></td><td>Evento que no causó lesión pero que podría haberla causado</td><td>Carga que cae junto a un trabajador, casi-atropello de carretilla, tropiezo sin caída</td><td>✅ Siempre — son el aviso antes del accidente real</td></tr>
+        <tr><td><strong>Situación peligrosa</strong></td><td>Condición que existe y puede generar incidentes</td><td>Cable eléctrico deteriorado detectado, suelo mojado sin señalizar, resguardo de máquina roto</td><td>✅ Registrar y gestionar — es prevención proactiva</td></tr>
+        <tr><td><strong>Enfermedad profesional</strong></td><td>Deterioro de salud atribuible a condiciones de trabajo</td><td>Hipoacusia por ruido, dermatitis por sustancias, lumbalgia crónica por MMC</td><td>✅ Investigar condiciones que la generaron</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout clave">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>La pirámide de Heinrich invertida como herramienta de gestión</strong>
+      <p>Por cada accidente grave hay 29 leves y 300 cuasi accidentes. Gestionar preventivamente los 300 cuasi accidentes es más eficaz y mucho más barato que esperar a que ocurran los 29 leves y el 1 grave. Un sistema SST maduro tiene más registros de cuasi accidentes que de accidentes reales — eso indica que el sistema detecta y actúa antes de que ocurra el daño.</p></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>2. El proceso de investigación: 6 pasos que no pueden saltarse</h2>
+
+    <div class="proceso-flujo">
+      <div class="flujo-paso">
+        <div class="flujo-num">1</div>
+        <div class="flujo-body">
+          <h4>Notificación y primera respuesta (primeras horas)</h4>
+          <p>Notificar al técnico de PRL y al mando. Asegurar la atención al accidentado. Preservar la escena sin alterarla — no limpiar, no mover equipos, no reparar hasta que se investigue. Fotografiar el lugar del accidente.</p>
+        </div>
+      </div>
+      <div class="flujo-paso">
+        <div class="flujo-num">2</div>
+        <div class="flujo-body">
+          <h4>Recopilación de información (primeras 24-48 horas)</h4>
+          <p>Entrevistar por separado: al accidentado (si es posible), a los testigos presenciales, al mando del área. Inspeccionar el equipo, herramienta o área involucrada. Revisar los registros relevantes: evaluación de riesgos del puesto, formación recibida, historial de incidentes previos en ese puesto o equipo, mantenimiento del equipo.</p>
+        </div>
+      </div>
+      <div class="flujo-paso">
+        <div class="flujo-num">3</div>
+        <div class="flujo-body">
+          <h4>Análisis de causas (el corazón de la investigación)</h4>
+          <p>Aplicar una metodología sistemática — no llegar a conclusiones precipitadas. Los métodos más usados: 5 Porqués, árbol de causas (más robusto para accidentes complejos), diagrama de Ishikawa. El objetivo es llegar a la causa raíz del sistema — no a la causa inmediata superficial.</p>
+        </div>
+      </div>
+      <div class="flujo-paso">
+        <div class="flujo-num">4</div>
+        <div class="flujo-body">
+          <h4>Planificación de acciones correctivas</h4>
+          <p>Para cada causa raíz identificada, definir una acción correctiva proporcional. Aplicar la jerarquía de controles — preferir acciones de ingeniería sobre administrativas. Cada acción con responsable, plazo y recursos asignados.</p>
+        </div>
+      </div>
+      <div class="flujo-paso">
+        <div class="flujo-num">5</div>
+        <div class="flujo-body">
+          <h4>Implementación y seguimiento</h4>
+          <p>Ejecutar las acciones en los plazos establecidos. Las acciones inmediatas (controles provisionales) se implementan en horas o días. Las correctivas de fondo pueden requerir semanas. Verificar que se implementan y que son eficaces.</p>
+        </div>
+      </div>
+      <div class="flujo-paso">
+        <div class="flujo-num">6</div>
+        <div class="flujo-body">
+          <h4>Comunicación de lecciones aprendidas</h4>
+          <p>Compartir las conclusiones y las acciones adoptadas con los trabajadores del área afectada y, si la lección es transferible, con el resto de la organización. Actualizar la evaluación de riesgos si el incidente ha revelado un peligro no identificado previamente.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout alerta">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>El plazo crítico: las primeras 24 horas son las más valiosas</strong>
+      <p>La investigación debe comenzar inmediatamente después de garantizar la atención al accidentado. Con cada hora que pasa: la escena se altera, los testigos olvidan detalles, los equipos se reparan o se mueven, y la presión organizativa para "volver a la normalidad" crece. Una investigación iniciada 3 días después del accidente ya ha perdido las evidencias más críticas.</p></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>3. El método de los 5 Porqués: cómo llegar a la causa raíz</h2>
+    <p>Los 5 Porqués es la técnica de análisis de causas más accesible y más potente para la mayoría de incidentes. La clave es no detenerse en la primera causa aparente — seguir preguntando "¿por qué?" hasta llegar al fallo del sistema.</p>
+
+    <div class="arbol-causas">
+      <h4>🔍 Caso real: Caída de operario en almacén — Análisis 5 Porqués</h4>
+      <div class="porq-item">
+        <div class="porq-num">P1</div>
+        <div class="porq-content">
+          <strong>¿Por qué cayó el operario?</strong>
+          <p>Porque resbaló en el suelo del pasillo del almacén.</p>
+        </div>
+      </div>
+      <div class="porq-item">
+        <div class="porq-num">P2</div>
+        <div class="porq-content">
+          <strong>¿Por qué resbaló?</strong>
+          <p>Porque el suelo estaba mojado por una fuga de agua de la estantería de refrigeración.</p>
+        </div>
+      </div>
+      <div class="porq-item">
+        <div class="porq-num">P3</div>
+        <div class="porq-content">
+          <strong>¿Por qué había una fuga sin señalizar?</strong>
+          <p>Porque la fuga llevaba al menos 2 horas y nadie la había reportado ni señalizado.</p>
+        </div>
+      </div>
+      <div class="porq-item">
+        <div class="porq-num">P4</div>
+        <div class="porq-content">
+          <strong>¿Por qué nadie reportó la fuga en 2 horas?</strong>
+          <p>Porque no existe un sistema de reporte de condiciones peligrosas — los trabajadores no saben que deben reportar ni cómo hacerlo.</p>
+        </div>
+      </div>
+      <div class="porq-item">
+        <div class="porq-num">P5</div>
+        <div class="porq-content">
+          <strong>¿Por qué no existe ese sistema de reporte?</strong>
+          <p>Porque la empresa nunca ha establecido un canal de comunicación de condiciones peligrosas ni ha formado al personal en la obligación de reportarlas.</p>
+        </div>
+      </div>
+      <div class="causa-raiz">
+        <p>🎯 CAUSA RAÍZ: Ausencia de sistema de reporte de condiciones peligrosas y falta de formación del personal en la obligación de comunicarlas. La causa inmediata (suelo mojado) es solo el síntoma.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>La trampa del "error humano" como causa raíz</strong>
+      <p>La investigación que concluye que la causa raíz fue "el trabajador no prestó suficiente atención" o "el operario no siguió el procedimiento" no es una investigación — es una excusa. El error humano siempre es síntoma de un fallo del sistema: procedimiento que nadie conoce, formación insuficiente, presión de producción que invita a saltarse pasos de seguridad, señalización ausente o EPI incómodo que nadie usa. La causa raíz real siempre está en el sistema, no en la persona.</p></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>4. El árbol de causas: para accidentes complejos</h2>
+    <p>El árbol de causas es más robusto que los 5 Porqués cuando el accidente tiene múltiples causas concurrentes. Parte del daño y va hacia atrás identificando qué hechos son necesarios y suficientes para que ocurriera el accidente.</p>
+
+    <div class="infografia-wrap">
+      <div class="infografia-titulo">🌳 Árbol de causas — Accidente con carretilla elevadora</div>
+      <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;">
+        <!-- DAÑO -->
+        <rect x="240" y="10" width="200" height="48" rx="8" fill="#C0392B"/>
+        <text x="340" y="32" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">DAÑO: Fractura de pierna</text>
+        <text x="340" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">Operario atropellado por carretilla</text>
+        <line x1="340" y1="58" x2="340" y2="82" stroke="#C0392B" stroke-width="1.5"/>
+
+        <!-- Nivel 1 — Hechos inmediatos -->
+        <rect x="80" y="82" width="170" height="44" rx="7" fill="#E85820"/>
+        <text x="165" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Carretilla no detectó</text>
+        <text x="165" y="116" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">al peatón en cruce</text>
+        <rect x="430" y="82" width="170" height="44" rx="7" fill="#E85820"/>
+        <text x="515" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Peatón entró en zona</text>
+        <text x="515" y="116" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">de paso de carretillas</text>
+        <line x1="250" y1="82" x2="310" y2="58" stroke="#E85820" stroke-width="1.5"/>
+        <line x1="430" y1="82" x2="370" y2="58" stroke="#E85820" stroke-width="1.5"/>
+        <line x1="165" y1="126" x2="165" y2="150" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="515" y1="126" x2="515" y2="150" stroke="#D97706" stroke-width="1.5"/>
+
+        <!-- Nivel 2 -->
+        <rect x="20" y="150" width="145" height="44" rx="7" fill="#D97706"/>
+        <text x="92" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Visibilidad reducida</text>
+        <text x="92" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">en cruce de pasillos</text>
+        <rect x="190" y="150" width="145" height="44" rx="7" fill="#D97706"/>
+        <text x="262" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Sin bocina / pitido</text>
+        <text x="262" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">de aproximación</text>
+        <rect x="360" y="150" width="145" height="44" rx="7" fill="#D97706"/>
+        <text x="432" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Sin separación física</text>
+        <text x="432" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">peatones/carretillas</text>
+        <rect x="525" y="150" width="135" height="44" rx="7" fill="#D97706"/>
+        <text x="592" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Peatón no conocía</text>
+        <text x="592" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">las zonas de riesgo</text>
+        <line x1="92" y1="150" x2="140" y2="126" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="262" y1="150" x2="185" y2="126" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="432" y1="150" x2="490" y2="126" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="592" y1="150" x2="540" y2="126" stroke="#D97706" stroke-width="1.5"/>
+        <line x1="92" y1="194" x2="92" y2="218" stroke="#2563A8" stroke-width="1.5"/>
+        <line x1="262" y1="194" x2="262" y2="218" stroke="#2563A8" stroke-width="1.5"/>
+        <line x1="432" y1="194" x2="432" y2="218" stroke="#2563A8" stroke-width="1.5"/>
+        <line x1="592" y1="194" x2="592" y2="218" stroke="#2563A8" stroke-width="1.5"/>
+
+        <!-- Nivel 3 — Causas raíz -->
+        <rect x="20" y="218" width="145" height="44" rx="7" fill="#2563A8"/>
+        <text x="92" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">No hay espejos</text>
+        <text x="92" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">en cruce — no evaluado</text>
+        <rect x="190" y="218" width="145" height="44" rx="7" fill="#2563A8"/>
+        <text x="262" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Mantenimiento no</text>
+        <text x="262" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">revisó la bocina</text>
+        <rect x="360" y="218" width="145" height="44" rx="7" fill="#2563A8"/>
+        <text x="432" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Diseño almacén sin</text>
+        <text x="432" y="252" text-anchor="middle" font-family="Inter,sans,serif" font-size="10" fill="rgba(255,255,255,0.85)">criterios SST aplicados</text>
+        <rect x="525" y="218" width="135" height="44" rx="7" fill="#2563A8"/>
+        <text x="592" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white">Sin formación acogida</text>
+        <text x="592" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.85)">al peatón (contratista)</text>
+
+        <!-- Leyenda -->
+        <rect x="20" y="310" width="12" height="12" rx="2" fill="#C0392B"/>
+        <text x="38" y="321" font-family="Inter,sans-serif" font-size="10" fill="#374151">Daño / consecuencia</text>
+        <rect x="155" y="310" width="12" height="12" rx="2" fill="#E85820"/>
+        <text x="173" y="321" font-family="Inter,sans-serif" font-size="10" fill="#374151">Hecho inmediato</text>
+        <rect x="280" y="310" width="12" height="12" rx="2" fill="#D97706"/>
+        <text x="298" y="321" font-family="Inter,sans-serif" font-size="10" fill="#374151">Causa contribuyente</text>
+        <rect x="430" y="310" width="12" height="12" rx="2" fill="#2563A8"/>
+        <text x="448" y="321" font-family="Inter,sans-serif" font-size="10" fill="#374151">Causa raíz (sistémica)</text>
+      </svg>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>5. Obligaciones legales de notificación y registro</h2>
+    <p>La investigación interna del SGS no sustituye a las obligaciones legales de notificación. En España, el sistema de notificación de accidentes laborales tiene plazos estrictos:</p>
+
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Tipo de accidente</th><th>Obligación legal</th><th>Plazo</th><th>Canal</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Accidente con baja laboral</strong></td><td>Parte de Accidente de Trabajo (PAT) a la mutua y al MITES</td><td>5 días hábiles desde la fecha del accidente (o desde la baja médica)</td><td>Sistema Delt@ (online)</td></tr>
+        <tr><td><strong>Accidente muy grave, mortal o colectivo (≥4 trabajadores)</strong></td><td>Comunicación urgente adicional a la autoridad laboral autonómica</td><td>24 horas desde el accidente</td><td>Comunicación directa a la inspección de trabajo</td></tr>
+        <tr><td><strong>Accidente sin baja</strong></td><td>Relación mensual de accidentes sin baja</td><td>Antes del día 5 del mes siguiente</td><td>Sistema Delt@</td></tr>
+        <tr><td><strong>Enfermedad profesional</strong></td><td>Parte de Enfermedad Profesional (CEPROSS)</td><td>10 días hábiles desde el diagnóstico</td><td>Sistema CEPROSS (online)</td></tr>
+        <tr><td><strong>Accidentes de tráfico en jornada laboral (in itinere)</strong></td><td>PAT como accidente laboral + parte de atestado de tráfico</td><td>Igual que accidente con baja</td><td>Sistema Delt@ + DGT</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout legal">
+      <div class="callout-icon">⚖️</div>
+      <div class="callout-body"><strong>Consecuencias de no notificar o notificar fuera de plazo</strong>
+      <p>El incumplimiento de los plazos de notificación es una infracción grave del Art. 12.3 de la LISOS (Ley de Infracciones y Sanciones del Orden Social), sancionable con multas de 2.046 a 40.985 euros por accidente no notificado o notificado fuera de plazo. Además, la ITSS puede detectar el incumplimiento en sus inspecciones cruzando datos de la mutua con el sistema Delt@.</p></div>
+    </div>
+
+    <div class="caso-practico">
+      <div class="caso-header">
+        <span class="caso-badge">Caso práctico</span>
+        <h4>Empresa de construcción — Investigación que cambió el sistema</h4>
+      </div>
+      <p><strong>Incidente:</strong> Un albañil sufre una fractura de muñeca al caer de un andamio de 1,5 metros de altura. Baja de 45 días. A primera vista parece un descuido del trabajador que "no se agarró bien".</p>
+      <p><strong>Investigación superficial (lo que haría un técnico junior):</strong> "Causa: el trabajador perdió el equilibrio. Acción: recordar a los trabajadores que deben agarrarse bien en los andamios." Este tipo de investigación no previene nada.</p>
+      <p><strong>Investigación real con 5 Porqués:</strong></p>
+      <ul>
+        <li>¿Por qué cayó? → Porque perdió el equilibrio en el andamio</li>
+        <li>¿Por qué perdió el equilibrio? → Porque la plataforma del andamio estaba húmeda y resbaladiza</li>
+        <li>¿Por qué estaba húmeda? → Porque llovió esa mañana y no se revisó el estado del andamio antes de reanudar el trabajo</li>
+        <li>¿Por qué no se revisó? → Porque no existe procedimiento de inspección del andamio tras lluvia</li>
+        <li>¿Por qué no existe ese procedimiento? → Porque nadie lo ha establecido y no hay criterios operativos para reanudar trabajos en altura tras lluvia</li>
+      </ul>
+      <p><strong>Causa raíz:</strong> Ausencia de procedimiento de inspección previa a la reanudación de trabajos en altura tras condiciones adversas.</p>
+      <p><strong>Acción correctiva real:</strong> Crear criterio operativo: "Antes de reanudar trabajos en altura tras lluvia, el encargado inspecciona el andamio y firma la autorización. Si la plataforma está húmeda, se espera o se seca antes de subir." Esta acción sí previene el accidente siguiente.</p>
+    </div>
+  </section>
+
+  <div class="descargable">
+    <div class="descargable-icon">🔍</div>
+    <div class="descargable-body">
+      <h4>Informe completo de investigación de incidentes + Árbol de causas en blanco</h4>
+      <p>Informe de investigación estructurado con todas las secciones: datos del incidente, recopilación de información, análisis de causas (5 Porqués), acciones correctivas, comunicación y cierre. Árbol de causas en blanco para rellenar.</p>
+      <button class="btn-dl" onclick="descargar()">⬇ Descargar informe y árbol de causas</button>
+    </div>
+  </div>
+
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <h3>Quiz del Módulo 7</h3><span class="quiz-badge">12 preguntas</span>
+    </div>
+    <div class="quiz-body">
+
+      <div class="pregunta" id="p1"><div class="pregunta-num">Pregunta 1 de 12</div>
+      <h4>¿Por qué un cuasi accidente (near-miss) debe investigarse con el mismo rigor que un accidente con lesión?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Porque la ley española lo exige para todos los cuasi accidentes</label>
+        <label class="opcion" onclick="sel(this,'p1',true)"><div class="opcion-dot"></div>Porque revela los mismos fallos del sistema que el accidente con lesión, pero sin la presión emocional y legal — es el mejor momento para aprender</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Solo si el cuasi accidente involucra a más de 3 personas</label>
+        <label class="opcion" onclick="sel(this,'p1',false)"><div class="opcion-dot"></div>Porque ISO 45001 exige documentar todos los eventos, incluidos los cuasi accidentes</label>
+      </div><div class="feedback-pregunta" id="fb1"></div></div>
+
+      <div class="pregunta" id="p2"><div class="pregunta-num">Pregunta 2 de 12</div>
+      <h4>¿Cuál es el plazo legal para notificar un accidente con baja al sistema Delt@ en España?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>24 horas desde el accidente</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>3 días hábiles</label>
+        <label class="opcion" onclick="sel(this,'p2',true)"><div class="opcion-dot"></div>5 días hábiles desde la fecha del accidente o desde la baja médica</label>
+        <label class="opcion" onclick="sel(this,'p2',false)"><div class="opcion-dot"></div>10 días hábiles desde que se conoce el diagnóstico</label>
+      </div><div class="feedback-pregunta" id="fb2"></div></div>
+
+      <div class="pregunta" id="p3"><div class="pregunta-num">Pregunta 3 de 12</div>
+      <h4>¿Por qué "el trabajador no prestó suficiente atención" NO es una causa raíz válida en la investigación de incidentes?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Porque en España no se puede responsabilizar al trabajador de un accidente laboral</label>
+        <label class="opcion" onclick="sel(this,'p3',true)"><div class="opcion-dot"></div>Porque el error humano siempre es síntoma de un fallo del sistema — la causa raíz está en la formación insuficiente, el procedimiento desconocido, la presión de producción o los controles ausentes</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Porque ISO 45001 prohíbe atribuir accidentes a comportamientos del trabajador</label>
+        <label class="opcion" onclick="sel(this,'p3',false)"><div class="opcion-dot"></div>Porque ese tipo de causa no puede documentarse formalmente en el informe</label>
+      </div><div class="feedback-pregunta" id="fb3"></div></div>
+
+      <div class="pregunta" id="p4"><div class="pregunta-num">Pregunta 4 de 12</div>
+      <h4>¿En qué se diferencia el árbol de causas de los 5 Porqués como metodología de análisis?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Son equivalentes — el árbol de causas es simplemente la versión gráfica de los 5 Porqués</label>
+        <label class="opcion" onclick="sel(this,'p4',true)"><div class="opcion-dot"></div>El árbol de causas permite representar múltiples causas concurrentes y sus interacciones — más robusto para accidentes complejos con varias causas simultáneas</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>El árbol de causas es obligatorio para accidentes mortales; los 5 Porqués para el resto</label>
+        <label class="opcion" onclick="sel(this,'p4',false)"><div class="opcion-dot"></div>Los 5 Porqués es una metodología más rigurosa y siempre preferible al árbol de causas</label>
+      </div><div class="feedback-pregunta" id="fb4"></div></div>
+
+      <div class="pregunta" id="p5"><div class="pregunta-num">Pregunta 5 de 12</div>
+      <h4>¿Qué acciones deben tomarse en las primeras horas tras un accidente, antes de iniciar la investigación formal?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Limpiar la zona y reanudar la producción para minimizar el impacto económico</label>
+        <label class="opcion" onclick="sel(this,'p5',true)"><div class="opcion-dot"></div>Atender al accidentado, preservar la escena sin alterarla, fotografiar el lugar y notificar al técnico de PRL y al mando</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Redactar el informe preliminar antes de que los testigos hablen entre sí</label>
+        <label class="opcion" onclick="sel(this,'p5',false)"><div class="opcion-dot"></div>Notificar inmediatamente a la ITSS para evitar problemas legales posteriores</label>
+      </div><div class="feedback-pregunta" id="fb5"></div></div>
+
+      <div class="pregunta" id="p6"><div class="pregunta-num">Pregunta 6 de 12</div>
+      <h4>¿Cuál es la causa raíz real identificada en el caso práctico del albañil con fractura de muñeca?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>El trabajador no prestó suficiente atención al bajar del andamio</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>El andamio estaba húmedo por la lluvia</label>
+        <label class="opcion" onclick="sel(this,'p6',true)"><div class="opcion-dot"></div>Ausencia de procedimiento de inspección y criterios operativos para reanudar trabajos en altura tras condiciones adversas meteorológicas</label>
+        <label class="opcion" onclick="sel(this,'p6',false)"><div class="opcion-dot"></div>El encargado no supervisó adecuadamente al trabajador</label>
+      </div><div class="feedback-pregunta" id="fb6"></div></div>
+
+      <div class="pregunta" id="p7"><div class="pregunta-num">Pregunta 7 de 12</div>
+      <h4>¿Qué indica un sistema SST maduro respecto a la proporción entre cuasi accidentes y accidentes reales registrados?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>Que los cuasi accidentes son muy pocos — la empresa los gestiona antes de que ocurran</label>
+        <label class="opcion" onclick="sel(this,'p7',true)"><div class="opcion-dot"></div>Que hay más registros de cuasi accidentes que de accidentes reales — el sistema detecta y actúa antes de que ocurra el daño</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>Que la proporción es irrelevante — lo que importa es que los accidentes reales sean cero</label>
+        <label class="opcion" onclick="sel(this,'p7',false)"><div class="opcion-dot"></div>Que los cuasi accidentes y accidentes tienen proporciones iguales en un sistema maduro</label>
+      </div><div class="feedback-pregunta" id="fb7"></div></div>
+
+      <div class="pregunta" id="p8"><div class="pregunta-num">Pregunta 8 de 12</div>
+      <h4>¿Qué obligación adicional existe cuando un accidente es mortal, muy grave o afecta a 4 o más trabajadores?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Solo el PAT habitual con prioridad máxima en el sistema Delt@</label>
+        <label class="opcion" onclick="sel(this,'p8',true)"><div class="opcion-dot"></div>Comunicación urgente a la autoridad laboral autonómica en 24 horas, además del PAT habitual</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Notificación al juzgado de guardia en el plazo de 48 horas</label>
+        <label class="opcion" onclick="sel(this,'p8',false)"><div class="opcion-dot"></div>Presentación de informe de investigación preliminar al organismo certificador ISO 45001</label>
+      </div><div class="feedback-pregunta" id="fb8"></div></div>
+
+      <div class="pregunta" id="p9"><div class="pregunta-num">Pregunta 9 de 12</div>
+      <h4>¿En qué sistema informático se notifican las enfermedades profesionales en España?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Sistema Delt@, el mismo que los accidentes de trabajo</label>
+        <label class="opcion" onclick="sel(this,'p9',true)"><div class="opcion-dot"></div>Sistema CEPROSS (Comunicación de Enfermedades Profesionales en la Seguridad Social)</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Portal del INSST para notificación voluntaria de enfermedades profesionales</label>
+        <label class="opcion" onclick="sel(this,'p9',false)"><div class="opcion-dot"></div>Sistema SISSOA de la ITSS para enfermedades laborales</label>
+      </div><div class="feedback-pregunta" id="fb9"></div></div>
+
+      <div class="pregunta" id="p10"><div class="pregunta-num">Pregunta 10 de 12</div>
+      <h4>¿Por qué las primeras 24 horas tras el accidente son las más valiosas para la investigación?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Porque es el plazo que marca la normativa para iniciar la investigación</label>
+        <label class="opcion" onclick="sel(this,'p10',true)"><div class="opcion-dot"></div>Porque con cada hora que pasa la escena se altera, los testigos olvidan detalles, los equipos se reparan y la presión organizativa para volver a la normalidad crece</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Porque el accidentado solo puede declarar en las primeras 24 horas legalmente</label>
+        <label class="opcion" onclick="sel(this,'p10',false)"><div class="opcion-dot"></div>Porque después de 24 horas la ITSS puede iniciar su propia investigación paralela</label>
+      </div><div class="feedback-pregunta" id="fb10"></div></div>
+
+      <div class="pregunta" id="p11"><div class="pregunta-num">Pregunta 11 de 12</div>
+      <h4>¿Qué debe hacerse con la evaluación de riesgos del puesto tras la investigación de un incidente?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>No es necesario modificarla — la evaluación es válida hasta la siguiente revisión anual</label>
+        <label class="opcion" onclick="sel(this,'p11',true)"><div class="opcion-dot"></div>Actualizarla si el incidente ha revelado un peligro no identificado o un control insuficiente que no estaba reflejado</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Solo actualizarla si el incidente fue un accidente con baja de más de 30 días</label>
+        <label class="opcion" onclick="sel(this,'p11',false)"><div class="opcion-dot"></div>Rehacerla completamente para el puesto afectado independientemente del resultado</label>
+      </div><div class="feedback-pregunta" id="fb11"></div></div>
+
+      <div class="pregunta" id="p12"><div class="pregunta-num">Pregunta 12 de 12</div>
+      <h4>¿Cuál es el último paso del proceso de investigación de incidentes que cierra el ciclo de aprendizaje?</h4>
+      <div class="opciones">
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>La firma del informe por el director general</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>El archivo del informe en el expediente del accidentado</label>
+        <label class="opcion" onclick="sel(this,'p12',true)"><div class="opcion-dot"></div>La comunicación de lecciones aprendidas a los trabajadores del área y, si es transferible, al resto de la organización</label>
+        <label class="opcion" onclick="sel(this,'p12',false)"><div class="opcion-dot"></div>La notificación del cierre de la investigación a la ITSS</label>
+      </div><div class="feedback-pregunta" id="fb12"></div></div>
+
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-quiz" id="btnComprobar" onclick="comprobarQuiz()">Comprobar respuestas</button>
+      <button class="btn-quiz" id="btnReset" onclick="resetQuiz()" style="background:#fff;color:var(--azul);border:2px solid var(--gris-2);display:none;">Reintentar</button>
+      <span class="quiz-resultado" id="quizResultado"></span>
+    </div>
+  </div>
+
+  <div class="modulo-nav">
+    <a href="iso45001-modulo6.html" class="btn-nav anterior">← Módulo 6</a>
+    <a href="iso45001-modulo8.html" class="btn-nav siguiente">Módulo 8: Auditoría Interna y Revisión →</a>
+  </div>
+</main>
+</div>
+<script>
+const R={};
+const CI={p1:1,p2:2,p3:1,p4:1,p5:1,p6:2,p7:1,p8:1,p9:1,p10:1,p11:1,p12:2};
+const FB={
+  p1:{ok:'✅ Correcto. El cuasi accidente tiene la misma secuencia causal que el accidente con lesión — solo lo diferencia la suerte. Investigarlo cuando no hay lesionados permite aprender sin el estrés emocional y la presión legal del accidente real.',ko:'❌ Incorrecto. El cuasi accidente revela los mismos fallos del sistema que el accidente real, pero en un contexto menos cargado emocionalmente y legalmente. Es la mejor oportunidad de aprendizaje preventivo.'},
+  p2:{ok:'✅ Correcto. El plazo es de 5 días hábiles desde la fecha del accidente o desde la baja médica, lo que ocurra antes. El sistema Delt@ permite cumplirlo online.',ko:'❌ Incorrecto. El plazo para el PAT (Parte de Accidente de Trabajo) es de 5 días hábiles desde la fecha del accidente o desde la baja médica. El plazo de 24 horas es para accidentes muy graves, mortales o colectivos.'},
+  p3:{ok:'✅ Correcto. El error humano es siempre síntoma de un fallo del sistema. Detrás del "no prestó atención" siempre hay: formación insuficiente, procedimiento desconocido o inaplicable, presión de producción, EPI incómodo o controles ausentes.',ko:'❌ Incorrecto. El error humano siempre es síntoma de un fallo sistémico. La causa raíz real está en el sistema que permitió que ese error ocurriera: formación, procedimientos, controles o diseño del puesto.'},
+  p4:{ok:'✅ Correcto. El árbol de causas es más robusto cuando el accidente tiene múltiples causas que interactúan simultáneamente. Los 5 Porqués es más lineal y adecuado cuando hay una cadena causal clara.',ko:'❌ Incorrecto. Son metodologías distintas. El árbol de causas permite representar múltiples causas concurrentes y sus interrelaciones — ideal para accidentes complejos. Los 5 Porqués es más lineal, más rápido y adecuado para casos con una cadena causal relativamente simple.'},
+  p5:{ok:'✅ Correcto. Las prioridades en orden son: 1) atención al accidentado, 2) preservar la escena sin alterarla (no limpiar, no mover equipos), 3) fotografiar, 4) notificar. Limpiar la zona antes de investigar destruye evidencias críticas.',ko:'❌ Incorrecto. La prioridad es atender al accidentado y luego preservar la escena intacta. Limpiar o reparar antes de investigar destruye las evidencias que permitirán entender qué falló.'},
+  p6:{ok:'✅ Correcto. La causa raíz real es sistémica: la ausencia de un procedimiento que establezca qué hacer antes de reanudar trabajos en altura tras lluvia. Esta es la acción que previene el próximo accidente.',ko:'❌ Incorrecto. La causa raíz no es el andamio húmedo (causa inmediata) ni el encargado (causa contribuyente). Es la ausencia de un procedimiento que establezca criterios para reanudar trabajos en altura tras condiciones meteorológicas adversas.'},
+  p7:{ok:'✅ Correcto. Un sistema SST maduro tiene más registros de cuasi accidentes que de accidentes reales porque el sistema ha aprendido a detectar y actuar antes de que ocurra el daño. Es el indicador más claro de cultura preventiva real.',ko:'❌ Incorrecto. Más registros de cuasi accidentes que de accidentes reales indica que el sistema detecta los avisos antes de que ocurra el daño. Es la señal de un sistema SST maduro, no de un problema.'},
+  p8:{ok:'✅ Correcto. Para accidentes muy graves, mortales o que afectan a 4 o más trabajadores, además del PAT habitual hay obligación de comunicación urgente a la autoridad laboral autonómica en 24 horas.',ko:'❌ Incorrecto. Los accidentes muy graves, mortales o colectivos (≥4 trabajadores) tienen una obligación adicional: comunicación urgente a la autoridad laboral autonómica en 24 horas, además del PAT habitual de 5 días hábiles.'},
+  p9:{ok:'✅ Correcto. Las enfermedades profesionales se notifican en el sistema CEPROSS (Comunicación de Enfermedades Profesionales en la Seguridad Social), distinto al sistema Delt@ que es para accidentes de trabajo.',ko:'❌ Incorrecto. Las enfermedades profesionales tienen su propio sistema de notificación: CEPROSS (Comunicación de Enfermedades Profesionales en la Seguridad Social). El sistema Delt@ es exclusivo para accidentes de trabajo.'},
+  p10:{ok:'✅ Correcto. La degradación de las evidencias es exponencial en las primeras horas: la escena se altera, los testigos comparten versiones, los equipos se reparan y la presión organizativa para "volver a la normalidad" actúa en contra de la investigación.',ko:'❌ Incorrecto. Las evidencias se deterioran muy rápidamente: la escena se limpia, los testigos hablan entre sí y alinean sus versiones, los equipos se reparan o mueven. Una investigación tardía ya ha perdido las evidencias más valiosas.'},
+  p11:{ok:'✅ Correcto. Si el incidente ha revelado un peligro no identificado previamente o ha demostrado que un control existente es insuficiente, la evaluación de riesgos debe actualizarse inmediatamente para que el sistema refleje la realidad.',ko:'❌ Incorrecto. Si el incidente revela un peligro no identificado o un control insuficiente, la evaluación de riesgos debe actualizarse. Es uno de los outputs más importantes de la investigación.'},
+  p12:{ok:'✅ Correcto. La comunicación de lecciones aprendidas cierra el ciclo. Sin ella, la investigación queda en un cajón y los compañeros del accidentado (y los de otras áreas con peligros similares) siguen expuestos al mismo riesgo.',ko:'❌ Incorrecto. El último paso es comunicar las lecciones aprendidas. Sin esta comunicación, la investigación sirve para archivar el expediente pero no para prevenir el accidente siguiente en el mismo u otro área de la empresa.'}
+};
+function sel(el,pid,ok){if(document.getElementById('btnComprobar').disabled)return;el.closest('.opciones').querySelectorAll('.opcion').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');R[pid]={idx:Array.from(el.closest('.opciones').children).indexOf(el),ok};}
+function comprobarQuiz(){const ps=['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12'];if(Object.keys(R).length<ps.length){alert('Responde todas las preguntas.');return;}let a=0;ps.forEach(pid=>{const r=R[pid];const ops=document.querySelectorAll('#'+pid+' .opcion');const fb=document.getElementById('fb'+pid.substring(1));ops.forEach(o=>o.style.pointerEvents='none');if(r.ok){ops[r.idx].classList.add('correcta');fb.className='feedback-pregunta ok';fb.textContent=FB[pid].ok;a++;}else{ops[r.idx].classList.add('incorrecta');ops[CI[pid]].classList.add('correcta');fb.className='feedback-pregunta ko';fb.textContent=FB[pid].ko;}});document.getElementById('btnComprobar').disabled=true;document.getElementById('btnComprobar').style.display='none';document.getElementById('btnReset').style.display='inline-block';const res=document.getElementById('quizResultado');res.classList.add('visible');const pct=Math.round(a/12*100);res.style.color=pct>=80?'var(--verde)':pct>=60?'var(--amarillo)':'var(--rojo)';res.textContent=pct>=80?`🎉 ${a}/12 (${pct}%) — Investigas como un profesional.`:pct>=60?`📖 ${a}/12 (${pct}%) — Repasa los puntos incorrectos.`:`🔄 ${a}/12 (${pct}%) — Vuelve a leer el módulo.`;}
+function resetQuiz(){Object.keys(R).forEach(k=>delete R[k]);document.querySelectorAll('.opcion').forEach(o=>{o.classList.remove('selected','correcta','incorrecta');o.style.pointerEvents='';});document.querySelectorAll('.feedback-pregunta').forEach(f=>{f.className='feedback-pregunta';f.textContent='';});document.getElementById('btnComprobar').disabled=false;document.getElementById('btnComprobar').style.display='';document.getElementById('btnReset').style.display='none';document.getElementById('quizResultado').classList.remove('visible');}
+function descargar(){const t=`DOCUMENTOS MÓDULO 7 — INVESTIGACIÓN DE INCIDENTES ISO 45001\n${'='.repeat(60)}\n\nINFORME DE INVESTIGACIÓN DE INCIDENTE / ACCIDENTE\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSECCIÓN 1: DATOS DEL INCIDENTE\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nFecha: ___ | Hora: ___ | Lugar exacto: ___\nTipo: □ Accidente con baja □ Accidente sin baja □ Cuasi accidente □ Situación peligrosa □ EP\nAccidentado (si aplica): ___ | Puesto: ___ | Antigüedad en el puesto: ___\nTestigos presentes: ___ \nNotificado a: ___ | Fecha notificación: ___ | Hora notificación: ___\n\nDescripción del incidente (qué ocurrió, en qué momento, cómo):\n___\n\nLesión resultante (si aplica): ___ | Parte del cuerpo afectada: ___\nDías de baja estimados: ___ | PAT presentado: Sí/No | Fecha PAT: ___\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSECCIÓN 2: RECOPILACIÓN DE INFORMACIÓN\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nDeclaración del accidentado (si es posible):\n___\n\nDeclaración testigo 1 (___):\n___\n\nDeclaración testigo 2 (___):\n___\n\nDeclaración del mando directo (___):\n___\n\nInspección del área / equipo involucrado:\n- Estado del equipo: ___\n- Condiciones del entorno (suelo, iluminación, orden): ___\n- EPI disponibles y su estado: ___\n- Evidencias fotográficas: Sí/No (nº fotos: ___)\n\nDocumentación revisada:\n□ Evaluación de riesgos del puesto — versión: ___ — ¿recoge este peligro? Sí/No\n□ Formación del trabajador en este puesto — última fecha: ___\n□ Historial de incidentes previos en este puesto/equipo: ___\n□ Plan de mantenimiento del equipo involucrado — última revisión: ___\n□ Procedimiento de trabajo aplicable: ___\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSECCIÓN 3: ANÁLISIS DE CAUSAS — 5 PORQUÉS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n¿Por qué ocurrió el incidente? (Causa inmediata)\n___\n\n¿Por qué? (2º nivel)\n___\n\n¿Por qué? (3º nivel)\n___\n\n¿Por qué? (4º nivel)\n___\n\n¿Por qué? (5º nivel / causa raíz)\n___\n\nCausa raíz identificada:\n┌─────────────────────────────────────────────────┐\n│ ___                                             │\n└─────────────────────────────────────────────────┘\n\nCategoría de la causa raíz:\n□ Fallo de diseño/ingeniería  □ Mantenimiento insuficiente\n□ Formación/competencia       □ Procedimiento ausente o inadecuado\n□ Supervisión insuficiente    □ Condiciones de trabajo\n□ Gestión del cambio          □ Factores organizativos/psicosociales\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSECCIÓN 4: ACCIONES CORRECTIVAS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAcción inmediata (implementada el día del incidente):\n___ | Responsable: ___ | Estado: COMPLETADA\n\nAcción correctiva 1 (aborda la causa raíz):\n___ | Nivel jerarquía: □Elim □Sust □Ing □Adm □EPI\nResponsable: ___ | Plazo: ___ | Presupuesto: ___\nFecha verificación eficacia: ___\n\nAcción correctiva 2:\n___ | Responsable: ___ | Plazo: ___ | Estado: ___\n\nAcción correctiva 3:\n___ | Responsable: ___ | Plazo: ___ | Estado: ___\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSECCIÓN 5: ACTUALIZACIÓN DE DOCUMENTOS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n□ Evaluación de riesgos actualizada — Fecha: ___\n□ Procedimiento de trabajo actualizado — Fecha: ___\n□ Plan de formación actualizado — Fecha: ___\n□ Plan de mantenimiento actualizado — Fecha: ___\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSECCIÓN 6: COMUNICACIÓN DE LECCIONES APRENDIDAS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nResumen de lecciones aprendidas (máx. 5 líneas para difusión):\n___\n\nComunicado a:\n□ Trabajadores del área afectada — Fecha: ___ | Método: ___\n□ Resto de la organización (si aplica) — Fecha: ___ | Método: ___\n□ Comité de Seguridad y Salud — Fecha reunión: ___\n□ Incluido en revisión por la dirección: Sí/No\n\nFirmas:\nTécnico PRL investigador: ___ | Fecha informe: ___\nMando del área: ___ | Director: ___\n\nFecha de cierre del informe: ___ | Fecha de próxima revisión de eficacia: ___\n\n© Curso Consultor ISO 45001 — Todos los derechos reservados`;
+  const b=new Blob([t],{type:'text/plain;charset=utf-8'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='informe-investigacion-incidentes-sst.txt';a.click();URL.revokeObjectURL(u);}
+</script>
+</body>
+</html>
